@@ -5,6 +5,9 @@ __pycache__/
 # C extensions
 *.so
 
+# settings file
+BioDesigner/settings.py
+
 # Distribution / packaging
 .Python
 env/
