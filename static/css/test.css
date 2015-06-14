@@ -1,0 +1,150 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    font-family:"Helvetica Neue","Helvetica","Arial","Verdana","sans-serif";
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility
+}
+
+div{
+	display: block;
+}
+
+div#container{
+	width:100%;
+	text-align: center;
+	height: 100%;
+	left:0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+}
+
+a.btn-action{
+	text-decoration: none;
+	display: inline-block;
+	color:#FFF;
+	width:40%;
+	text-decoration: none;
+	-webkit-transition-delay: 0s;
+	-webkit-transition-duration: 0.2s;
+	-webkit-transition-property: opacity;
+	-webkit-transition-timing-function: cubic-bezier(0.645, 0.045, 0.355, 1);
+	-webkit-user-select: none;
+}
+
+a.btn-action:hover{
+	color:#5AFF35;
+}
+div#button{
+	width: 80%;
+	font-size: 4em;
+	position: relative;
+	top:40%;
+	margin:0 auto;
+}
+
+div#background-image{
+	background:url(/static/img/test_background.jpg);
+	background-size:cover;
+	background-repeat:no-repeat;
+	width:100%;
+	height: 100%;
+	z-index: -1;
+	-webkit-background-size: cover;
+	top:0;
+	left: 0;
+	position: absolute;
+}
+
+div#mean-window,
+div#spell-window{
+	position: absolute;
+	top:15%;
+	opacity: 0.85;
+}
+
+div.modal-content{
+	background-color: #E6E6E6;
+}
+
+button.cancel-button,
+button.ok-button{
+	background-color: rgba(0,0,0,0);
+	font-size:1.25em;
+	border-width: 0px;
+	-webkit-transition-delay: 0s;
+	-webkit-transition-duration: 0.2s;
+	-webkit-transition-property: opacity;
+	-webkit-transition-timing-function: cubic-bezier(0.645, 0.045, 0.355, 1);
+	-webkit-user-select: none;
+}
+button.cancel-button{
+	color:#333333;
+	float: left;
+}
+button.ok-button{
+	color:#0080FF;
+	font-size: 1.3em
+}
+
+button.cancel-button:hover{
+	color:#191919;
+	font-weight: bolder;
+}
+
+button.ok-button:hover{
+	color:#0000FF;
+	font-weight: bolder;
+}
+
+div.choice-area{
+	width:90%;
+	margin:0 auto;
+}
+
+a.mean-choice{
+	text-decoration: none;
+	font-size:2.5em;
+	display: block;
+}
+
+div.mean-area{
+	font-size: 2em;
+	display: block;
+	margin-bottom: 1em;
+}
+
+div.explanation-area{
+	font-size:1.3em;
+}
+
+input#user-spell{
+	width:80%;
+	margin:0 auto;
+	height:3em;
+	font-size:1.5em;
+	border-top: 0;
+	border-left: 0;
+	border-right: 0;
+	border-bottom-width: 1px;
+	border-bottom-color: #000000;
+	box-shadow: none;
+	background-color: rgba(230,230,230,0.7);
+}
+
+input#user-spell:focus {
+	border: 0;
+}
+{
+	border:0;
+}
+
+div.spell-base{
+	margin-top: 1em;
+	font-size: 2em;
+	display: block;
+	color:#0080FF;
+}

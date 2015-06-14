@@ -1,0 +1,204 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    font-family:"Helvetica Neue","Helvetica","Arial","Verdana","sans-serif";
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    background-color: #DAFFDB;
+}
+
+div{
+	display: block;
+}
+
+
+
+div#container{
+	width:100%;
+	text-align: center;
+	height: 100%;
+	left:0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+}
+
+div#background-image{
+	background:url(/static/img/dashboard_background.jpg);
+	background-size:cover;
+	background-repeat:no-repeat;
+	width:100%;
+	height: 100%;
+	z-index: -1;
+	background-size: cover;
+	top:0;
+	left: 0;
+	position: absolute;
+}
+
+div#container a.carousel-control{
+	background-image: none;
+	top:80%;
+	width:5%;
+}
+
+div.hint-infos{
+	vertical-align: center;
+	margin:1.5em auto;
+	width:80%;
+	height: 30%;
+	display: block;
+	font-size: 2.6em;
+	font-weight: normal;
+	text-shadow: 0 0 5px rgba(0,0,0,0.35);
+}
+
+div#day-word{
+	float: left;
+}
+
+div#day-word div.day-title{
+	font-weight: 300;
+	color:#008040;
+}
+
+div#day-word div#words a{
+	text-decoration: none;
+	color:#54A2CE;
+	font-size: 1.459em;
+	font-weight: bolder;
+}
+
+div#total-words{
+	float: right;
+}
+div#total-words div.total-title{
+	font-weight: 500;
+	color:#909090;
+}
+
+div#total-words div#total{
+	color:#008080;
+	font-size: 1.4em;
+	font-weight: bold;
+}
+
+div#note-area{
+	text-align: center;
+	width:65%;
+	margin:0 auto;
+}
+
+div#note-area div.word-mean{
+	display: block;
+	margin-bottom: 1em;
+}
+
+div#note-area div.word-mean input#word{
+	float:left;
+	width:48%;
+	height:3.5em;
+}
+
+div#note-area div.word-mean input#mean{
+	float:right;
+	width:48%;
+	height:3.5em;
+}
+
+div#note-area div.explanation{
+	padding-top: 10%;
+}
+
+div#note-area div.explanation input#explanation{
+	display: block;
+	width: 100%;
+	height:3.9em;
+}
+
+div#note-area div.add-button{
+	width:95%;
+	display: block;
+	margin:1em auto;
+}
+
+div#note-area div.add-button button{
+	float: right;
+	background-color: rgba(0,0,0,0);
+	border-width: 0;
+	color:#002FA7;
+	font-size:4em;
+}
+
+div#note-area div.add-button button:hover{
+	color:#0095EB;
+}
+
+div#note-area div.add-button button:active{
+	color:#00A2FF;
+}
+
+div#noted-area{
+	width:100%;
+}
+
+div#noted-words{
+	width:80%;
+	margin:15% auto;
+	text-align: center;
+}
+
+div#noted-words div.word-pad{
+	width:100%;
+	height:auto;
+	margin-top: 5%;
+	margin-bottom: 5%;
+	background-color:rgba(0,0,255, 0.62);
+	font-size: 3em;
+	border-radius: 0.2em;
+	text-shadow: 0 0 20px rgba(0,0,0,0.35);
+}
+
+div#noted-words div.level-1{
+	background-color: rgba(255, 204, 102, 0.62);
+}
+
+div#noted-words div.level-2{
+	background-color: rgba(255, 128, 0, 0.62);
+}
+
+div#noted-words div.high-level{
+	background-color: rgba(255, 0, 0, 0.62);
+}
+
+div#noted-words div.remembered{
+	background-color: rgba(128,255,0,0.62);
+}
+
+div#noted-words div.word-pad a.noteword{
+	text-decoration: none;
+	color:#fff;
+	font-weight: bold;
+}
+
+div#noted-words div.word-pad a.noteword:hover{
+	color:#CCCCCC;
+}
+
+div#noted-words div.word-pad button.noteword{
+	text-decoration: none;
+	color:#fff;
+	font-weight: bold;
+	background-color: rgba(0,0,0,0);
+	border-width: 0;
+}
+
+div#noted-words div.word-pad button.noteword:hover{
+	color:#CCCCCC;
+}
+
+div#word-card{
+	opacity: 0.85;
+}

@@ -1,0 +1,261 @@
+body{
+	height:100%;
+	width:100%;
+}
+
+#total_container{
+	height:100%;
+	width:100%;
+}
+
+#left_container{
+	height:100%;
+	width:23.6%;
+	min-width: 200px;
+	max-width: 250px;
+	background-color: grey;
+	float:left;
+}
+
+#logo{
+	width:100%;
+	background-image: url("/static/img/dash_logo.jpg");
+	background-size:cover;
+	background-repeat:no-repeat;
+}
+
+#tab_container{
+	width:100%;
+	
+    border:0 ;
+
+    margin:0;
+    
+    padding:0;
+	background-color: black;
+}
+
+#tab_ul{
+	padding:0;
+	margin:0;
+}
+/*
+#tab_ul li{
+	width:48%;
+	margin:0;
+}*/
+
+#search_part_container{
+	width: 100%;
+    height:70%;
+	padding: 0;
+	margin:0;
+	border: 0;
+	background-color: yellow;
+}
+
+.search_container{
+	width:100%;
+	height:50px;
+    background-color: orange;
+}
+
+.search_input{
+	border:0;
+	height:40px;
+	margin:5px;
+	width:60%;
+	font-size:25px;
+}
+
+.search_button{
+	height:40px;
+	margin:5px;
+	width:30%; 
+	float:right;
+
+}
+.result_container{
+     background-color:green;
+     overflow: auto;
+}
+/*
+.result_container{
+	width:100%;
+	background-color: red;
+	overflow: auto;
+}
+*/
+
+/*  左侧 组件样式*/
+.part_style{
+	width:100%;
+	background-color:blue;
+	color:white;
+	margin-top:2px;
+}
+
+/* 左侧 组件 拖动*/
+.part_drag{
+}
+
+/* 左侧 组件点击出信息 */
+.show_message{
+}
+
+/* 左侧搜索 组件 点击出推荐组件*/
+.show_recommand{
+}
+
+#recommand_container{
+	width:100%;
+}
+
+#recommand_container h1{
+	width:100%;
+	height:35px;
+	background-color: black;
+	font:25px/35px sans-serif;
+	color:white;
+	text-align: center;
+}
+
+#recommand_search_container{
+	width:100%;
+	height:100px;
+	background-color: green;
+	overflow: auto;
+}
+
+#right_container{
+    height:100%;
+	background-color:black;
+}
+
+#bananer{
+	height:50px;
+	width:100%;
+	background-color: green;
+}
+
+#operation{
+	width:100%;
+	background-color:grey;
+}
+
+.add_style{
+	background-color: black;
+    float:left;
+}
+
+.add_button_receive{
+}
+
+.receivable{
+}
+
+.receive_style{
+	background-color:blue;
+    float:left;
+
+}
+
+.receive_hover{
+	background-color: white;
+}
+
+.operation_part_style{
+	background-color: red;
+	margin:10% auto;
+	height:40px;
+	width:40px;
+}
+
+.operation_part_drag{
+}
+
+.recommand_div{
+	position: absolute;
+	height:100px;
+	width:600px;
+	top:100px;
+	left:-300px;
+	background-color: white;
+	overflow: scroll;
+}
+.recommend_list_st{
+    height:50px;
+    width:100px;
+    float: right;
+    margin:2px;
+    background-color: blue;
+}
+.drag{
+	background-color: black;
+	color:white;
+}
+
+
+
+
+.container2 {
+	width: 100%;
+	
+	height: auto;
+	background-color: #E6E6E6;/*最外层颜色*/
+	}
+
+.container2 .div_scroll {
+	width: 100%;
+	height: 100px;
+	overflow: auto;
+	float: left;
+}	
+
+.container2 .scroll_container {
+	overflow: hidden;
+	position: relative;
+	background-color: #F8F8F8;/*内容区域颜色*/
+}
+
+.container2 .scroll_absolute {
+    position: absolute;
+}
+
+.container2 .scroll_vertical_bar {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 16px;
+    height: 100%;
+    background: green;
+    margin: 0;
+    padding: 0;
+}
+
+.container2 .scroll_track {
+	position: relative;
+	background-color: #BFEBFF;/*滚动条下方颜色*/
+}
+
+.container2 .scroll_drag {
+	position: relative;
+	top: 0;
+	left: 0;
+	cursor: pointer;
+	background-color: #075E92;/*滚动条颜色*/
+}
+
+.container2 .scroll_arrow {
+	text-indent: -20000px;
+	display: block;
+	cursor: pointer;
+	background-color: #369DB4;
+}
+
+.container2 .scroll_vertical_bar .scroll_arrow {
+    height: 16px;
+}
+
+
+

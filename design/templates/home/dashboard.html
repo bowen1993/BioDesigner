@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
+	<title>BioDesiger</title>
+	<link rel="stylesheet" href="/static/css/dashboard_.css">
+	<link rel="stylesheet" type="text/css" href="/static/css/bootstrap.css" />
+	<!--<script type="text/javascript" src="/static/js/jquery-2.1.1.min.js"></script>-->
+	<script type="text/javascript" src="/static/js/jquery-1.7.js" ></script>
+	<script type="text/javascript" src="/static/js/jquery-ui-1.8.16.custom.js" ></script>
+	<script type="text/javascript" src="/static/js/dashboard.js"></script>
+	<script type="text/javascript" src="/static/js/jquery.tmpl.js"></script>
+	<script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
+</head>
+<script id="search_part" type="text/x-jquery-tmpl">
+    <div class="part_style part_drag show_message " part_name="${part_name}" part_id="${part_id}" part_type="${part_type}"><img src="/static/img/${part_type}.png" alt="logo" class="img-rounded" style="width: 60px;height: 30px;" />${part_name}</div>
+</script>
+<script id="recommand_part" type="text/x-jquery-tmpl">
+	<div class="part_style part_drag show_message " part_name="${part_name}" part_id="${part_id}" part_type="${part_type}" ><img src="/static/img/${part_type}.png" alt="logo" class="img-rounded" style="width: 60px;height: 30px;" />${part_name}</div>
+    
+</script>
+<script id="recommand_part_list" type="text/x-jquery-tmpl">
+    <div class="operation_part_style operation_part_drag col-lg-6 col-md-6 col-sm-6" part_id="${part_id}" part_name="${part_name}" part_type="${part_type}"><img src="/static/img/${part_type}.png" alt="logo" class="img-rounded" style="width: 60px;height: 30px;" />${part_name}</div>
+</script>
+<script id="project-info" type="text/x-jquery-tmpl">
+	<div class="project-item switch-project" project-id="${id}">${name} Created by ${creator}</div>
+</script>
+<script id="part_detail_info" type="text/x-jquery-tmpl">
+	
+</script>
+<body>
+<div id="container"><!-- total container start -->
+	<div id="left_container"><!-- left container start -->
+		<div id="logo"><!-- logo start-->
+			<img src="/static/img/logo_white.png" alt="logo" class="img-rounded" style="width: 90px;height: 90px;" />
+			BioDesigner
+		</div><!-- logo stop-->
+		<div id="tab_container"><!-- tab start-->
+		<div role="navigation" class="tab">
+			<ul class="nav nav-tabs" role="tablist" id="tab_ul">
+				<li role="presentation" class="switcher" style="width:48%;margin:0;"><a href="#search_part_container" class="ppswitch" aria-controls="search_part_container" role="tab" data-toggle="tab">Parts</a></li>
+				<li role="presentation" class="active switcher" style="width:48%;margin:0; float:right"><a class="ppswitch" aria-controls="project_container" role="tab" data-toggle="tab" href="#project_container">Projects</a></li>
+			</ul>
+		</div>
+		<div class="tab-content">
+			<div id="search_part_container" class="tab-pane tab_div_container" role="tabpanel">
+				<div class="search_container" >
+					<input type="text" class="search_input" id="search_part_input" />
+					<button  class="btn btn-success search_button" id="search_part_button" >search</button>
+				</div>
+                <div class="result_container" id="part_result_container">
+                </div>
+            </div>
+			<div id="project_container" class="tab-pane active" role="tabpanel">
+				
+			</div>
+		</div>
+		</div><!-- tab stop-->
+		<div id="recommand_container"><!-- recommand start-->
+			<div id="title">Recommandations</div>
+			<div id="recommand_search_container">
+				
+			</div>
+		</div><!-- recommand stop-->
+		
+	</div><!-- left container stop -->
+	<div id="right_container" project_id=""><!-- right container start -->
+		<div id="bananer"><!-- bananer start-->
+			<div class="button-area">
+				<button class="btn btn-primary func-button" id="newpro-btn"><span class="glyphicon glyphicon-plus"></span> New Project</button>
+			</div>
+		</div><!-- bananer stop -->
+		<div class="bg-info hint-info hide">Success</div>
+		<div id="operation" class="row" project-id="0"><!-- operation start -->
+				<div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 add_style add_button_receive"><span class="glyphicon glyphicon-plus"></span></div>
+				<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 receive_style receivable" id="1">
+				</div>
+				<div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 add_style add_button_receive"><span class="glyphicon glyphicon-plus"></span></div>
+		</div><!-- operation stop -->
+		<div id="part_info" class="panel panel-success hide">
+			<div class="panel-heading">
+				<button type="button" class="close" id="close_info" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			    <h3 class="panel-title" id="part_title"></h3>
+			</div>
+			<div class="panel-body" id="part_detail">
+				<div class="part_detail_item part_type">Type: Terminator</div>
+				<div class="part_detail_item part_nickname">Nickname: tetR</div>
+				<div class="part_detail_title">Short Description</div>
+				<div class="part_detail_item part_short_desc">T1 from E. coli rrnB</div>
+				<div class="part_detail_title">Description</div>
+				<div class="part_detail_item part_description">
+					<p>Transcriptional terminator consisting of a 64 bp stem-loop.</p>
+				</div>
+				<div class="part_detail_item part_url"><a href=""></a></div>
+				<!--
+				<div class="part_detail_title">Sequence</div>
+				<div class="part_detail_item part_sequence">
+				ccaggcatcaaataaaacgaaaggctcagtcgaaagactgggcctttcgttttatctgttgtttgtcggtgaacgctctc
+				</div>
+				-->
+			</div>
+		</div>
+	</div><!-- right container stop -->
+</div><!-- total container stop  -->
+<div id="new-project" class="modal fade" role="dialog">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span class="glyphicon glyphicon-remove"></span>
+                </button>
+                <h3 class="modal-title">New Project</h3>
+    		</div>
+    		<div class="modal-body">
+    			<div class="container-fluid">
+    				<div class="row por-item">
+    					<div class="pro-title col-lg-4 col-md-4 hidden-sm hidden-xs">Project Name</div>
+    					<div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+    					<input class="form-control info_input" id="new-pro-name" type="text" placeholder="Project name" />
+    					</div>
+    				</div>
+    				<div class="row pro-item">
+    					<div class="pro-title col-lg-4 col-md-4 hidden-sm hidden-xs">Track</div>
+    					<select class="item-select col-lg-8 col-md-8 col-sm-8 col-xs-8" id="tracks">
+    					</select>
+    				</div>
+    			</div>
+    		</div>
+    		<div class="modal-footer">
+    			<button type="button" class="btn btn-cancel" data-dismiss="modal">Cancel</button>
+    			<button type="button" class="btn btn-create" id="create-pro">Create</button>
+    		</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+$('li.switcher a').click(function (e) {
+	  e.preventDefault()
+	  $(this).tab('show')
+})
+</script>
+<script type="text/javascript">
+	$('#close_info').click(function(event) {
+		$('#part_info').addClass('hide');
+	});
+</script>
+<script type="text/javascript">
+	$('#newpro-btn').click(function(event) {
+		$('#new-project').modal('show');
+	});
+</script>
+<script type="text/javascript">
+	$('#create-pro').click(function(event) {
+		createProject();
+	});
+</script>
+</body>
+</html>

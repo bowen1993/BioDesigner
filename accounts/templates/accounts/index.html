@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>BioDesigner</title>
+    <link rel="shortcut icon" href="/static/img/logo.png">
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/index.css" />
+    <!-- Java Script -->
+    <script type="text/javascript" src="/static/js/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div id="container">
+    <div class="logo-big">
+        <img src="/static/img/logo_white.png" alt="logo" class="img-rounded" style="width: 130px;height: 130px;" />
+    </div> <!-- div.logo-big -->
+    <div class="login-window">
+        <div class="window-title">BioDesginer Login</div>
+        <div class="alert alert-danger hide" id="login-alert" role="alert">Invalid username or password</div>
+        <div class="input-area">
+                <div class="input-field top-input-field">
+                    <input type="text" id="username-field" class="form-control login-input" placeholder="Username"  />
+                </div>
+                <div class="input-field">
+                    <input type="password" id="password-field" class="form-control login-input" placeholder="Password"  />
+                </div>
+        </div> <!-- div.input-area -->
+        <div class="remember-me">
+        <label for="remember-me">
+            <input id="remember-me" type="checkbox" /> Remember Me
+        </label>
+        </div>
+        <div class="button-area">
+            <button type="button" id="register" class="btn btn-primary btn-index">Register</button>
+            <button type="button" id="login" class="btn btn-primary btn-index">Login</button>
+        </div>
+    </div> <!-- div.login-window -->
+    
+</div><!-- div#container -->
+<div class="modal fade" id="register-window" role="dialog">
+    <div class="moda-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span class="glyphicon glyphicon-remove"></span>
+                    </button>
+                    <h3 class="modal-title" id="register-title">Create BioDesinger Account</h3>
+            </div><!-- div.modal-header -->
+            <div class="modal-body">
+                <div class="alert alert-danger hide" id="register-alert" role="alert">
+                    Invalid username or password
+                </div>
+                <div class="register-area">
+                    <row>
+                        <div class="input-group input-group-lg register-input col-lg-10 col-md-10 col-sm-7 col-xs-7">
+                            <input type="text" id="register-username-field" class="form-control register-field" placeholder="Username"  />
+                        </div>
+                        <div class="input-group input-group-lg register-input col-lg-10 col-md-10 col-sm-7 col-xs-7">
+                            <input type="password" id="register-password-field" class="form-control register-field" placeholder="Password"  />
+                        </div>
+                        <div class="input-group input-group-lg register-input col-lg-10 col-md-10 col-sm-7 col-xs-7">
+                            <input type="password" id="confirm-password-field" class="form-control register-field" placeholder="Confirm Password"  />
+                        </div>
+                        <div class="input-group input-group-lg register-input col-lg-10 col-md-10 col-sm-7 col-xs-7">
+                            <input type="email" id="email-field" class="form-control register-field" placeholder="Email"  />
+                        </div>
+                    </row>
+                </div>
+            </div><!-- div.modal-body -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-cancel cancel-button" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn ok-button" id="register-button">OK</button>
+            </div>
+        </div><!-- div.modal-content -->
+    </div><!-- div.modal-dialog -->
+</div><!-- div#register-window -->
+
+<script type="text/javascript">
+    jQuery.fn.shake = function(intShakes, intDistance, intDuration) {
+        this.each(function() {
+            $(this).css({
+                position: "relative"
+            });
+            for (var x = 1; x <= intShakes; x++) {
+                $(this).animate({
+                    left: (intDistance * -1)
+                }, (((intDuration / intShakes) / 4))).animate({
+                    left: intDistance
+                }, ((intDuration / intShakes) / 2)).animate({
+                    left: 0
+                }, (((intDuration / intShakes) / 4)));
+            }
+        });
+        return this;
+    };
+</script>
+<script type="text/javascript">
+$('button#register').click(function() {
+    $('div#register-window').modal('show')
+});
+</script>
+<script type="text/javascript">
+    function processLoginResult (result) {
+        if ( result['isSuccessful'] ){
+            window.location.href="/home/dashboard"
+        }else{
+
+            $('div.input-area').shake(4, 20, 200);
+        }
+    }
+</script>
+<script type="text/javascript">
+    function doLonginAction (username, password, rememberMe) {
+        var postData = {
+            'username': username,
+            'password': password,
+            'rememberMe': rememberMe
+        }
+        $.ajax({
+            type:'POST',
+            url: '/accounts/login',
+            data: postData,
+            dataType: 'JSON',
+            success: function(result){
+                processLoginResult(result);
+            }
+        });
+    }
+</script>
+<script type="text/javascript">
+    $('button#login').click(function(event) {
+        var username = $('#username-field').val(),
+            password = $('#password-field').val(),
+            rememberMe  = $('#remember-me').is(':checked');
+        $('#password-field').val('')
+        doLonginAction(username, password, rememberMe);
+    });
+</script>
+<script type="text/javascript">
+    function processRegisterResult (result) {
+        if ( result['isSuccessful'] ){
+            window.location.href = "/accounts/successful"
+        }else{
+             $('div.modal-body').shake(4, 20, 200);
+         }
+    }
+</script>
+<script type="text/javascript">
+    function doRegister (username, password, email) {
+        var postData = {
+            'username' : username,
+            'password' : password,
+            'email' : email
+        }
+        $.ajax({
+            type:"POST",
+            url:"/accounts/register",
+            data:postData,
+            dataType:"JSON",
+            success:function(result){
+                processRegisterResult(result);
+            }
+        });
+    }
+</script>
+
+<script type="text/javascript">
+    $('#register-window').delegate('.modal-footer #register-button', 'click', function(){
+        $('#register-alert').addClass('hide');
+        var username = $('#register-username-field').val()
+            password = $('#register-password-field').val()
+            repassword = $('#confirm-password-field').val()
+            email = $('#email-field').val();
+        if (username.length == 0 || password.length == 0 ||repassword.length == 0 || email.length == 0 || (password != repassword)){
+            $('#register-alert').removeClass('hide');
+            $('div.modal-body').shake(4, 20, 200);
+        }
+        else{
+            doRegister(username, password, email)
+        }
+    });
+</script>
+</body>
+</html>
