@@ -1,0 +1,20 @@
+language: python
+python:
+  - "2.7"
+services: mysql
+
+env:
+  - DJANGO_VERSION=1.7
+
+# command to install dependencies
+install:
+  - pip install Django==$DJANGO_VERSION
+  - pip install mysql-python
+  - pip install elasticsearch
+
+# command to run test
+before_script:
+  - mysql -e 'CREATE DATABASE biodesigner'
+  - python BioDesigner/manage.py syncdb --noinput
+
+script: python BioDesigner/manage.py test
