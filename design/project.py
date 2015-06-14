@@ -1,5 +1,6 @@
 from accounts.models import User
 from design.models import project, functions, tracks, user_project, parts
+import sys, traceback
 
 def searchProject(keyword, userObj):
     result={
@@ -42,8 +43,8 @@ def getChain(projectId):
     try:
         projectObj = project.objects.get(id=projectId)
         chainStr = projectObj.chain
-        print chainStr
-        chain = list();
+        #print chainStr
+        chain = list()
         if not chainStr:
             return True, chain
         if chainStr.startswith('_'):
@@ -51,7 +52,6 @@ def getChain(projectId):
         if chainStr.endswith('_'):
             chainStr = chainStr[:-1]
         chainList = chainStr.split('_')
-        
         for partId in chainList:
             partObj = parts.objects.get(part_id=partId)
             info = {
