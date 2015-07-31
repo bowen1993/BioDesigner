@@ -1,5 +1,5 @@
 from accounts.models import User
-from design.models import project, functions, tracks, user_project, parts
+from design.models import project, functions, tracks, user_project, parts, chain
 import sys, traceback
 
 def searchProject(keyword, userObj):
@@ -29,24 +29,38 @@ def formatProjectList(projectList):
             'creator' : proInfo.creator.username,
         }
         try:
-            p['function'] = partInfo.function.function
+            p['function'] = proInfo.function.function
         except:
             p['function'] = None
         try:
-            p['track'] = partInfo.track.track
+            p['track'] = proInfo.track.track
         except:
             p['track'] = None
         result.append(p)
     return result
 
-def getChain(projectId):
+def getChainList(projectId):
+    result = list()
     try:
-        projectObj = project.objects.get(id=projectId)
-        chainStr = projectObj.chain
+        chainObjs = chain.objects.filter(project_id=projectId)
+        for chainObj in chainObjs:
+            c = {
+                'id' : chainObj.id,
+                'name' : chainObj.name,
+            }
+            result.append(c)
+    except:
+        pass
+    return result
+
+def getChain(chainId):
+    try:
+        chainObj = chain.objects.get(id=chainId)
+        chainStr = chainObj.sequence
         #print chainStr
-        chain = list()
+        chains = list()
         if not chainStr:
-            return True, chain
+            return True, chains
         if chainStr.startswith('_'):
             chainStr = chainStr[1:]
         if chainStr.endswith('_'):
@@ -59,7 +73,7 @@ def getChain(projectId):
                 'part_name' : partObj.part_name,
                 'part_type' : partObj.part_type
             }
-            chain.append(info)
-        return True, chain
+            chains.append(info)
+        return True, chains
     except:
         return False, None

@@ -12,30 +12,34 @@ import datetime
 import random
 from search_part import ambiguousSearch, getPart
 from accounts.models import User
-from design.models import project, functions, tracks, user_project, tracks
-from design.project import searchProject, getUserProject, getChain
+from design.models import project, functions, tracks, user_project, tracks, chain
+from design.project import searchProject, getUserProject, getChain, getChainList
 from design.recommend import getApriorRecommend, getMarkovRecommend
+from design.file import getSequenceResultImage
 
 @csrf_exempt
 def searchParts(request):
     keyword = request.GET.get('keyword')
     results = ambiguousSearch(keyword)
-    return HttpResponse(json.dumps(results), content_type="application/json")
+    return HttpResponse(json.dumps(results), content_type="text/json")
 
 @csrf_exempt
 def getParts(request):
     partName = request.GET.get('partname')
     results = getPart(partName)
-    return HttpResponse(json.dumps(results), content_type="application/json")
+    return HttpResponse(json.dumps(results), content_type="text/json")
 
 @csrf_exempt
 def dashboardView(request):
     try:
         isLoggedIn = request.session['isLoggedIn']
-        isAccountConfirm = isAccountActive(request)
-        if isLoggedIn and isAccountConfirm:
+        if isLoggedIn:
+            chainId = int(request.GET.get('id'))
             template = loader.get_template('home/dashboard.html')
-            context = RequestContext(request, {})
+            context = RequestContext(request, {
+                'username':str(request.session['username']),
+                'id' : chainId
+                })
             return HttpResponse(template.render(context))
         else:
             return HttpResponseRedirect('/')
@@ -43,13 +47,14 @@ def dashboardView(request):
         return HttpResponseRedirect('/')
 
 @csrf_exempt
-def testDashboardView(request):
+def projectView(request):
     try:
         isLoggedIn = request.session['isLoggedIn']
-        isAccountConfirm = isAccountActive(request)
-        if isLoggedIn and isAccountConfirm:
-            template = loader.get_template('home/dashboard_.html')
-            context = RequestContext(request, {})
+        if isLoggedIn:
+            template = loader.get_template('home/project.html')
+            context = RequestContext(request, {
+                'username':request.session['username']
+                })
             return HttpResponse(template.render(context))
         else:
             return HttpResponseRedirect('/')
@@ -103,6 +108,7 @@ def createProject(request):
     result['isSuccessful'] = createResult[0]
     result['project_name'] = name
     result['id'] = createResult[1].id
+    result['track'] = createResult[1].track.track
     result['creator'] = userObj.username
     return HttpResponse(json.dumps(result), content_type="application/json")
 
@@ -139,20 +145,42 @@ def getUserProjects(request):
     return HttpResponse(json.dumps(result), content_type="application/json")
 
 @csrf_exempt
+def getProjectChains(request):
+    projectId = request.GET.get('id','')
+    result = getChainList(int(projectId))
+    return HttpResponse(json.dumps(result), content_type="application/json")
+
+@csrf_exempt
+def createNewDevice(request):
+    result = {
+        'isSuccessful': False,
+    }
+    if not isLoggedIn(request):
+        return HttpResponse(json.dumps(result), content_type="application/json")
+    name = request.POST.get('name', '')
+    projectId = request.POST.get('id', '')
+    newChain = chain(name=name, project_id=int(projectId))
+    try:
+        newChain.save()
+        result['isSuccessful'] = True
+        result['name'] = name
+        result['id'] = projectId
+    except:
+        pass
+    return HttpResponse(json.dumps(result), content_type="application/json")
+
+
+@csrf_exempt
 def saveChain(request):
     result = {'isSuccessful':True,}
     chainContent = request.POST.get('chain','')
-    projectId = int(request.POST.get('id',''))
-    projectObject = project.objects.get(pk=projectId)
-
-    if projectObject == "":
+    chainId = int(request.POST.get('id',''))
+    try:
+        chainObj = chain.objects.get(id=chainId)
+        chainObj.sequence = chainContent
+        chainObj.save()
+    except:
         result['isSuccessful'] = False
-    else:
-        projectObject.chain = chainContent
-        try:
-            projectObject.save()
-        except Exception, e:
-            result['isSuccessful'] = False
 
     return HttpResponse(json.dumps(result),content_type="application/json")
 
@@ -180,4 +208,47 @@ def getTracks(request):
         trackInfos.append(tmp)
     result['isSuccessful'] = True
     result['tracks'] = trackInfos
+    return HttpResponse(json.dumps(result), content_type="application/json")
+
+@csrf_exempt
+def getChainLength(request):
+    chainId = request.GET.get('id')
+    result = {
+        'isSuccessful' : True,
+    }
+    try:
+        chainObj = chain.objects.get(id=chainId)
+        se = chainObj.sequence
+        if se.startswith('_'):
+            se = se[1:]
+        chainLength = len(se.split('_'))
+        result['length'] = chainLength
+    except:
+        result['isSuccessful'] = False
+    return HttpResponse(json.dumps(result), content_type="application/json")
+
+@csrf_exempt
+def getResultImage(request):
+    result = {
+        'isSuccessful': True,
+    }
+    try:
+        chainId = request.GET.get('id')
+        chainObj = chain.objects.get(id=chainId)
+        chainStr = chainObj.sequence
+        if chainStr.startswith('_'):
+            chainStr = chainStr[1:]
+        if chainStr == "" or chainStr == None:
+            result['isSuccessful'] = False
+        else:
+            chainName = chainObj.name
+            width = 80 * len(chainStr.split('_'))
+            height = 100
+            if width > 800:
+                width = 800
+                height = 100 * (len(chainStr.split('_')) / 10);
+
+            result['filepath'] = getSequenceResultImage(chainStr, width, height, chainName)
+    except:
+        result['isSuccessful'] = False
     return HttpResponse(json.dumps(result), content_type="application/json")

@@ -99,6 +99,8 @@ input.login-input:focus{
 div.remember-me{
 	text-align: center;
 	font-size: 1.2em;
+	width: 20%;
+	margin:0 auto;
 }
 
 div.button-area{
@@ -107,13 +109,13 @@ div.button-area{
 }
 
 button.btn-index{
-	font-size: 2.2em;
-	background-color: rgba(0,0,0,0);
+	font-size: 1.8em;
+
 	border-width: 0px;
 }
 
 button.btn-index:hover, button.btn-index:focus, button.btn-index:active{
-	font-size: 2.2em;
+
 	box-shadow: none;
 	background-color: rgba(0,0,0,0);
 	border-width: 0px;
@@ -142,6 +144,7 @@ div#register-window{
 
 div.register-input{
 	margin-top: 5%;
+	display: block;
 }
 
 input.register-field{

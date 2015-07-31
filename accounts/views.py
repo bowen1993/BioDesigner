@@ -18,9 +18,14 @@ import random
 def indexView(request):
     # check is allow auto login
     if (isAllowAutoLogin(request)):
-        return HttpResponseRedirect('/home/dashboard')
+        return HttpResponseRedirect('/home/project')
     # render and return the page
     template = loader.get_template('accounts/index.html')
+    context = RequestContext(request, {})
+    return HttpResponse(template.render(context))
+
+def testIndexView(request):
+    template = loader.get_template('accounts/new_index.html')
     context = RequestContext(request, {})
     return HttpResponse(template.render(context))
 
@@ -88,7 +93,7 @@ def createSession(request, username, isAutoLogin):
 
     request.session['isLoggedIn'] = True
     request.session['username'] = username
-    request.session['isAutoLogin'] = isAutoLogin
+    request.session['isAllowAutoLogin'] = isAutoLogin
 
 def isAccountValid(username, password):
     try:
@@ -105,12 +110,11 @@ def logoutAction(request):
     try:
         del request.session['isLoggedIn']
         del request.session['isAllowAutoLogin']
-        del request.session['isAdministrator']
-        del request.session['isReviewer']
+        del request.session['username']
     except:
         pass
 
-    return HttpResponseRedirect('/accounts')
+    return HttpResponse()
 
 @csrf_exempt
 def registerAction(request):
@@ -146,9 +150,9 @@ def registerAction(request):
 
 def saveNewUser(username, password, email):
     password = hashlib.sha1(password).hexdigest()
-    newUser = User(username=username, password=password, email=email, is_confirmed=False)
+    newUser = User(username=username, password=password, email=email, is_confirmed=True)
     newUser.save()
-    varifyEmail(email, newUser, username)
+    #varifyEmail(email, newUser, username)
 
 def varifyEmail(email, user, username):
     """email confirmation
@@ -190,7 +194,7 @@ def register_confirm(request, activation_key):
     """
     user_safety = get_object_or_404(UserSafety, activation_key=activation_key)
     if user_safety.user.is_confirmed:
-        return HttpResponseRedirect('/home/dashboard')
+        return HttpResponseRedirect('/home/project')
     if user_safety.key_expires < timezone.now():
         return render_to_response('accounts/confirmExpires.html')
     user = user_safety.user

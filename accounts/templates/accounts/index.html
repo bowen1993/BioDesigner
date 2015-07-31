@@ -8,9 +8,11 @@
     <!-- CSS -->
     <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.css" />
     <link rel="stylesheet" type="text/css" href="/static/css/index.css" />
+    <link rel="stylesheet" href="/static/css/material.min.css" >
     <!-- Java Script -->
     <script type="text/javascript" src="/static/js/jquery-2.1.1.min.js"></script>
     <script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
+    <script src="/static/js/material.min.js"></script>
 </head>
 <body>
 <div id="container">
@@ -29,13 +31,14 @@
                 </div>
         </div> <!-- div.input-area -->
         <div class="remember-me">
-        <label for="remember-me">
-            <input id="remember-me" type="checkbox" /> Remember Me
+        <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="remember-me">
+            <input id="remember-me" class="mdl-checkbox__input" type="checkbox" />
+            <span class="mdl-checkbox__label">Remeber Me</span>
         </label>
         </div>
         <div class="button-area">
-            <button type="button" id="register" class="btn btn-primary btn-index">Register</button>
-            <button type="button" id="login" class="btn btn-primary btn-index">Login</button>
+            <button type="button" id="register" class="mdl-button mdl-button--primary mdl-js-button mdl-js-ripple-effect btn-index">Register</button>
+            <button type="button" id="login" class="mdl-button mdl-js-button mdl-js-ripple-effect btn-index">Login</button>
         </div>
     </div> <!-- div.login-window -->
     
@@ -54,6 +57,7 @@
                     Invalid username or password
                 </div>
                 <div class="register-area">
+                <!--
                     <row>
                         <div class="input-group input-group-lg register-input col-lg-10 col-md-10 col-sm-7 col-xs-7">
                             <input type="text" id="register-username-field" class="form-control register-field" placeholder="Username"  />
@@ -67,7 +71,25 @@
                         <div class="input-group input-group-lg register-input col-lg-10 col-md-10 col-sm-7 col-xs-7">
                             <input type="email" id="email-field" class="form-control register-field" placeholder="Email"  />
                         </div>
-                    </row>
+                    </row> -->
+                    <div class="register-inputs">
+                        <div class="register-input mdl-textfield mdl-js-textfield">
+                            <input type="text" class="mdl-textfield__input" id="register-username-field" />
+                            <label class="mdl-textfield__label" for="register-username-field">Username</label>
+                        </div>
+                        <div class="register-input mdl-textfield mdl-js-textfield">
+                            <input type="password" class="mdl-textfield__input" id="register-password-field" />
+                            <label class="mdl-textfield__label" for="register-password-field">Password</label>
+                        </div>
+                        <div class="register-input mdl-textfield mdl-js-textfield">
+                            <input type="password" class="mdl-textfield__input" id="confirm-password-field" />
+                            <label class="mdl-textfield__label" for="confirm-password-field">Confirm Password</label>
+                        </div>
+                        <div class="register-input mdl-textfield mdl-js-textfield">
+                            <input type="email" class="mdl-textfield__input" id="email-field" />
+                            <label class="mdl-textfield__label" for="email-field">Email</label>
+                        </div>
+                    </div>
                 </div>
             </div><!-- div.modal-body -->
             <div class="modal-footer">
@@ -105,7 +127,7 @@ $('button#register').click(function() {
 <script type="text/javascript">
     function processLoginResult (result) {
         if ( result['isSuccessful'] ){
-            window.location.href="/home/dashboard"
+            window.location.href="/home/project"
         }else{
 
             $('div.input-area').shake(4, 20, 200);
@@ -142,7 +164,7 @@ $('button#register').click(function() {
 <script type="text/javascript">
     function processRegisterResult (result) {
         if ( result['isSuccessful'] ){
-            window.location.href = "/accounts/successful"
+            window.location.href = "/home/project"
         }else{
              $('div.modal-body').shake(4, 20, 200);
          }

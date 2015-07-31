@@ -43,6 +43,14 @@ class parts(models.Model):
     class Meta:
         db_table = 'bio_parts' 
 
+class part_parameters(models.Model):
+    part = models.ForeignKey(parts)
+    name = models.CharField(max_length=256)
+    value = models.CharField(max_length=256)
+
+    class Meta:
+        db_table = 'bio_part_parameters'
+
 class part_twins(models.Model):
     part_1 = models.ForeignKey(parts)
     part_2 = models.ForeignKey(parts, related_name='FK_PART_TWIN2', db_column='part_2_id')
@@ -104,7 +112,7 @@ class project(models.Model):
     project_name = models.CharField(max_length=64)
     creator      = models.ForeignKey(User)
     create_time  = models.DateTimeField(auto_now_add=True)
-    chain        = models.CharField(max_length=255, null=True)
+
     function     = models.ForeignKey(functions, null=True)
     track        = models.ForeignKey(tracks, null=True)
     is_deleted   = models.BooleanField(default=False)
@@ -136,5 +144,13 @@ class user_project(models.Model):
     class Meta:
         db_table = 'bio_user_project'
 
+class chain(models.Model):
+    sequence = models.CharField(max_length=255,null=True)
+    project  = models.ForeignKey(project)
+    name = models.CharField(max_length=64, null=False)
+    def __unicode__(self):
+        return self.sequence
 
+    class Meta:
+        db_table = 'bio_chain'
 

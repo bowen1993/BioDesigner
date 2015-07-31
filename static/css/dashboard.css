@@ -1,261 +1,213 @@
-html,body{
-	height:100%;
-	width:100%;
-	margin:0;
-	padding:0;
-	font-family:"Helvetica Neue","Helvetica","Arial","Verdana","sans-serif";
+html, body{
+    font-family:"Helvetica Neue","Helvetica","Arial","Verdana","sans-serif";
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility
 }
 
-#total_container{
-	height:100%;
-	width:100%;
+a{
+    text-decoration: none;
 }
 
-#left_container{
-	height:100%;
-	width:23.6%;
-	min-width: 200px;
-	max-width: 250px;
-	background-color: gray;
-	float:left;
-}
-
-#logo{
-	width:100%;
-	background-color: #33CC66;
-	vertical-align: center;
-	font-size: 1.8em;
-	font-weight: bolder;
-}
-
-#tab_container{
-	width:100%;
-	
-    border:0 ;
-
-    margin:0;
-    
-    padding:0;
-	background-color: black;
-}
-
-#tab_ul{
-	padding:0;
-	margin:0;
-}
-/*
-#tab_ul li{
-	width:48%;
-	margin:0;
-}*/
-
-#search_part_container{
-	width: 100%;
-    height:70%;
-	padding: 0;
-	margin:0;
-	border: 0;
-	background-color: yellow;
-}
-
-.search_container{
-	width:100%;
-	height:50px;
-    background-color: orange;
-}
-
-.search_input{
-	border:0;
-	height:40px;
-	margin:5px;
-	width:60%;
-	font-size:25px;
-}
-
-.search_button{
-	height:40px;
-	margin:5px;
-	width:30%; 
-	float:right;
-
-}
-.result_container{
-     background-color:green;
-     overflow: auto;
-}
-/*
-.result_container{
-	width:100%;
-	background-color: red;
-	overflow: auto;
-}
-*/
-
-/*  左侧 组件样式*/
-.part_style{
-	width:100%;
-	background-color:blue;
-	color:white;
-	margin-top:2px;
-}
-
-/* 左侧 组件 拖动*/
-.part_drag{
-}
-
-/* 左侧 组件点击出信息 */
-.show_message{
-}
-
-/* 左侧搜索 组件 点击出推荐组件*/
-.show_recommand{
-}
-
-#recommand_container{
-	width:100%;
-}
-
-#recommand_container h1{
-	width:100%;
-	height:35px;
-	background-color: black;
-	font:25px/35px sans-serif;
-	color:white;
-	text-align: center;
-}
-
-#recommand_search_container{
-	width:100%;
-	height:100px;
-	background-color: green;
-	overflow: auto;
-}
-
-#right_container{
+div#container{
+    width:100%;
     height:100%;
-	background-color:black;
 }
-
-#bananer{
-	height:50px;
-	width:100%;
-	background-color: green;
+div#bananer{
+    width:100%;
+    height:50px;
+    background: rgb(221,221,221);
 }
-
-#operation{
-	width:100%;
-	background-color:gray;
-}
-
-.add_style{
-	background-color: black;
+div#logo{
+    height:50px;
+    width:200px;
+    background: rgb(98,206,104);
     float:left;
 }
-
-.add_button_receive{
-}
-
-.receivable{
-}
-
-.receive_style{
-	background-color:blue;
+div#logo img{
+    height:50px;
+    width:50px;
+    display: block;
     float:left;
+}
+div#logo span{
+    color:white;
+    font-size: 20px;
+    line-height: 50px;
+    display: block;
+    float:left;
+}
+div#bananer button{
+    margin-top: 4px;
+    margin-left: 20px;
+}
+div#bananer ul#buttonArea{
+    float:right;
+}
+div#bananer ul#buttonArea li{
+    list-style-type: none;
+    float:left;
+    margin-left:2px;
+    margin-top: 5px;
+}
+div#main{
+    width:100%;
+}
+div#sidebar{
+    width:200px;
 
+    height:100%;
+    float:left;
+}
+div#search_part_container{
+    background: rgb(44,47,50);
+}
+div#search_part_container div.search_container{
+    height:40px;
+    width:100%;
 }
 
+div#search_part_container div.search_container input.search_input{
+    width:61.8%;
+    height: 32px;
+    margin-top: 4px;
+    border-radius: 15px;
+    box-shadow: none;
+    border-width: 0;
+    padding-left: 10px;
+}
+
+div#search_part_container div.search_container input.search_input:focus{
+    box-shadow: none;
+    border-left: 0px;
+    border-right: 0px;
+    border-top: 0px;
+    border-bottom: 0px;
+}
+
+div#search_part_container div.search_container button.search_button{
+    font-size: 1.2em;
+    text-align: center;
+    padding:2%;
+    width:30%;
+    border-radius: 10px;   
+}
+
+div#part_result_container{
+    width:100%;
+    overflow: auto;
+}
+div.part_style{
+    width:100%;
+    height:10%;
+    color:#FFF;
+    padding-left: 10%;
+    margin-bottom: 5%;
+    font-size: 1.3em;
+}
+
+div.part_active{
+    background-color: rgb(138,204,118);
+    color:#333333;
+}
+
+
+div#recommand_container{
+    width:100%;
+    background-color: rgb(62,64,72);
+}
+div.title{
+    background-color: rgb(127,127,127);
+    color:#FFF;
+    font-size: 1.65em;
+    text-align: center;
+}
+div#recommand_search_container{
+    width:100%;
+}
+div#dashboard_container{
+    height:100%;
+    overflow: auto;
+    position: relative;
+}
+div#dashboard_container  canvas#background{
+    z-index: -1;
+    position: absolute;
+}
+div#dashboard_container div#dashboard{
+    margin:0 auto;
+    height:100%;
+    z-index: 0;
+    position: absolute;
+    
+}
 .receive_hover{
-	background-color: white;
+    opacity:0.3;
+}
+div.receive_style{
+   width:75%;
+   height:80px;
+   border-radius: 10px;
+   margin:0 auto;
+   background-color:#999999;
+   font-size: 1em;
+   text-align: center;
+   display: inline-block;
+}
+div.click_div{
+    height:40px;
+    width:50px;
+    background: blue;
+    position: absolute;
+    top:20px;
+    left:60px;
+}
+div.copy,div.part_remove,div.paste,div.delete{
+    height:20px;
+    width:100%;
+    color:white;
+    font-size: 10px;
+    line-height: 20px;
+    text-align: center;
+}
+div.copy:hover,div.part_remove:hover,div.paste:hover,div.delete:hover{
+    background: red;
 }
 
-.operation_part_style{
-	background-color: red;
-	margin:10% auto;
-	height:40px;
-	width:40px;
+div.operation_part_style{
+    margin:0 auto;
 }
-
 div.operation_part_style img{
-	display: block;
+    height:64px;
+    width:64px;
+    display: block;
+    margin: 0 auto;
+}
+div.add_style{
+    width:10%;
+    height:80px;
+    text-align: center;
 }
 
-.operation_part_drag{
+div.btn-front{
+    float:left;
 }
 
-.recommand_div{
-	position: absolute;
-	height:100px;
-	width:200px;
-	top:100px;
-	left:-20px;
-	background-color: white;
-	overflow: scroll;
+div.btn-back{
+    float:right;
 }
-
-
-
-
-
-.container2 {
-	width: 100%;
-	
-	height: auto;
-	background-color: #E6E6E6;/*最外层颜色*/
-	}
-
-.container2 .div_scroll {
-	width: 100%;
-	height: 100px;
-	overflow: auto;
-	float: left;
-}	
-
-.container2 .scroll_container {
-	overflow: hidden;
-	position: relative;
-	background-color: #F8F8F8;/*内容区域颜色*/
+div.part-cell{
 }
-
-.container2 .scroll_absolute {
-    position: absolute;
+div.add_style:hover{
+    background: blue;
 }
-
-.container2 .scroll_vertical_bar {
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 16px;
-    height: 100%;
-    background: green;
-    margin: 0;
-    padding: 0;
+div.add_style span{
+    margin-top: 30px;
 }
-
-.container2 .scroll_track {
-	position: relative;
-	background-color: #BFEBFF;/*滚动条下方颜色*/
+div.floatLeft{
+    float: left;
 }
-
-.container2 .scroll_drag {
-	position: relative;
-	top: 0;
-	left: 0;
-	cursor: pointer;
-	background-color: #075E92;/*滚动条颜色*/
+div.floatRight{
+    float: right;
 }
-
-.container2 .scroll_arrow {
-	text-indent: -20000px;
-	display: block;
-	cursor: pointer;
-	background-color: #369DB4;
-}
-
-.container2 .scroll_vertical_bar .scroll_arrow {
-    height: 16px;
-}
-
 
 

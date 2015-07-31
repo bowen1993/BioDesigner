@@ -128,14 +128,14 @@ div.result_container{
     /*background-color: rgb(44,47,49);*/
     height: 72.8%;
     max-height: 72.8%;
-    overflow: scroll;
+    overflow: auto;
 
 }
 
 div#project_container{
     height: 72.8%;
     max-height: 72.8%;
-    overflow: scroll;
+    overflow: auto;
     margin-top: 5%;
 }
 
