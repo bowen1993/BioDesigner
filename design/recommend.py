@@ -19,7 +19,7 @@ def getMarkovRecommend(part_id):
     result = {
         'isSuccessful' : True,
     }
-    predictChains = predict(3, 1, part_id, loadA())
+    predictChains = predict(4, 1, part_id, loadA())
     if not predictChains:
         result['isSuccessful'] = False
         return result
