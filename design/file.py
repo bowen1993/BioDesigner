@@ -16,7 +16,7 @@ icon_space_small = 30
 icon_space_large = 30
 
 def createFolder(contentType):
-    basePath = 'downloads/'
+    basePath = BASE+'/../downloads/'
     year     = str(time.localtime().tm_year)
     month    = str(time.localtime().tm_mon)
     day      = str(time.localtime().tm_mday)
@@ -36,6 +36,7 @@ def createFolder(contentType):
 
 def geneFileName(name, surfix):
     now = datetime.datetime.now()
+    name = name.replace(' ', '')
     fileNameFormat = '%(year)i-%(month)i-%(day)i-%(hour)i-%(minute)i-%(second)i-%(name)s.%(extension)s'
     fileNameValue = {
                      'year' : now.year,
@@ -114,7 +115,7 @@ def drawSequence(sequenceInfo, width, height, file_path):
                 drawOnePart(item['name'], (initX, initY), drawer, True, icon_im)
                 initX -= icon_width_small + icon_space_small
                 index+=1
-    newImage.save(BASE+'/../'+file_path)
+    newImage.save(file_path)
 
 def getSequenceResultImage(sequence, width, height, name):
     if sequence.startswith('_'):
@@ -130,4 +131,4 @@ def getSequenceResultImage(sequence, width, height, name):
         sequenceInfo.append(infoDict)
     filename = createFolder('image') + geneFileName(name, 'png')
     drawSequence(sequenceInfo, width, height, filename)
-    return '/' + filename
+    return '/' + filename.replace(BASE+'/../','')
