@@ -9,7 +9,7 @@
 	<!--<script type="text/javascript" src="/static/js/jquery-2.1.1.min.js"></script>-->
 	<script type="text/javascript" src="/static/js/jquery-1.7.js" ></script>
 	<script type="text/javascript" src="/static/js/jquery-ui-1.8.16.custom.js" ></script>
-	<script type="text/javascript" src="/static/js/dashboard.js"></script>
+	
 	<script type="text/javascript" src="/static/js/jquery.tmpl.js"></script>
 	<script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
 </head>
@@ -21,28 +21,32 @@
     
 </script>
 <script id="recommand_part_list" type="text/x-jquery-tmpl">
-    <div class="operation_part_style operation_part_drag col-lg-6 col-md-6 col-sm-6" part_id="${part_id}" part_name="${part_name}" part_type="${part_type}"><img src="/static/img/${part_type}.png" alt="logo" class="img-rounded" style="width: 60px;height: 30px;" />${part_name}</div>
+    <div class="show_message operation_part_style " part_type="${part_type}" part_name="${part_name}" part_id="${part_id}">
+        <img class="img-rounded" alt="logo" src="/static/img/${part_type}.png">
+        <span>${part_name}</span>
+    </div>
 </script>
 <script id="project-info" type="text/x-jquery-tmpl">
 	<div class="project-item switch-project" project-id="${id}">${name} Created by ${creator}</div>
 </script>
-<script id="part_detail_info" type="text/x-jquery-tmpl">
-	
+<script id="showChain" type="text/x-jquery-tmpl">
+    <div class="part-cell col-lg-2 col-md-2 col-sm-3 col-xs-4 ">
+        <div class="receive_style receive_click">
+            <div class="show_message operation_part_style" part_type="${part_type}" part_name="${part_name}" part_id="${part_id}">
+                <img class="img-rounded" alt="logo" src="/static/img/${part_type}.png">
+                <span>${part_name}</span>
+            </div
+        </div>
+        <div class="add_style btn-back add_button_receive"><span class=" glyphicon glyphicon-plus"></span></div>
+    </div>
 </script>
 <body>
     <div id="container">
     	<div id="bananer">
     		<div id="logo">
-    			<img src="/static/img/logo_white_small.png" alt="logo" class="img-rounded" >
+    			<img src="/static/img/logo_white.png" alt="logo" class="img-rounded" >
     		    <span>BioDesigner</span>
     		</div>
-    		
-    		
-    		<ul id="buttonArea">
-				<li id="small"><button id="small" class="btn btn-primary">small</button></li>
-				<li id="normal"><button id="normal" class="btn btn-primary">normal</button></li>
-				<li id="big"><button id="big" class="btn btn-primary">big</button></li>
-    		</ul>
     	</div>
     	<div id="main">
     		<div id="sidebar">
@@ -62,19 +66,40 @@
     		<div id="dashboard_container">
     			<div id="dashboard" class="row">
     				<div class="part-cell col-lg-2 col-md-2 col-sm-3 col-xs-4 ">
-    					<div class="add_style btn-front add_button_receive"><span class=" glyphicon glyphicon-plus"></span></div>
-    					<div class="receive_style receivable receive_click">1</div>
-    					<div class="add_style btn-back add_button_receive"><span class=" glyphicon glyphicon-plus"></span></div>
-    				</div>
+                        <div class="btn-front add_style add_button_receive"><span class=" glyphicon glyphicon-plus"></span></div>
+                        <div class="receive_style receive_click">
+                        </div>
+                        <div class="add_style btn-back add_button_receive"><span class=" glyphicon glyphicon-plus"></span></div>
+                    </div>
     			</div>
-    			<canvas id="background" height="1000"  ></canvas>
+    			<canvas id="background" height="500" width="500"></canvas>
     		</div>
     	</div>
+        <div id="part_info" class="hide panel panel-success">
+            <div class="panel-heading">
+                <button type="button" class="btn btn-close" id="close_info">
+                    <span class="glyphicon glyphicon-remove"></span>
+                </button>
+                <h3 class="panel-title" id="part_title"></h3>
+            </div>
+            <div class="panel-body" id="part_detail">
+                <div class="part_detail_item part_type"></div>
+                <div class="part_detail_item part_nickname"></div>
+                <div class="part_detail_title">Short Description</div>
+                <div class="part_detail_item part_short_desc"></div>
+                <div class="part_detail_title">Description</div>
+                <div class="part_detail_item part_description">
+                    <p></p>
+                </div>
+                
+            </div>
+        </div>
     </div>
 <script type="text/javascript">
 	window.chainId = {{id}};
 	window.uname = '{{username}}';
 </script>
+<script type="text/javascript" src="/static/js/dashboard.js"></script>
 <script type="text/javascript">
 	$('#close_info').click(function(event) {
 		$('#part_info').addClass('hide');
@@ -91,88 +116,91 @@
 	});
 </script>
 <script>
-	$('#small').click(function(event){
-		if(getWidth()){
-			setDashBoardFrame(560);
-		}else{
-			setDashBoardFrame(800);
-		}
-		setDashBoardFloat();
-	});
-	$('#normal').click(function(){
-		if(getWidth()){
-			setDashBoardFrame(700);
-		}else{
-			setDashBoardFrame(1000);
-		}
-		setDashBoardFloat();
-	});
-	$('#big').click(function(){
-		if(getWidth()){
-			setDashBoardFrame(840);
-		}else{
-			setDashBoardFrame(1200);
-		}
-		setDashBoardFloat();
-	});
-	function setDashBoardFrame(width){
-	     $('#dashboard').css("width",width);
-	    $('#background').css("width",width);
-	    var dashboard_container_width = $('#dashboard_container').width();
-	    var padding_left_width = (dashboard_container_width-width)/2;
-	    $('#dashboard_container').css("padding-left",padding_left_width);
-	    //draw();//画图
-    }
-    function draw(){
-        var width = $('#background').width();
-        var canvas = document.getElementById("background");
-        var context = canvas.getContext("2d");
-        var radius = 45;
-        var start = 1.5*Math.PI;
-        var stop = 0.5*Math.PI;
-        var centerX=width-45;
-        var centerY=90;
-        context.moveTo(45,45);
-        context.lineTo(width-45,45);
-        context.arc(centerX,centerY,radius,start,stop);
-        context.lineWidth = 10;
-        context.strokeStyle = "black";
-        
-        context.stroke();
-    }
-    function getWidth(){
-    	var total_width=document.documentElement.clientWidth;//获得屏幕宽度
-    	if(total_width<1400){
-    		return true;
-    	}
-    	else{
-    		return false;
-    	}
-    }
+    
     function setDashBoardFloat(){
     	var number;
-    	var dashboard_width = $('#dashboard').width();
-    	var receive_style_width = $('.receive_style').width();
-    	if(receive_style_width==100){
-    		if (dashboard_width < 560){
-    			number = 8;
-    		}else if(dashboard_width >= 560 && dashboard_width < 700){
-    			number = 10;
-    		}else{
-    			number = 12;
-    		}
-    	}
-    	var elements = $('#dashboard').children().filter('*').removeClass("floatLeft").removeClass("floatRight");
+    	var total_width = document.body.clientWidth;
+    	if(total_width<768){
+            number=3;
+        }
+        if(768 <= total_width && total_width<992 ){
+            number=4;
+        }
+        if(992 <= total_width){
+            number=6;
+        }
+    	var elements = $('#dashboard').children().filter('*').removeClass("pull-right");
     	for( var i = 0; i<elements.length; i++){
-    	    var row = parseInt(i/number+1);	   
-    	    if( row%2==1 ){
-    	    	//$(elements[i]).addClass("floatLeft");
-    	    }else{
-    	    	//$(elements[i]).addClass("floatRight");
+    	    var row = parseInt(i/number+1);	 
+    	    if( row%2==0 ){
+    	    	$(elements[i]).addClass("pull-right");
     	    }
     	}
+        
+        draw(); 
+
+        function draw(){
+            var width = $('#dashboard').width();
+            var rowNumber = elements.length/number+1;
+            var height = rowNumber*84;
+            $('#background').attr("height",height).attr("width",width);
+
+            var canvas = document.getElementById("background");
+            var context = canvas.getContext("2d");
+            context.lineWidth = 10;
+            context.strokeStyle = "#008080";
+            var radius = 42;
+            var start;
+            var stop ;
+            var centerX;
+            var centerY=86;
+            var moveToX ;
+            var moveToY = 44;
+            var lineToX ;
+            var lineToY = 44;
+            for(var i=0; i<rowNumber; i++){
+                if(i%2==0){
+                    start = 1.5*Math.PI;
+                    stop = 0.5*Math.PI;
+                    centerX=width-50;
+                    moveToX = 50;
+                    lineToX = width-50;
+                    context.moveTo(moveToX,moveToY);
+                    context.lineTo(lineToX,lineToY);
+                    context.stroke();
+                    context.beginPath();
+                    context.arc(centerX,centerY,radius,start,stop);
+                    context.stroke();
+                    context.beginPath();
+                }else{
+                    start = 0.5*Math.PI;
+                    stop = 1.5*Math.PI;
+                    centerX=50;
+                    moveToX = width-50;
+                    lineToX = 50;
+                    context.moveTo(moveToX,moveToY);
+                    context.lineTo(lineToX,lineToY);
+                    context.stroke();
+                    context.beginPath();
+                    context.arc(centerX,centerY,radius,start,stop);
+                    context.stroke();
+                    context.beginPath();
+                }
+                
+                moveToY+=84;
+                lineToY+=84;
+                centerY+=84;
+
+          
+            }
+            
+            
+        } 
     }
    
+</script>
+<script>
+    
 </script>
 </body>
 </html>

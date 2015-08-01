@@ -13,19 +13,15 @@ window.onresize=function(){
     setFrame();
 }   
 $(document).ready(function(){
-        var total_width=document.documentElement.clientWidth;//获得屏幕宽度
-        if(total_width<1400){
-            setDashBoardFrame(700);
-        }else{
-            setDashBoardFrame(1000);
-        }
+        $(document).bind('contextmenu', function (e) {  
+ return false;  
+}); 　
+
         setFrame();
         setDashBoardFloat();
         //为本地的接收组件设置为可接受
         setDroppable($('.receive_style'));
         setAddDroppable($('.add_style'));
-
-        getProjects();
         //为搜索加事件
         $(document).on({
             click:function(){
@@ -43,15 +39,12 @@ $(document).ready(function(){
                 $('.click_div').remove();
             }
         },'.show_message');
-        /*
+        
          //处理右键点击出复制 删除
         $(document).on({
             mousedown: function(e){
                 if(e.which==3){
                     $('.click_div').remove();
-                    //copy_id=this.getAttribute('part_id');
-                    //copy_name=this.getAttribute('part_name');
-                    //copy_type=this.getAttribute('part_type');
                     var html="<div class='click_div'></div>";
                     var click_div=$(html);
                     html="<div class='copy'>copy</div>";
@@ -85,21 +78,22 @@ $(document).ready(function(){
         $(document).on({
             click: function(){
                 isCopy=1;
-                var elems=$(this).parent().next('*');
+
+                var elems=$(this).parent().parent().children('.operation_part_style');
                 copy_id=elems.attr('part_id');
                 copy_name=elems.attr('part_name');
                 copy_type=elems.attr('part_type');
-
                 $('.click_div').remove();
+                console.log(copy_id+copy_type+copy_name);
             }
         },'.copy');
+
         //点击  删除组件
         $(document).on({
             click:function(){
-               var receive_div=$("<div class=' receive_style receivable receive_click' ></div>");
-               setDroppable(receive_div);
-               $(this).parent().parent().replaceWith(receive_div);
-               $('.click_div').remove();
+                $(this).parent().parent().empty().droppable('enable').addClass("receive_click");
+                $('.click_div').remove();
+                saveChain();
            }
         },'.part_remove');
 
@@ -110,8 +104,7 @@ $(document).ready(function(){
                 part_id=copy_id;
                 part_name=copy_name;
                 part_type=copy_type;
-                drop_index=$(this).parent().parent().prevAll('*').length;
-                getInsert();
+                getInsert( $(this).parent().parent() );
                 }
                 $('.click_div').remove();
             }   
@@ -120,13 +113,13 @@ $(document).ready(function(){
         //点击删除 接收组件
         $(document).on({
             click:function(){
-                var elems=$(this).parent().parent();
-                var dele=elems.next('*').add(elems);
-                dele.remove();
-                $('.click_div').remove();
+                if( $(this).parent().parent().siblings('.btn-front').length!=1 ){
+                    $(this).parent().parent().parent().remove();
+                    setDashBoardFloat();
+                }  
             }
         },'.delete');
-        */
+
         $(document).on({
             click : function(){
                 $('.click_div').remove();
@@ -142,6 +135,7 @@ $(document).ready(function(){
         $(document).on({
             click:function(){
                 $('.click_div').remove();
+                //$('.operation_recommends_list').remove();
                 var add_button=$("<div class=\" add_style btn-back add_button_receive\"><span class=\"glyphicon glyphicon-plus\"></span></div>");
                 var receive_div=$("<div class='receive_style receivable receive_click' ></div>");
                 setAddDroppable(add_button);
@@ -157,24 +151,24 @@ $(document).ready(function(){
         $(document).on({
             click:function(){
                 $('.click_div').remove();
-                var add_button=$("<div class=\" add_style btn-front add_button_receive\"><span class=\"glyphicon glyphicon-plus\"></span></div>");
+                //$('.operation_recommends_list').remove();
+                var add_button_front=$("<div class=\" add_style btn-front add_button_receive\"><span class=\"glyphicon glyphicon-plus\"></span></div>");
+                var add_button_back=$("<div class=\" add_style btn-back add_button_receive\"><span class=\"glyphicon glyphicon-plus\"></span></div>");
                 var receive_div=$("<div class='receive_style receivable receive_click' ></div>");
-                setAddDroppable(add_button);
+                setAddDroppable(add_button_front);
+                setAddDroppable(add_button_back);
                 setDroppable(receive_div);
                 var new_cell = $('<div class="part-cell col-lg-2 col-md-2 col-sm-3 col-xs-4"></div>');
+                new_cell.append(add_button_front);
                 new_cell.append(receive_div);
-                new_cell.append(add_button);
+                new_cell.append(add_button_back);
                 $(this).parent().before(new_cell);
+                $(this).remove();
                 setDashBoardFloat();//重新设置浮动
             }
         },'.btn-front');
-
-        getTracks()
+        getProjectChain(window.chainId);
 });
-//清除操作区弹出的推荐组件
-function clear(){
-    $('.click_div').remove();
-}
 //设置框架大小
 function setFrame () {
     var total_width=document.documentElement.clientWidth;//获得屏幕宽度
@@ -205,39 +199,48 @@ function setFrame () {
     var result_container_height = search_part_container_height-title_height-search_container_height;
     $('#part_result_container').css("height",result_container_height);
     $('#recommand_search_container').css("height",recommand_container_height-title_height);
+    setDashBoardFloat();
 }
-
-
-function addChainPart(infos){
-    var name = infos['part_name'],
-        id = infos['part_id'],
-        type = infos['part_type'],
-        receive_div = $(getReceiveDiv()),
-        add_button = $(getAddButtonHtml());
-    var opeartion_part = $(getOperationPart(id, name, type))
-    //setAddDroppable(add_button);
-    setDroppable(receive_div);
-    setOperationDraggable(opeartion_part);
-    receive_div.append(opeartion_part);
-    $('#operation').append(receive_div);
-    $('#operation').append(add_button);
+function insertChain(chain){
+    var html="<div class=\"part-cell col-lg-2 col-md-2 col-sm-3 col-xs-4 \"> " +
+        "<div class=\"receive_style receive_click\">" + 
+            "<div class=\"show_message operation_part_style\" part_type=\""+chain['part_type']+"\" part_name=\" "+chain['part_name']+"\" part_id=\" "+chain['part_id']+"\">" + 
+                "<img class=\"img-rounded\" alt=\"logo\" src=\"/static/img/"+chain['part_type']+".png\">" + 
+                "<span>" +chain['part_name']+"</span>" + 
+            "</div>" + 
+        "</div>" + 
+        "<div class=\"add_style btn-back add_button_receive\"><span class=\" glyphicon glyphicon-plus\"></span></div>" +
+    "</div>";
+    return $(html);
 }
 function showChain(result){
     if (result['isSuccessful']){
-        chain = result['chain']
-        $('#operation').html('');
-        var button_before = $(getAddButtonHtml());
-        //setAddDroppable(button_before);
-        $('#operation').append(button_before);
-        for (var i = 0; i < chain.length; i++){
-            addChainPart(chain[i])
+        chain = result['chain'];
+        /*
+        $('#showChain').tmpl(chain).appendTo('#dashboard');
+        var add_button_front=$("<div class=\" add_style btn-front add_button_receive\"><span class=\"glyphicon glyphicon-plus\"></span></div>");
+        */
+        var chainLength = chain.length;
+        if (chainLength != 0){
+            $('#dashboard').empty();
+            for( var i=0; i<chain.length; i++){
+                var insert = insertChain(chain[i]);
+                insert.appendTo('#dashboard');
+            }
+            var add_button_front=$("<div class=\" add_style btn-front add_button_receive\"><span class=\"glyphicon glyphicon-plus\"></span></div>");
+            //$(add_button_front).prependTo($( $('.part-cell')[0] ));
+            $($('.part-cell')[0]).prepend(add_button_front);
+            setDroppable( $('.receive_style'));
+            $('.receive_style').droppable('disable');
+            setOperationDraggable( $('.operation_part_style') );
+            setDashBoardFloat();
         }
+        
     }else{
         showMsg("Chain not gained")
     }
 }
 function getProjectChain(id){
-    cleanDesign();
     $.ajax({
         url : "/home/getChain?id=" + id,
         type: "GET",
@@ -246,113 +249,12 @@ function getProjectChain(id){
         }
     });
 }
-function showProjects(result){
-    if (result['isSuccessful']){
-        pro_list = result['projects']
-        $('#project-info').tmpl(pro_list).appendTo('#project_container');
-    }else{
-        showMsg("Error, can't get project information");
-    }
-}
-function getProjects(){
-    $.ajax({
-        url : "/home/getUserProject",
-        type : "GET",
-        success : function(result){
-            showProjects(result);
-        }
-    });
-}
-//获取操作区组件的 html
-function getOperationPart(id, name, type){
-    return "<div part_id='"+id+"' part_name='"+name+"' part_type='"+
-           type+"' class='show_message operation_part_style'><img src=\"/static/img/"+type+".png\" alt=\"logo\" class=\"img-rounded\" style=\"width: 60px;height: 30px;\" />"+name+"</div>";
-}
-//获取操作区加号按钮的 html
-function getAddButtonHtml(){
-    return '<div class="add_style btn-back add_button_receive"><span class=" glyphicon glyphicon-plus"></span></div>';
-}
-//获取操作区接收组件的 html
-function getReceiveDiv(){
-    return '<div class="receive_style receivable receive_click"></div>';
-}
 
-function getPartCellDiv(){
-    return '<div class="part-cell col-lg-2 col-md-2 col-sm-3 col-xs-4"></div>';
-}
-//巩的方法
-function cleanDesign(){
-    //saveChain();
-    $('#operation').html('');
-    var button_before = $(getAddButtonHtml()),
-        receive_div = $(getReceiveDiv()),
-        button_after = $(getAddButtonHtml());
-    //setAddDroppable(button_before);
-   //setAddDroppable(button_after);
-    setDroppable(receive_div);
-    $('#operation').append(button_before);
-    $('#operation').append(receive_div);
-    $('#operation').append(button_after);
-}
-//巩的方法
+
 function showMsg(msg){
     $('div.hint-info').html(msg);
     $('div.hint-info').removeClass('hide');
     $('div.hint-info').show(200).delay(1000).hide(200);
-}
-//巩的方法
-function addProject(name, id, creator){
-    var html = '<div class="project-item switch-project" project-id="'+id+'">'+name+'Created by '+creator+'</div>'
-    $('#project_container').prepend(html);
-}
-//巩的方法
-function createProject(){
-    var name = $('input#new-pro-name').val(),
-    id = $('select#tracks').val();
-    var postData = {
-        'name' : name,
-        'track' : id
-    }
-    $.ajax({
-        url:"/home/newProject",
-        type:"POST",
-        data:postData,
-        dataType : "JSON",
-        success : function(result){
-            $('#new-project').modal('hide');
-            if(result['isSuccessful']){
-                cleanDesign();
-                addProject(result['project_name'], result['id'],result['creator'])
-                showMsg("Project created");
-                $('#right_container').attr('project_id', result['id'])
-            }else{
-                showMsg("Project create failed");
-            }
-        }
-    });
-}
-//巩的方法
-function addTracks(result){
-    if (result['isSuccessful']){
-        $('#tracks').html('')
-        track_list = result['tracks']
-        for(var i = 0; i < track_list.length; i++){
-            var newOption = $('<option></option>')
-            newOption.html(track_list[i]['track'])
-            newOption.val(track_list[i]['id'])
-            $('#tracks').append(newOption)
-        }
-    }
-}
-//巩的方法
-function getTracks(){
-    $.ajax({
-        url:'/home/tracks',
-        type:'GET',
-        success : function(result){
-            addTracks(result)
-        }
-    });
 }
 
 //获取组件搜索的结果并显示出来
@@ -372,11 +274,12 @@ function getSearchPart(input){
 function setDraggable(elems){
     elems.draggable({
         helper:function(){
-            var html="<img style=\" width:50px;height:50px;background:white \"  />";
+            var html="<div class='drag'>"+this.getAttribute('part_name')+"</div>";
             return $(html);
         },
         start:function(){
             $('.click_div').remove();
+            //$('.operation_recommends_list').remove();
             part_id=this.getAttribute('part_id');
             part_name=this.getAttribute('part_name');
             part_type=this.getAttribute('part_type');
@@ -392,31 +295,16 @@ function setOperationDraggable(elems){
         },
         start:function(){
             $('.click_div').remove();
-            $('.recommand_div').remove();
-            leave_index=$(this).parent().prevAll('*').length;
-            
+            //$('.operation_recommends_list').remove(); 
             part_id=this.getAttribute('part_id');
             part_name=this.getAttribute('part_name');
             part_type=this.getAttribute('part_type');            
             var par=$(this).parent();
             par.addClass('receive_click');
-            setDroppable(par);
+            $(this).parent().droppable('enable');//将父元素 设置为可以接受组件
             $(this).remove();
         },
         stop:function(){ 
-            /*
-            if(success==0){
-                drop_index=leave_index;
-                getInsert();
-                
-            }*/
-        }
-    });
-}
-function setBigDroppable(elems){
-    elems.droppable({
-        drop:function(){
-            alert("大的被触发");
         }
     });
 }
@@ -424,8 +312,8 @@ function setBigDroppable(elems){
 function setDroppable(elems){
     elems.droppable({        
         drop:function(){
-            drop_index=$(this).prevAll('*').length;
-            getInsert(this);
+            $('.operation_recommends_list').remove();
+            getInsert( $(this) );
             saveChain();
         },
         out:function(){
@@ -443,9 +331,22 @@ function setDroppable(elems){
 function setAddDroppable(elems){
     elems.droppable({        
         drop:function(){
-            drop_index=$(this).prevAll('*').length;//获取接收的按钮的位置，0开始
-            getAdd();
+            //var element = $(this).parent();
+             //$('.operation_recommends_list').remove();
+             //判断是前按钮 还是后按钮
+             /*
+            if( $(this).is('.btn-front') ){
+                     有问题
+                $('.btn-front').trigger('click');
+                getInsert( $( $('receive_style')[0] ) );
+                
+            }else{
+                $('.btn-back').trigger('click');
+                getInsert( $(this).parent().next('.part-cell').children('.receive_style') );
+            }
+            
             saveChain();
+            */
         },
         out:function(){
             success=0;
@@ -527,72 +428,38 @@ function getRecommend(){
     });
 }
 //获取操作区推荐的组件并显示
-function getOperationRecommend(here){
-
+function getOperationRecommend(obj){
     $.ajax({
         url:'/home/seqRecommend?part='+part_id,
         type:'GET',
         dateType:'JSON',
         success:function(result){
             if(result['isSuccessful']){
+                $('.operation_recommends_list').remove();//将之前的推荐清除
                 result_list = result['recommend_list'][0];
                 var insertElems=$('#recommand_part_list').tmpl(result_list);
                 setDraggable(insertElems);
-                var recommand_div=$("<div class='recommand_div row'></div>");
+                var recommand_div=$("<div class='operation_recommends_list'></div>");
                 recommand_div.append(insertElems);
-                var s= $('#operation').children().filter('*').eq(here);
-                s.css("position","relative").append(recommand_div);
-            }
-            
-            //setFrame();
-                   
+                
+                obj.prepend(recommand_div);
+            }          
         }
     });
 }
 //在一个接收组件上插入操作的组件
 function getInsert(obj){
     $('.recommand_div').remove();
-    //$('#dashboard').children().filter('*').eq(drop_index).remove();
     var html="<div part_id='"+part_id+"' part_name='"+part_name+"' part_type='"+
-           part_type+"' class='show_message operation_part_style'><img src=\"/static/img/"+part_type+".png\" alt=\"logo\" class=\"img-rounded\"  />"+part_name+"</div>";
+           part_type+"' class='show_message operation_part_style'><img src=\"/static/img/"+part_type+".png\" alt=\"logo\" class=\"img-rounded\"  /><span>"+part_name+"</span></div>";
     var operation_div=$(html);
     setOperationDraggable(operation_div);
-    $(obj).append(operation_div);
-    /*
-    html='<div class="receive_style receivable receive_click"></div>';
-    var receive_div=$(html).prepend(operation_div);
-    html='<div class="add_style btn-back add_button_receive"><span class=" glyphicon glyphicon-plus"></span></div>';
-    var add_div=$(html);
-    setAddDroppable(add_div);
-    var part_cell = $('<div class="part-cell col-lg-2 col-md-2 col-sm-3 col-xs-4"></div>');
-    part_cell.append(receive_div);
-    part_cell.append(add_div);
-    $('#dashboard').children().filter('*').eq(drop_index-1).after(part_cell);  
-    setDashBoardFloat();
-    getRecommend();
-    getOperationRecommend(drop_index);
-    */
-    success=0;
+    obj.append(operation_div);
+    obj.droppable('disable');//将接收组件设置为不可用
+    obj.removeClass("receive_click");
+    getRecommend();//获取左侧推荐
+    getOperationRecommend( obj );
+    saveChain();
 }
-function getAdd(){
-    $('.recommand_div').remove();
-    var html="<div part_id='"+part_id+"' part_name='"+part_name+"' part_type='"+
-           part_type+"' class='show_message operation_part_style'><img src=\"/static/img/"+part_type+".png\" alt=\"logo\" class=\"img-rounded\"  />"+part_name+"</div>";
-    var operation_div=$(html);
-    setOperationDraggable(operation_div);
-    html='<div class="receive_style receivable receive_click"></div>';
-    var receive_div=$(html).prepend(operation_div);
-    html='<div class="add_style btn-back add_button_receive"><span class=" glyphicon glyphicon-plus"></span></div>';
-    var add_div=$(html);
-    setAddDroppable(add_div);
-    var part_cell = $('<div class="part-cell col-lg-2 col-md-2 col-sm-3 col-xs-4"></div>');
-    part_cell.append(receive_div);
-    part_cell.append(add_div);
-    $('#dashboard').children().filter('*').eq(drop_index).after(part_cell);
-    setDashBoardFloat();
-    getRecommend();
-    getOperationRecommend(drop_index+1);
-    //setFrame();
-    success=0;
-}
+
 

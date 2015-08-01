@@ -1,3 +1,4 @@
+
 html, body{
     font-family:"Helvetica Neue","Helvetica","Arial","Verdana","sans-serif";
     -webkit-font-smoothing: antialiased;
@@ -19,7 +20,7 @@ div#bananer{
 }
 div#logo{
     height:50px;
-    width:200px;
+    width:250px;
     background: rgb(98,206,104);
     float:left;
 }
@@ -53,7 +54,7 @@ div#main{
     width:100%;
 }
 div#sidebar{
-    width:200px;
+    width:250px;
 
     height:100%;
     float:left;
@@ -138,7 +139,8 @@ div#dashboard_container div#dashboard{
     height:100%;
     z-index: 0;
     position: absolute;
-    
+    width:100%;
+    height:100%;
 }
 .receive_hover{
     opacity:0.3;
@@ -148,39 +150,63 @@ div.receive_style{
    height:80px;
    border-radius: 10px;
    margin:0 auto;
-   background-color:#999999;
+   background-color:rgba(153,153,153,0.5);
    font-size: 1em;
    text-align: center;
    display: inline-block;
+   float:left;
+   position: relative;
+}
+div.operation_recommends_list{
+    position: absolute;
+    top:80px;
+    width:300px;
+    border-radius: 5px;
+    z-index: 1;
+    background: rgba(0,128,128,0.5);
+}
+div.operation_recommends_list div.operation_part_style{
+    margin-left:10px;
+    float: left;
 }
 div.click_div{
-    height:40px;
-    width:50px;
-    background: blue;
+    height:100%;
+    width:100%;
+    border-radius: 10px;
+    background: rgb(102,102,102);
+  
     position: absolute;
-    top:20px;
-    left:60px;
+    top:0;
+    left:0;
+    z-index: 3;
 }
 div.copy,div.part_remove,div.paste,div.delete{
-    height:20px;
+    height:40px;
     width:100%;
+    border-radius: 10px;
     color:white;
-    font-size: 10px;
-    line-height: 20px;
+    font-size: 25px;
+    line-height: 40px;
     text-align: center;
 }
 div.copy:hover,div.part_remove:hover,div.paste:hover,div.delete:hover{
-    background: red;
+    background: rgb(3,147,201);
 }
 
 div.operation_part_style{
     margin:0 auto;
+
 }
 div.operation_part_style img{
-    height:64px;
-    width:64px;
+    height:60px;
+    width:60px;
     display: block;
     margin: 0 auto;
+}
+div.operation_part_style span{
+    display: block;
+    margin:0 auto;
+
 }
 div.add_style{
     width:10%;
@@ -193,12 +219,13 @@ div.btn-front{
 }
 
 div.btn-back{
-    float:right;
+    float:left;
 }
 div.part-cell{
+    margin-top: 4px;
 }
-div.add_style:hover{
-    background: blue;
+div.add_style span:hover{
+    opacity: 0.3;
 }
 div.add_style span{
     margin-top: 30px;
@@ -210,4 +237,38 @@ div.floatRight{
     float: right;
 }
 
+.pull-right div.btn-back{
+    float:right;
+}
+.pull-right div.btn-front{
+    float:right;
+}
+.pull-right div.receive_style{
+    float:right;
+}
+canvas#background{
+}
+
+
+div#part_info{
+    opacity: 0.7;
+    width: 20%;
+    height: 80%;
+    position: absolute;
+    top:15%;
+    right:0;
+    z-index:10;
+    float: right;
+    overflow: auto;
+}
+.btn-close{
+    float: right;
+    background-color: rgba(0,0,0,0);
+    margin:0;
+    width:50px;
+    height: auto;
+    position: relative;
+    top:0;
+    right:0;
+}
 
