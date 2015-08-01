@@ -1,6 +1,9 @@
 from design.models import parts, team_parts, teams
 from elasticsearch import Elasticsearch
 import json
+import os.path
+
+BASE = os.path.dirname(os.path.abspath(__file__))
 
 def getApriorRecommend():
     result = {
@@ -41,7 +44,7 @@ def getMarkovRecommend(part_id):
     return result
 
 def loadA():
-    tranFile = open('tran.json', 'r')
+    tranFile = open(BASE+'/../tran.json', 'r')
     A = json.loads(tranFile.read())
     return A
 

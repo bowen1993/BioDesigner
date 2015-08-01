@@ -71,7 +71,7 @@ def drawOnePart(name, position, drawer, isSmall, icon_im):
             if icon_data[y*icon_im.size[0]+x][3] != 0:
                 drawer.point((position[0] + x, position[1] + y), fill=icon_data[y*icon_im.size[0]+x])
     #draw text
-    font = ImageFont.truetype('static/fonts/HelveticaNeueDeskInterface.ttc', 10)
+    font = ImageFont.truetype(BASE+'../static/fonts/HelveticaNeueDeskInterface.ttc', 10)
     drawer.text((position[0], position[1] + h + icon_text_space), name, fill='black', font=font)
 
 def drawCurve(drawer, cbox, isForward):
@@ -114,7 +114,7 @@ def drawSequence(sequenceInfo, width, height, file_path):
                 drawOnePart(item['name'], (initX, initY), drawer, True, icon_im)
                 initX -= icon_width_small + icon_space_small
                 index+=1
-    newImage.save(file_path)
+    newImage.save(BASE+'/../'+file_path)
 
 def getSequenceResultImage(sequence, width, height, name):
     if sequence.startswith('_'):
