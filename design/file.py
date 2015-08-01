@@ -125,7 +125,7 @@ def getSequenceResultImage(sequence, width, height, name):
         partObj = parts.objects.get(part_id=partid)
         infoDict = {
             'name': partObj.part_name,
-            'icon_file_name' : BASE + '../static/img/%s.png' % partObj.part_type,
+            'icon_file_name' : BASE + '/../static/img/%s.png' % partObj.part_type,
         }
         sequenceInfo.append(infoDict)
     filename = createFolder('image') + geneFileName(name, 'png')
