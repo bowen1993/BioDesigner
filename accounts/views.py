@@ -1,4 +1,4 @@
-from accounts.models import User, UserSafety
+from accounts.models import User, UserSafety, loginRecord
 from django.shortcuts import render
 from django.db.models import Q
 from django.http import HttpResponse, HttpResponseRedirect
@@ -48,6 +48,14 @@ def isAllowAutoLogin(request):
     except KeyError:
         return False
 
+def get_client_ip(request):
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    if x_forwarded_for:
+        ip = x_forwarded_for.split(',')[0]
+    else:
+        ip = request.META.get('REMOTE_ADDR')
+    return ip
+
 @csrf_exempt
 def loginAction(request):
     """handle the login request
@@ -78,6 +86,7 @@ def loginAction(request):
         results['isSuccessful'] = results['isAccountValid']
         if results['isSuccessful']:
             createSession(request, username, isAutoLogin)
+    recordLogin(username, get_client_ip(request), results['isSuccessful'])
 
     return HttpResponse(json.dumps(results), content_type="application/json")
 
@@ -181,6 +190,11 @@ def isEmailExists(email):
         return True
     except:
         return False
+
+def recordLogin(username, ip, isSuccessful):
+    newRecord = loginRecord(identity=username, login_ip=ip)
+    newRecord.isSuccess = isSuccessful
+    newRecord.save()
 
 @csrf_exempt
 def register_confirm(request, activation_key):

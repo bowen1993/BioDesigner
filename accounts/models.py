@@ -27,3 +27,15 @@ class UserSafety(models.Model):
 
     class Meta:
         db_table = 'bio_usersafety'
+
+class loginRecord(models.Model):
+    identity  = models.CharField(max_length=64)
+    login_time = models.DateTimeField(auto_now_add=True, auto_now=True)
+    login_ip = models.CharField(max_length=64, null=True)
+    isSuccess = models.BooleanField(default=False)
+
+    def __unicode__(self):
+        return self.identity
+
+    class Meta:
+        db_table = 'record_login_record'
