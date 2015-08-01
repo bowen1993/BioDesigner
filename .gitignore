@@ -55,3 +55,6 @@ new.xml
 
 #download folder
 downloads/
+
+#setting file
+BioDesigner/settings.py

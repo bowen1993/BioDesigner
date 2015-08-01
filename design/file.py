@@ -1,4 +1,4 @@
-import Image, ImageDraw, ImageFont
+from PIL import Image, ImageDraw, ImageFont
 import os.path
 import time
 import datetime
