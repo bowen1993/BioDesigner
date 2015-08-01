@@ -232,23 +232,20 @@ def getResultImage(request):
     result = {
         'isSuccessful': True,
     }
-    try:
-        chainId = request.GET.get('id')
-        chainObj = chain.objects.get(id=chainId)
-        chainStr = chainObj.sequence
-        if chainStr.startswith('_'):
-            chainStr = chainStr[1:]
-        if chainStr == "" or chainStr == None:
-            result['isSuccessful'] = False
-        else:
-            chainName = chainObj.name
-            width = 80 * len(chainStr.split('_'))
-            height = 100
-            if width > 800:
-                width = 800
-                height = 100 * (len(chainStr.split('_')) / 10);
-
-            result['filepath'] = getSequenceResultImage(chainStr, width, height, chainName)
-    except:
+    chainId = request.GET.get('id')
+    chainObj = chain.objects.get(id=chainId)
+    chainStr = chainObj.sequence
+    if chainStr.startswith('_'):
+        chainStr = chainStr[1:]
+    if chainStr == "" or chainStr == None:
         result['isSuccessful'] = False
+    else:
+        chainName = chainObj.name
+        width = 80 * len(chainStr.split('_'))
+        height = 100
+        if width > 800:
+            width = 800
+            height = 100 * (len(chainStr.split('_')) / 10);
+
+        result['filepath'] = getSequenceResultImage(chainStr, width, height, chainName)
     return HttpResponse(json.dumps(result), content_type="application/json")
