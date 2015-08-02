@@ -18,6 +18,7 @@ import random
 def indexView(request):
     # check is allow auto login
     if (isAllowAutoLogin(request)):
+        recordLogin(request.session['username'], get_client_ip(request), True)
         return HttpResponseRedirect('/home/project')
     # render and return the page
     template = loader.get_template('accounts/index.html')
