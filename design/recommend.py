@@ -2,21 +2,104 @@ from design.models import parts, team_parts, teams
 from elasticsearch import Elasticsearch
 import json
 import os.path
+import pickle
 
 BASE = os.path.dirname(os.path.abspath(__file__))
 
-def getApriorRecommend():
+def getApriorRecommend(chainStr):
+    dataList = chainStr.split('_')
+    dataList = dataList[len(dataList)-2:len(dataList)]
+    print dataList
+    fList = list()
+    with open(BASE+'/../freq.txt', 'rb') as f:
+        fList = pickle.load(f)
+    strResult = getResult(dataList, fList)
+    recommend_list = list()
+    for partId in strResult:
+        partObj = parts.objects.get(part_id=int(partId))
+        partInfo = {
+            'part_id': partObj.part_id,
+            'part_name': partObj.part_name,
+            'part_type': partObj.part_type,
+        }
+        recommend_list.append(partInfo)
     result = {
         'isSuccessful' : True,
-        'recommend_list': [
-            {'part_id':98, 'part_name':'BBa_M39201', 'part_type':'T7'},
-            {'part_id':144, 'part_name':'BBa_B0011', 'part_type':'T7'},
-            {'part_id':145, 'part_name':'BBa_B0012', 'part_type':'T7'},
-            {'part_id':146, 'part_name':'BBa_B0013', 'part_type':'T7'},
-            {'part_id':147, 'part_name':'BBa_B0030', 'part_type':'T7'},
-        ]
+        'recommend_list': recommend_list,
     }
     return result
+
+def analyseData(dataList,dataLength = 2):
+    tempData = []
+    tempData1 = []
+    tempData2 = []
+    for item in dataList:
+            tempData.append(item)
+            tempData1.append(tempData)
+            tempData = []
+    tempData1 = map(set,tempData1)
+    tempData2 = tempData1
+    for i in range(dataLength - 1):
+        for item in tempData1:
+            for j in range(len(tempData2)):
+                if (item.union(tempData2[j]) not in tempData):
+                    tempData.append(item.union(tempData2[j]))
+        tempData2 = tempData
+        tempData = []
+    flag = False
+    
+    for item in tempData2:
+        if len(item) < dataLength:
+            tempData2.remove(item)
+            flag = True
+    while (flag == True):
+        flag = False
+        for item in tempData2:
+            if len(item) < dataLength:
+                tempData2.remove(item)
+                flag = True
+    return tempData2
+        
+def getResult(currentList,datalist):#currentList ,dataList pin fan xiang ji
+    dataList = toFrozenset(datalist)
+    dataLength = 2
+    resultList = []
+    if len(currentList) == 0:
+        return resultList
+    if len(currentList) <= dataLength:
+        for item in dataList:
+            for item1 in item:
+                if frozenset(currentList).issubset(item1):
+                   resultList.append(item1^frozenset(currentList))
+        resultList = toBeOne(resultList)
+        return resultList
+    tempData = analyseData(currentList,dataLength)
+    for item in tempData:
+        for item2 in dataList:
+            if item.issubset(item2):
+                if item2 not in resultList:
+                    resultList.append(item2^item)
+    resultList = toBeOne(resultList)
+    return resultList
+
+def toBeOne(data):#delete chong fu xiang
+    result = []
+    for item in data:
+        t = list(item)
+        for item2 in t:
+            if item2 not in result:
+                result.append(item2)
+    return result
+def toFrozenset(data):
+    result = []
+    for item in data:
+        temp = []
+        for i in item:
+            temp.append(frozenset(i))
+        result.append(temp)
+    return result
+    
+
 
 def getMarkovRecommend(part_id):
     result = {
@@ -76,7 +159,6 @@ def get_chain(elem, num, process):
         chain = get_chain(last_elem, num-1, process)
         chain.append(elem)
         return chain
-
 
 def predict(m, count, s, A):
     """predict the chain after s

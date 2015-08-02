@@ -91,8 +91,10 @@ $(document).ready(function(){
         //点击  删除组件
         $(document).on({
             click:function(){
+
                 $(this).parent().parent().empty().droppable('enable').addClass("receive_click");
                 $('.click_div').remove();
+
                 saveChain();
            }
         },'.part_remove');
@@ -105,6 +107,7 @@ $(document).ready(function(){
                 part_name=copy_name;
                 part_type=copy_type;
                 getInsert( $(this).parent().parent() );
+
                 }
                 $('.click_div').remove();
             }   
@@ -116,6 +119,7 @@ $(document).ready(function(){
                 if( $(this).parent().parent().siblings('.btn-front').length!=1 ){
                     $(this).parent().parent().parent().remove();
                     setDashBoardFloat();
+                    saveChain();
                 }  
             }
         },'.delete');
@@ -204,7 +208,7 @@ function setFrame () {
 function insertChain(chain){
     var html="<div class=\"part-cell col-lg-2 col-md-2 col-sm-3 col-xs-4 \"> " +
         "<div class=\"receive_style receive_click\">" + 
-            "<div class=\"show_message operation_part_style\" part_type=\""+chain['part_type']+"\" part_name=\" "+chain['part_name']+"\" part_id=\" "+chain['part_id']+"\">" + 
+            "<div class=\"show_message operation_part_style\" part_type=\""+chain['part_type']+"\" part_name=\""+chain['part_name']+"\" part_id=\""+chain['part_id']+"\">" + 
                 "<img class=\"img-rounded\" alt=\"logo\" src=\"/static/img/"+chain['part_type']+".png\">" + 
                 "<span>" +chain['part_name']+"</span>" + 
             "</div>" + 
@@ -359,6 +363,7 @@ function setAddDroppable(elems){
 }
 //巩的方法
 function saveChain(){
+    showMsg('Saving...');
     var chain = getCurrChain();
     var postData = {
         'chain' : chain,
@@ -459,7 +464,7 @@ function getInsert(obj){
     obj.removeClass("receive_click");
     getRecommend();//获取左侧推荐
     getOperationRecommend( obj );
-    saveChain();
+
 }
 
 

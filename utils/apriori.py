@@ -1,11 +1,37 @@
+import os
+import django
+import sys
+import pickle
+
+pro_dir = os.getcwd()
+sys.path.append(pro_dir)
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "BioDesigner.settings")
+
+from design.models import teams, team_parts, parts
+from igemRecomdData import getResult
+
 def loadDataSet():
-    simpDat = [['r', 'z', 'h', 'j', 'p'],
-               ['z', 'y', 'x', 'w', 'v', 'u', 't', 's'],
-               ['z'],
-               ['r', 'x', 'n', 'o', 's'],
-               ['y', 'r', 'x', 'z', 'q', 't', 'p'],
-               ['y', 'z', 'x', 'e', 'q', 's', 't', 'm']]
-    return simpDat
+    dataList = list()
+    allTeam = teams.objects.all()
+    for t in allTeam:
+        team_list = list()
+        p_list = team_parts.objects.filter(team_id=t.team_id)
+        if len(p_list) == 0:
+            continue
+        for p in p_list:
+            team_list.append(str(p.part_id))
+        dataList.append(team_list)
+    allParts = parts.objects.all()
+    for po in allParts:
+        se = po.deep_u_list
+        if se == None or se == "":
+            continue
+        if se.startswith('_'):
+            se = se[1:]
+        if se.endswith('_'):
+            se = se[:-1]
+        dataList.append(se.split('_'))
+    return dataList
 
 def createC1(dataSet):
     C1 = []
@@ -25,13 +51,13 @@ def scanD(D,Ck,minSupport):
                 else:ssCnt[can] += 1
     numItems = float(len(D))
     retList = []
-    supportData = {}
+    #supportData = {}
     for key in ssCnt:
         support = ssCnt[key]/numItems
         if support >= minSupport:
             retList.insert(0,key)
-        supportData[key] = support
-    return retList,supportData
+        #supportData[key] = support
+    return retList#,supportData
 
 def aprioriGen(Lk,k):
     retList = []
@@ -44,21 +70,21 @@ def aprioriGen(Lk,k):
                 retList.append(Lk[i] | Lk[j])
     return retList
 
-def apriori(dataSet,minSupport = 0.002):
+def apriori(dataSet,minSupport = 0.003):
     C1 = createC1(dataSet)
     D = map(set,dataSet)
-    L1,supportData = scanD(D,C1,minSupport)
+    L1 = scanD(D,C1,minSupport)
     L = [L1]
     k = 2
-    while (len(L[k-2]) > 0):
+    while (len(L[k-2]) > 0 and (k-1) < 3):#parameter 2 controls the number of xiangji,and there is 3
         Ck = aprioriGen(L[k-2],k)
-        Lk,supk = scanD(D,Ck,minSupport)
-        supportData.update(supk)
+        Lk = scanD(D,Ck,minSupport)
+        #supportData.update(supk)
         L.append(Lk)
         k += 1
-    return L,supportData
+    return toList(L)#,supportData
 
-def generateRules(L,supportData,minConf = 0.3):
+def generateRules(L,supportData,minConf = 0.1):
     bigRuleList = []
     for i in range(1,len(L)):
         for freqSet in L[i]:
@@ -69,7 +95,7 @@ def generateRules(L,supportData,minConf = 0.3):
                 calcConf(freqSet,H1,supportData,bigRuleList,minConf)
     return bigRuleList
 
-def calcConf(freqSet,H,supportData,brl,minConf = 0.7):
+def calcConf(freqSet,H,supportData,brl,minConf = 0.1):
     prunedH = []
     for conseq in H:
         conf = supportData[freqSet]/supportData[freqSet-conseq]
@@ -79,10 +105,30 @@ def calcConf(freqSet,H,supportData,brl,minConf = 0.7):
             prunedH.append(conseq)
     return prunedH
 
-def ruleFromConseq(freqSet,H,supportData,brl,minConf = 0.7):
+def ruleFromConseq(freqSet,H,supportData,brl,minConf = 0.1):
     m = len(H[0])
     if (len(freqSet) > (m + 1)):
         Hmpl = aprioriGen(H,m + 1)
         Hmpl = calcConf(freqSet,Hmpl,supportData,brl,minConf)
         if (len(Hmpl) > 1):
             rulesFromConseq(freqSet,Hmpl,supportData,brl,minConf)
+
+def toList(data):
+    result = []
+    for item in data:
+        temp = []
+        for i in item:
+            temp.append(list(i))
+        result.append(temp)
+    return result
+
+def mainFunc():
+    django.setup()
+    fList = list()
+    with open('freq.txt', 'rb') as f:
+        fList = pickle.load(f)
+    print 'recommending'
+    print getResult(['162', '151'], fList)
+
+if __name__ =='__main__':
+    mainFunc()

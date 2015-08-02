@@ -124,6 +124,7 @@ div.title{
 }
 div#recommand_search_container{
     width:100%;
+    overflow: auto;
 }
 div#dashboard_container{
     height:100%;
@@ -270,5 +271,18 @@ div#part_info{
     position: relative;
     top:0;
     right:0;
+}
+
+.hint-info{
+    position: fixed;
+    top:0;
+    right:0;
+    width: 150px;
+    height:60px;
+    background-color: rgba(0, 204, 255, 0.5);
+    text-align: center;
+    font-size:1.5em;
+    padding-top: 10px;
+    color:#FFFFFF;
 }
 
