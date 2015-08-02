@@ -213,10 +213,10 @@ function getProjectLabel (project_id, project_name, track) {
 			url: '/home/getChainLength?id=' + chainId,
 			type: 'GET',
 			success:function(result){
-				
 				if(result['isSuccessful']){
-
 					$('.text-info').find('#length').html('Length: ' + result['length']);
+				}else{
+					$('.text-info').find('#length').html('Length: 0');
 				}
 			}
 		});
@@ -230,6 +230,8 @@ function getProjectLabel (project_id, project_name, track) {
 			success:function(result){
 				if (result['isSuccessful']){
 					$('.img-info #chain-img').attr('src', result['filepath'].replace('downloads/', 'static/'));
+				}else{
+					$('.img-info #chain-img').attr('src', '/static/img/logo_black_op.png');
 				}
 			}
 		});

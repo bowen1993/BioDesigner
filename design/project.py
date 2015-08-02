@@ -41,16 +41,15 @@ def formatProjectList(projectList):
 
 def getChainList(projectId):
     result = list()
-    try:
-        chainObjs = chain.objects.filter(project_id=projectId)
-        for chainObj in chainObjs:
-            c = {
-                'id' : chainObj.id,
-                'name' : chainObj.name,
-            }
-            result.append(c)
-    except:
-        pass
+
+    chainObjs = chain.objects.filter(project_id=projectId)
+    for chainObj in chainObjs:
+        c = {
+            'id' : chainObj.id,
+            'name' : chainObj.name,
+        }
+        result.append(c)
+
     return result
 
 def getChain(chainId):

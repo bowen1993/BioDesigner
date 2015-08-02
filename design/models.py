@@ -148,6 +148,8 @@ class chain(models.Model):
     sequence = models.CharField(max_length=255,null=True)
     project  = models.ForeignKey(project)
     name = models.CharField(max_length=64, null=False)
+    isModified = models.BooleanField(default=True)
+    image_file_path = models.CharField(max_length=255, null=True)
     def __unicode__(self):
         return self.sequence
 

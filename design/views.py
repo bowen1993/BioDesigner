@@ -178,6 +178,7 @@ def saveChain(request):
     try:
         chainObj = chain.objects.get(id=chainId)
         chainObj.sequence = chainContent
+        chainObj.isModified = True
         chainObj.save()
     except:
         result['isSuccessful'] = False
@@ -233,19 +234,27 @@ def getResultImage(request):
         'isSuccessful': True,
     }
     chainId = request.GET.get('id')
-    chainObj = chain.objects.get(id=chainId)
-    chainStr = chainObj.sequence
-    if chainStr.startswith('_'):
-        chainStr = chainStr[1:]
-    if chainStr == "" or chainStr == None:
+    try:
+        chainObj = chain.objects.get(id=chainId)
+        if not chainObj.isModified:
+            result['filepath'] = chainObj.image_file_path
+        else:
+            chainStr = chainObj.sequence
+            if chainStr.startswith('_'):
+                chainStr = chainStr[1:]
+            if chainStr == "" or chainStr == None:
+                result['isSuccessful'] = False
+            else:
+                chainName = chainObj.name
+                width = 80 * len(chainStr.split('_'))
+                height = 100
+                if width > 800:
+                    width = 800
+                    height = 100 * (len(chainStr.split('_')) / 10);
+                result['filepath'] = getSequenceResultImage(chainStr, width, height, chainName)
+                chainObj.isModified = False
+                chainObj.image_file_path = result['filepath']
+                chainObj.save()
+    except:
         result['isSuccessful'] = False
-    else:
-        chainName = chainObj.name
-        width = 80 * len(chainStr.split('_'))
-        height = 100
-        if width > 800:
-            width = 800
-            height = 100 * (len(chainStr.split('_')) / 10);
-
-        result['filepath'] = getSequenceResultImage(chainStr, width, height, chainName)
     return HttpResponse(json.dumps(result), content_type="application/json")

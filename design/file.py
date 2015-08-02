@@ -27,7 +27,7 @@ def createFolder(contentType):
         os.makedirs(basePath + month + '/')
     basePath += month + '/'
     if not os.path.exists(basePath + day + '/'):
-        os.makedirs(basePath + month + '/')
+        os.makedirs(basePath + day + '/')
     basePath += day + '/'
     if not os.path.exists(basePath + contentType + '/'):
         os.makedirs(basePath + contentType + '/')
@@ -72,7 +72,7 @@ def drawOnePart(name, position, drawer, isSmall, icon_im):
             if icon_data[y*icon_im.size[0]+x][3] != 0:
                 drawer.point((position[0] + x, position[1] + y), fill=icon_data[y*icon_im.size[0]+x])
     #draw text
-    font = ImageFont.truetype(BASE+'../static/fonts/HelveticaNeueDeskInterface.ttc', 10)
+    font = ImageFont.truetype(BASE+'/../static/fonts/HelveticaNeueDeskInterface.ttc', 10)
     drawer.text((position[0], position[1] + h + icon_text_space), name, fill='black', font=font)
 
 def drawCurve(drawer, cbox, isForward):
