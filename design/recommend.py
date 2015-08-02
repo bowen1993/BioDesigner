@@ -8,7 +8,7 @@ BASE = os.path.dirname(os.path.abspath(__file__))
 
 def getApriorRecommend(chainStr):
     dataList = chainStr.split('_')
-    dataList = dataList[len(dataList)-2:len(dataList)]
+    #dataList = dataList[len(dataList)-2:len(dataList)]
     print dataList
     fList = list()
     with open(BASE+'/../freq.txt', 'rb') as f:
@@ -60,8 +60,8 @@ def analyseData(dataList,dataLength = 2):
                 flag = True
     return tempData2
         
-def getResult(currentList,datalist):#currentList ,dataList pin fan xiang ji
-    dataList = toFrozenset(datalist)
+def getResult(currentList,dataList):#currentList ,dataList pin fan xiang ji
+    dataList = toFrozenset(dataList)
     dataLength = 2
     resultList = []
     if len(currentList) == 0:
@@ -76,9 +76,10 @@ def getResult(currentList,datalist):#currentList ,dataList pin fan xiang ji
     tempData = analyseData(currentList,dataLength)
     for item in tempData:
         for item2 in dataList:
-            if item.issubset(item2):
-                if item2 not in resultList:
-                    resultList.append(item2^item)
+            for item3 in item2:
+                if item.issubset(item3):
+                    if (item3^item) not in resultList:
+                        resultList.append(item3^item)
     resultList = toBeOne(resultList)
     return resultList
 
