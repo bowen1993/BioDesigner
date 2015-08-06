@@ -111,7 +111,7 @@ def drawSequence(sequenceInfo, width, height, file_path):
                 isForward = not isForward
                 
             else:
-                icon_im = Image.open(item['icon_file_name'])
+                icon_im = Image.open(item['icon_reverse_file_name'])
                 drawOnePart(item['name'], (initX, initY), drawer, True, icon_im)
                 initX -= icon_width_small + icon_space_small
                 index+=1
@@ -127,6 +127,7 @@ def getSequenceResultImage(sequence, width, height, name):
         infoDict = {
             'name': partObj.part_name,
             'icon_file_name' : BASE + '/../static/img/%s.png' % partObj.part_type,
+            'icon_reverse_file_name': BASE + '/../static/img/%s_reverse.png' % partObj.part_type,
         }
         sequenceInfo.append(infoDict)
     filename = createFolder('image') + geneFileName(name, 'png')

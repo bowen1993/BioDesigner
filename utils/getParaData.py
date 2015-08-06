@@ -50,12 +50,12 @@ def getInfosFromXML(xmlStr, partName):
 
 
 def mainFunc():
-    startpos = 7277
+    startpos = 29623
     step = 1000
     endpos = startpos + step
     totalPartCount = parts.objects.count()
     remainCount = totalPartCount
-    csv_writer = csv.writer(open('paraData3.csv', 'wb'), delimiter=',')
+    csv_writer = csv.writer(open('paraData6.csv', 'wb'), delimiter=',')
     print 'process started'
     while remainCount > 0:
         print 'processing %d to %d' % (startpos, endpos)

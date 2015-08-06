@@ -57,7 +57,6 @@ WSGI_APPLICATION = 'BioDesigner.wsgi.application'
 
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'biodesigner.bio@gmail.com'
-EMAIL_HOST_PASSWORD = 'mppFB2Qp>89G'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = 'biodesigner@bio.com'

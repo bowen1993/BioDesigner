@@ -9,7 +9,6 @@ class RecommendTestCase(TestCase):
         self.isGet = self.result['isSuccessful']
         self.assertEqual(self.isGet, False)
 
-
 class MarkovTestCase(TestCase):
     def test_get_chain(self):
         process = [{'f': [1, None]},

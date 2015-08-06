@@ -43,6 +43,14 @@ def registerSuccessView(request):
         return HttpResponseRedirect('/')
 
 def isAllowAutoLogin(request):
+    """check is user allow auto login
+    check is user allowed auto login, true or false
+    
+    Args:
+        request: the http request to be processed
+
+    Returns: A http response which contains json result
+    """
     try:
         isAllowAutoLogin = request.session['isAllowAutoLogin']
         return isAllowAutoLogin

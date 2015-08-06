@@ -234,6 +234,49 @@ def getChainLength(request):
         result['isSuccessful'] = False
     return HttpResponse(json.dumps(result), content_type="application/json")
 
+
+@csrf_exempt
+def changeProjectName(request):
+    projectId = request.POST.get('id','')
+    newName = request.POST.get('name','')
+    result = {
+        'isSuccessful': True,
+    }
+    try:
+        projectObj = project.objects.get(id=projectId)
+        projectObj.project_name = newName
+    except:
+        result['isSuccessful'] = False
+    return HttpResponse(json.dumps(result), content_type="application/json")
+
+@csrf_exempt
+def changeProjectTrack(request):
+    projectId = request.POST.get('id', '')
+    newTrackId = request.POST.get('track_id', '')
+    result = {
+        'isSuccessful': True,
+    }
+    try:
+        projectObj = project.objects.get(id=projectId)
+        trackObj = tracks.objects.get(id=newTrackId)
+        projectObj.track = trackObj
+    except:
+        result['isSuccessful'] = False
+    return HttpResponse(json.dumps(result), content_type="application/json")
+
+@csrf_exempt
+def deleteProject(request):
+    projectId = request.POST.get('id', '')
+    result = {
+        'isSuccessful' : True,
+    }
+    try:
+        projectObj = project.objects.get(id=projectId)
+        projectObj.is_deleted = 1
+    except:
+        result['isSuccessful'] = False
+    return HttpResponse(json.dumps(result), content_type="application/json")
+
 @csrf_exempt
 def getResultImage(request):
     result = {
