@@ -55,3 +55,6 @@ new.xml
 
 #download folder
 downloads/
+
+#gene data folder
+datas/

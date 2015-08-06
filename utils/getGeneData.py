@@ -6,7 +6,7 @@ baseGeneFindUrl = 'http://rest.kegg.jp/find/genes/'
 
 
 def getInfoFile(id, t):
-    filepath = '%s_%s' % (id, t)
+    filepath = 'datas/%s_%s' % (id, t)
     if os.path.exists(filepath):
         return
     newFile = open(filepath, 'w')
@@ -45,7 +45,7 @@ def getCompounds(id_file):
         cId_list.append(c_id)
         cName_list.append(c_name)
         #print 'geting data for %s ' % c_id
-        #getInfoFile(c_id, 'Compound')
+        getInfoFile(c_id, 'Compound')
     print 'compound process ended'
     print 'geting gene data'
     getGeneByCompounds(cName_list)
