@@ -10,16 +10,24 @@ def getInfoFile(id, t):
     if os.path.exists(filepath):
         return
     newFile = open(filepath, 'w')
-    req = urllib2.Request(baseGetUrl + id)
-    response = urllib2.urlopen(req)
-    newFile.write(response.read())
-    newFile.close()
+    try:
+        req = urllib2.Request(baseGetUrl + id)
+        response = urllib2.urlopen(req)
+        newFile.write(response.read())
+    except:
+        print '%s failed' % id
+        pass
+    finally:
+        newFile.close()
 
 def getGeneByCompounds(cList):
     for cn in cList:
-        req = urllib2.Request(baseGeneFindUrl + cn)
-        response = urllib2.urlopen(req)
-        resStr = response.read()
+        try:
+            req = urllib2.Request(baseGeneFindUrl + cn)
+            response = urllib2.urlopen(req)
+            resStr = response.read()
+        except:
+            pass
         geneList = resStr.split('\n')
         geneIdList = list()
         for g in geneList:
@@ -45,7 +53,7 @@ def getCompounds(id_file):
         cId_list.append(c_id)
         cName_list.append(c_name)
         #print 'geting data for %s ' % c_id
-        getInfoFile(c_id, 'Compound')
+        #getInfoFile(c_id, 'Compound')
     print 'compound process ended'
     print 'geting gene data'
     getGeneByCompounds(cName_list)
