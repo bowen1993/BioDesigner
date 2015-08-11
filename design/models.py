@@ -76,16 +76,6 @@ class part_features(models.Model):
     class Meta:
         db_table = 'bio_part_features'
 
-class functions(models.Model):
-    function_id = models.IntegerField(primary_key=True)
-    function    = models.CharField(max_length=128)
-
-    def __unicode__(self):
-        return self.function
-
-    class Meta:
-        db_table = 'bio_functions'
-
 
 class tracks(models.Model):
     track    = models.CharField(max_length=64)
@@ -96,10 +86,30 @@ class tracks(models.Model):
     class Meta:
         db_table = 'bio_tracks'
 
+class functions(models.Model):
+    function = models.CharField(max_length=255, null=True)
+
+    def __unicode__(self):
+        return self.function
+
+    class Meta:
+        db_table = 'bio_functions'
+
+class track_functions(models.Model):
+    track = models.ForeignKey(tracks)
+    function = models.ForeignKey(functions)
+
+    def __unicode__(self):
+        return '%s %s' % (self.track, self.function)
+
+    class Meta:
+        db_table = 'bio_track_function'
+
 class teams(models.Model):
     team_id = models.IntegerField(primary_key=True)
     name = models.CharField(max_length=64)
     track = models.ForeignKey(tracks)
+    function = models.ForeignKey(functions)
     year = models.CharField(max_length=16)
 
     def __unicode__(self):
@@ -155,4 +165,5 @@ class chain(models.Model):
 
     class Meta:
         db_table = 'bio_chain'
+
 

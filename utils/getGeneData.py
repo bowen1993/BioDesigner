@@ -39,6 +39,25 @@ def getGeneByCompounds(cList):
             print 'geting %s' % gid
             getInfoFile(gid, 'Gene')
 
+def getReactionData(cId_list):
+    for cid in cId_list:
+        filepath = 'datas/compound/%s_Compound'  % cid
+        f = open(filepath, 'r')
+        isReaction = False
+        for l in f.readlines():
+            if l.startswith('/'):
+                continue
+            if not l.startswith(' '):
+                if l.startswith('REACTION'):
+                    isReaction = True
+            if isReaction:
+                rList = l.split(' ')
+                for item in rList:
+                    if item == None or item == '' or item == 'REACTION':
+                        continue
+                    print item
+                    getInfoFile(item, 'Reaction')
+
 def getCompounds(id_file):
     f = open(id_file, 'r')
     cId_list = list()
@@ -52,14 +71,14 @@ def getCompounds(id_file):
         #print c_name
         cId_list.append(c_id)
         cName_list.append(c_name)
-        #print 'geting data for %s ' % c_id
-        #getInfoFile(c_id, 'Compound')
+        print 'geting data for %s ' % c_id
+        getInfoFile(c_id, 'Compound')
     print 'compound process ended'
     print 'geting gene data'
-    getGeneByCompounds(cName_list)
+    #getGeneByCompounds(cName_list)
     print 'gene data ended'
     print 'geting reaction data'
-    getReactionData(cName_list)
+    #getReactionData(cId_list)
     print 'reaction data ended'
 
 if __name__ == '__main__':

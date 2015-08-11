@@ -62,24 +62,24 @@ def analyseData(dataList,dataLength = 2):
         
 def getResult(currentList,dataList):#currentList ,dataList pin fan xiang ji
     dataList = toFrozenset(dataList)
-    dataLength = 2
+    dataLength = len(currentList)
+    max_length = 4
     resultList = []
-    if len(currentList) == 0:
+    if dataLength == 0:
         return resultList
-    if len(currentList) <= dataLength:
+    if dataLength > max_length:
+        currentList = currentList[dataLength-4:]
+        dataLength = 4
+    while dataLength > 0:
         for item in dataList:
             for item1 in item:
                 if frozenset(currentList).issubset(item1):
-                   resultList.append(item1^frozenset(currentList))
-        resultList = toBeOne(resultList)
-        return resultList
-    tempData = analyseData(currentList,dataLength)
-    for item in tempData:
-        for item2 in dataList:
-            for item3 in item2:
-                if item.issubset(item3):
-                    if (item3^item) not in resultList:
-                        resultList.append(item3^item)
+                    if (item1^frozenset(currentList)) not in resultList:
+                        resultList.append(item1^frozenset(currentList))
+        if len(resultList) >= 5:
+            break
+        currentList = currentList[1:]
+        dataLength = dataLength - 1
     resultList = toBeOne(resultList)
     return resultList
 
