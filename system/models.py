@@ -46,8 +46,8 @@ class reaction(models.Model):
         db_table = 'bio_reactions' 
 
 class reaction_compound(models.Model):
-    reaction_id = models.CharField(max_length=32)
-    compound_id = models.CharField(max_length=32)
+    reaction = models.ForeignKey(reaction)
+    compound = models.ForeignKey(compound)
     isReactant = models.BooleanField(default=False)
     isResultant = models.BooleanField(default=False)
     amount = models.IntegerField(null=True, default=1)

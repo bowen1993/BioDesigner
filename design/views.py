@@ -245,6 +245,7 @@ def changeProjectName(request):
     try:
         projectObj = project.objects.get(id=projectId)
         projectObj.project_name = newName
+        projectObj.save()
     except:
         result['isSuccessful'] = False
     return HttpResponse(json.dumps(result), content_type="application/json")
@@ -260,6 +261,7 @@ def changeProjectTrack(request):
         projectObj = project.objects.get(id=projectId)
         trackObj = tracks.objects.get(id=newTrackId)
         projectObj.track = trackObj
+        projectObj.save()
     except:
         result['isSuccessful'] = False
     return HttpResponse(json.dumps(result), content_type="application/json")
@@ -273,6 +275,7 @@ def deleteProject(request):
     try:
         projectObj = project.objects.get(id=projectId)
         projectObj.is_deleted = 1
+        projectObj.save()
     except:
         result['isSuccessful'] = False
     return HttpResponse(json.dumps(result), content_type="application/json")

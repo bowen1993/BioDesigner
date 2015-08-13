@@ -21,7 +21,8 @@
     
 </script>
 <script id="recommand_part_list" type="text/x-jquery-tmpl">
-    <div class="show_message operation_part_style " part_type="${part_type}" part_name="${part_name}" part_id="${part_id}">
+    <div class="show_message operation_recommand_part col-xs-2 col-sm-2 col-md-2" part_type="${part_type}" part_name="${part_name}" part_id="${part_id}">
+        <input type="checkbox"/>
         <img class="img-rounded" alt="logo" src="/static/img/${part_type}.png">
         <span>${part_name}</span>
     </div>
@@ -44,39 +45,57 @@
     <div id="container">
     	<div id="bananer">
     		<div id="logo">
-            <a href="/home/project">
-    			<img src="/static/img/logo_white_small.png" alt="logo" class="img-rounded" >
-    		    <span>BioDesigner</span>
-            </a>
+                <a href="/home/project">
+        			<img src="/static/img/logo_white_small.png" alt="logo" class="img-rounded" >
+        		    <span>BioDesigner</span>
+                </a>
     		</div>
+            <button id="add" class="btn btn-primary" >Add</button>
+            <ul id="buttonArea">
+               <!--  <li>
+                   <span class="label">123</span>
+                   <button class="close"><span class="glyphicon glyphicon-remove"></span></button>
+               </li>
+               <li>
+                   <span class="label">Phhh</span>
+                   <button class="close"><span class="glyphicon glyphicon-remove"></span></button>
+               </li>
+               <li>
+                   <span class="label">123</span>
+                   <button class="close"><span class="glyphicon glyphicon-remove"></span></button>
+               </li> -->
+            </ul>
     	</div>
     	<div id="main">
     		<div id="sidebar">
 				<div id="search_part_container">
-					<div class="title">search</div>
-					<div class="search_container" >
-						<input type="text" class="search_input" id="search_part_input" />
-						<button  class="btn btn-success search_button btn-lg" id="search_part_button" >search</button>
-					</div>
-	                <div class="result_container" id="part_result_container"></div>
-	            </div>
-				<div id="recommand_container"><!-- recommand start-->
-					<div class="title">Recommandations</div>
-					<div id="recommand_search_container"></div>
-				</div>
+                    <div class="title">search</div>
+                    <div class="search_container" >
+                        <input type="text" class="search_input" id="search_part_input" />
+                        <button  class="btn btn-success search_button btn-lg" id="search_part_button" >search</button>
+                    </div>
+                                    <div class="result_container" id="part_result_container"></div>
+                                </div>
+                <div id="recommand_container">
+                    <div class="title">Recommandations</div>
+                    <div id="recommand_search_container"></div>
+                </div>
     		</div>
             <div class="hint-info hide"></div>
-    		<div id="dashboard_container">
-    			<div id="dashboard" class="row">
-    				<div class="part-cell col-lg-2 col-md-2 col-sm-3 col-xs-4 ">
-                        <div class="btn-front add_style add_button_receive"><span class=" glyphicon glyphicon-plus"></span></div>
-                        <div class="receive_style receive_click">
+            <div id="main_right"> 
+                <div id="dashboard_container">
+                    <div id="dashboard" class="row">
+                        <div class="part-cell col-lg-2 col-md-2 col-sm-3 col-xs-4 ">
+                            <div class="btn-front add_style add_button_receive"><span class=" glyphicon glyphicon-plus"></span></div>
+                            <div class="receive_style receive_click">
+                            </div>
+                            <div class="add_style btn-back add_button_receive"><span class=" glyphicon glyphicon-plus"></span></div>
                         </div>
-                        <div class="add_style btn-back add_button_receive"><span class=" glyphicon glyphicon-plus"></span></div>
                     </div>
-    			</div>
-    			<canvas id="background" height="500" width="500"></canvas>
-    		</div>
+                    <canvas id="background" height="100" width="100"></canvas>
+                </div>
+                <div id="operation_recommand_container"></div>
+            </div>        
     	</div>
         <div id="part_info" class="hide panel panel-success">
             <div class="panel-heading">
@@ -97,6 +116,76 @@
                 
             </div>
         </div>
+        <div class="modal fade" id="myModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">Select tracks and functions</h4>
+                    </div>
+                <div class="modal-body">
+                    <div class="row info-item">
+                        <ul class="select-track col-lg-5 col-md-5 col-sm-5 col-xs-">
+                            <li track-id="">treacmn</li>
+                            <li track-id="">treacmn</li>
+                            <li track-id="">treacmn</li>
+                            <li track-id="">treacmn</li>
+                            <li track-id="">treacmn</li>
+                            <li track-id="">treacmn</li>
+                            <li track-id="">treacmn</li>
+                            <li track-id="">treacmn</li>
+                            <li track-id="">treacmn</li>
+                            <li track-id="">treacmn</li>
+                            <li track-id="">treacmn</li>
+                            <li track-id="">treacmn</li>
+                        </ul>
+                        <ul class="select-function col-lg-7 col-md-7 col-sm-7 col-xs-7" >
+                            <li>
+                                <span function-id="" function-name="">1</span>
+                                <input name="select" type="checkbox" value="1">
+                            </li>
+                            <li>
+                                <span function-id="" function-name="">1</span>
+                                <input name="select" type="checkbox" value="1">
+                            </li>
+                            <li>
+                                <span function-id="" function-name="">1</span>
+                                <input name="select" type="checkbox" value="1">
+                            </li>
+                            <li>
+                                <span function-id="" function-name="">1</span>
+                                <input name="select" type="checkbox" value="1">
+                            </li>
+                            <li>
+                                <span function-id="" function-name="">1</span>
+                                <input name="select" type="checkbox" value="1">
+                            </li>
+                            <li>
+                                <span function-id="" function-name="">1</span>
+                                <input name="select" type="checkbox" value="1">
+                            </li>
+                            <li>
+                                <span function-id="" function-name="">1</span>
+                                <input name="select" type="checkbox" value="1">
+                            </li>
+                            <li>
+                                <span function-id="" function-name="">1</span>
+                                <input name="select" type="checkbox" value="1">
+                            </li>
+                            <li>
+                                <span function-id="" function-name="">1</span>
+                                <input name="select" type="checkbox" value="1">
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button id="select" type="button" class="btn btn-primary" data-dismiss="modal">Submit</button>
+                </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
     </div>
 <script type="text/javascript">
 	window.chainId = {{id}};
@@ -144,7 +233,8 @@
 
         function draw(){
             var width = $('#dashboard').width();
-            var rowNumber = elements.length/number+1;
+            var rowNumber = parseInt(elements.length/number)+1;
+            
             var height = rowNumber*84;
             $('#background').attr("height",height).attr("width",width);
 

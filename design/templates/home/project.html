@@ -6,8 +6,8 @@
 	<title>BioDesigner|Project</title>
 	<link rel="stylesheet" href="/static/css/bootstrap.css" />
 	<link rel="stylesheet" href="/static/css/project.css" />
-	<link rel="stylesheet" media="(min-width: 800px)" href="/static/css/project_big.css" />
-	<link rel="stylesheet" media="(min-width:1600px)" href="/static/css/project_large.css" />
+	<!-- <link rel="stylesheet" media="(min-width: 800px)" href="/static/css/project_big.css" />
+	<link rel="stylesheet" media="(min-width:1600px)" href="/static/css/project_large.css" /> -->
 </head>
 
 <body>
@@ -30,7 +30,7 @@
 	    	</div>	
 	    </div>
 	    <div id="project-main">
-	    	<div id="project-main-left">
+	    	 <div id="project-main-left">
 	    		<div id="project-main-left-top">
 	    			<button id="addProjectButton" type="button" class="btn btn-primary">+</button>
                     <span>
@@ -41,6 +41,7 @@
 	    		<div id="project-main-left-bottom">
 	    		</div>
 	    	</div>
+	    	
 	    	<div id="project-main-right">
 	    		<div id="project-main-right-top">
 	    			<div id="buttondiv">
@@ -59,25 +60,25 @@
 	    				</div>
 	    				<div class="text-info panel panel-success hide">
 	    					<div class="panel-heading">
-								<button type="button" class="close" id="close_info" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-							    <h3 class="panel-title" id="part_title">Device</h3>
-							</div>
+	    									<button type="button" class="close" id="close_info" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	    								    <h3 class="panel-title" id="part_title">Device</h3>
+	    					</div>
 							<div class="panel-body" id="part_detail">
 								<div class="part_item" id="length">Length:</div>
 								<button class="btn btn-primary part-item" id="doDesign">Design it</button>
 							</div>
 	    				</div>
-	    			</div>
+	    			</div> 
 	    		</div>
-	    	</div>
+	    	</div> 
 	    </div>
-	</div><!-- div.container-fluid -->
+	</div>
 	<div class="modal fade add-window" id="addProject">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					<h4 class="modal-title">Create New Project</h4>
+					<h4 class="modal-title"></h4>
 				</div>
 				<div class="modal-body">
 					<div class="project-info">
@@ -87,10 +88,10 @@
 						</div>
 						<div class="row info-item">
 							<label for="tracks" class="add-item-title col-lg-4 col-md-4 col-sm-4 col-xs-4">Track</label>
-							<select class="item-select col-lg-8 col-md-8 col-sm-8 col-xs-8" id="tracks">
-    						</select>
+	    					<select class="item-select col-lg-8 col-md-8 col-sm-8 col-xs-8" id="tracks">
+	    						</select>
 						</div>
-					</div><!-- div.project-info -->
+					</div>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-warning btn-close" data-dismiss="modal">Close</button>
@@ -98,7 +99,7 @@
 				</div>
 			</div>
 		</div>
-	</div><!-- div#addProject -->
+	</div>
 	<div class="modal fade add-window" id="addDevice">
 		<div class="modal-dialog">
 			<div class="modal-content">
@@ -112,7 +113,7 @@
 							<label for="name" class="add-item-title col-lg-4 col-md-4 col-sm-4 col-xs-4">Device Name</label>
 							<input type="text" class="add-item-input col-lg-8 col-md-8 col-sm-8 col-xs-8" id="device-name">
 						</div>
-					</div><!-- div.device-info -->
+					</div>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-warning btn-close" data-dismiss="modal">Close</button>
@@ -120,296 +121,12 @@
 				</div>
 			</div>
 		</div>
-	</div><!-- div#addDevice -->
+	</div>
 <script src="/static/js/jquery-2.1.1.min.js"></script>
 <script src="/static/js/bootstrap.min.js"></script>
 <script type="text/javascript">
 	window.uname = '{{username}}';
 </script>
-<script type="text/javascript">
-function getProjectLabel (project_id, project_name, track) {
-	return '<div class="project-label" track="'+track+'" project-id='+project_id+'>' + 
-			project_name + '</div>'
-}
-</script>
-<!-- display user's prpject -->
-<script type="text/javascript">
-	function displayProjects(result){
-		for (var i = 0; i < result['projects'].length; i++){
-			var projectInfo = result['projects'][i];
-			$('#project-main-left-bottom').append(getProjectLabel(projectInfo['id'], projectInfo['name'], projectInfo['track']));
-		}
-	}
-</script>
-<script type="text/javascript">
-	function getUserProjects(){
-		$.ajax({
-			url : '/home/getUserProject',
-			type: "GET",
-			success: function(result){
-				displayProjects(result);
-			}
-		});
-	}
-</script>
-<script type="text/javascript">
-	function addTracks(result){
-    if (result['isSuccessful']){
-        $('#tracks').html('')
-        track_list = result['tracks']
-        for(var i = 0; i < track_list.length; i++){
-            var newOption = $('<option></option>')
-            newOption.html(track_list[i]['track'])
-            newOption.val(track_list[i]['id'])
-            $('#tracks').append(newOption)
-        }
-    }
-}
-</script>
-<script type="text/javascript">
-	function setTracks(){
-    $.ajax({
-        url:'/home/tracks',
-        type:'GET',
-        success : function(result){
-            addTracks(result)
-        }
-    });
-}
-</script>
-<script type="text/javascript">
-	function getChainDiv(id, name){
-		return '<div class="track-label" chain-id="'+id+'">'+name+'</div>'
-	}
-</script>
-<script type="text/javascript">
-	function displayChains(result){
-		for(var i = 0; i < result.length; i++){
-			$('#menu').append(getChainDiv(result[i]['id'], result[i]['name']));
-		}
-	}
-</script>
-<script type="text/javascript">
-	function getProjectChains(id){
-		$.ajax({
-			url:'/home/getChainList?id=' + id,
-			type:'GET',
-			success: function(result){
-				displayChains(result);
-			}
-		});
-	}
-</script>
-<script type="text/javascript">
-	function showMsg(msg){
-    $('div.hint-info').html(msg);
-    $('div.hint-info').removeClass('hide');
-    $('div.hint-info').show(200).delay(1000).hide(200);
-}
-</script>
-<script type="text/javascript">
-	function getChainLength (chainId) {
-		$.ajax({
-			url: '/home/getChainLength?id=' + chainId,
-			type: 'GET',
-			success:function(result){
-				if(result['isSuccessful']){
-					$('.text-info').find('#length').html('Length: ' + result['length']);
-				}else{
-					$('.text-info').find('#length').html('Length: 0');
-				}
-			}
-		});
-	}
-</script>
-<script type="text/javascript">
-	function showChainImage(chainId){
-		$.ajax({
-			url:'/home/getResultImage?id=' + chainId,
-			type:'GET',
-			success:function(result){
-				if (result['isSuccessful']){
-					$('.img-info #chain-img').attr('src', result['filepath'].replace('downloads/', 'static/'));
-				}else{
-					$('.img-info #chain-img').attr('src', '/static/img/logo_black_op.png');
-				}
-			}
-		});
-	}
-</script>
-<script>
-    $(document).ready(function(){
-        setProjectFrame();
-        $('#dropdown-menu').toggle();
-        $('#user-name').html(window.uname)
-        getUserProjects();
-        setTracks();
-    });
-	window.onresize=function(){
-		setProjectFrame();
-    }
-    function setProjectFrame(){
-    	var totalHeight = document.documentElement.clientHeight;
-    	var bananerHeight = $('#project-bananer').height();
-    	var projectMainHeight = totalHeight-bananerHeight;
-    	$('#project-main').css("height",projectMainHeight);
-    	
-
-    	var totalWidth = document.documentElement.clientWidth;
-    	var projectMainLeftWidth = $('#project-main-left').width();
-    	var projectMainRightWidth = totalWidth-projectMainLeftWidth;
-    	$('#project-main-right').css("width",projectMainRightWidth);
-
-    	var projectMainLeftTopHeight = $('#project-main-left-top').height();
-    	var projectMainLeftBottomHeight = projectMainHeight-projectMainLeftTopHeight;
-    	$('#project-main-left-bottom').css("height",projectMainLeftBottomHeight);
-
-    	var projectMainRightTopHeight = $('#project-main-right-top').height();
-    	var projectMainRightBottomHeight = projectMainHeight-projectMainRightTopHeight;
-    	$('#project-main-right-bottom').css("height",projectMainRightBottomHeight);
-    	$('#menu').css("height",projectMainRightBottomHeight);
-    }
-    $(document).on({
-        click:function(){
-        	$('#menu').html('');
-        	$('.project-label').addClass("toggle-class").toggleClass("toggle-class");
-        	$(this).toggleClass("toggle-class");
-        	$('#menu').attr('project-id', $(this).attr('project-id'));
-        	var project = $(this).text() + ' ' +$(this).attr('track');
-        	$('#project').text(project);
-        	$('#track').text("");
-        	getProjectChains($(this).attr('project-id'));
-        }
-    },'.project-label');
-    $(document).on({
-        click:function(){
-        	$('.track-label').addClass('device-choosen').toggleClass("device-choosen");
-        	$(this).toggleClass("device-choosen");
-        	var track = $(this).text();
-        	$('.text-info').removeClass('hide');
-        	getChainLength($(this).attr('chain-id'));
-        	$('button#doDesign').attr('chain-id', $(this).attr('chain-id'));
-        	$('#part_title').html(track);
-        	$('#track').text(track); 
-        	showChainImage($(this).attr('chain-id'));
-        }
-    },'.track-label');
-</script>
-<script type="text/javascript">
-	$(document).on({
-		click:function(){
-			window.location = '/home/dashboard?id=' + $(this).attr('chain-id');
-		}
-	},'#doDesign');
-</script>
-<script type="text/javascript">
-	$(document).on({
-		click:function(){
-			$('div.text-info').addClass('hide');
-		}
-	}, '#close_info')
-</script>
-<script type="text/javascript">
-	$(document).on({
-		click:function(){
-			$('#addDevice').modal('show');
-		}
-	},'#addDeviceBtn');
-</script>
-<script type="text/javascript">
-	$(document).on({
-		click:function(){
-			$.ajax({
-				type:'GET',
-				url:'/accounts/logout',
-				success:function(result){
-					window.location='/'
-				}
-			});
-		}
-	},'#logout')
-</script>
-<script type="text/javascript">
-	$(document).on({
-		click:function(){
-			$('#addProject').modal('show');
-		}
-	}, '#addProjectButton');
-</script>
-<script type="text/javascript">
-	function addProject (name, track, id) {
-		$('#project-main-left-bottom').append(getProjectLabel(id, name, track));
-		showMsg('New Project Saved')
-	}
-</script>
-<script type="text/javascript">
-	function createProject (name, track) {
-		var postData = {
-			'name':name,
-			'track': track
-		};
-		$.ajax({
-			url:'/home/newProject',
-			type:'POST',
-			data:postData,
-			dataType:'JSON',
-			success: function(result){
-				$('#addProject').modal('hide');
-	            if(result['isSuccessful']){
-	                addProject(result['project_name'], result['track'],result['id'])
-	                //showMsg("Project created");
-	            }else{
-	                showMsg("Project create failed");
-	            }
-			}
-		})
-	}
-</script>
-<script type="text/javascript">
-	$(document).on({
-		click:function(){
-			var name = $('#project-name').val(),
-			trackid = $('#tracks').val();
-			createProject(name, trackid);
-		}
-	},'#create-project')
-</script>
-<script type="text/javascript">
-	function addDevices (name, id) {
-		$('#menu').append(getChainDiv(id, name));
-		showMsg("New Device Saved");
-	}
-</script>
-<script type="text/javascript">
-	function createDevice(name, id){
-		var postData = {
-			'name' : name, 
-			'id': id
-		};
-		$.ajax({
-			url:'/home/newDevice',
-			dataType:'JSON',
-			type: 'POST',
-			data:postData,
-			success: function(result){
-				$('#addDevice').modal('hide');
-				if(result['isSuccessful']){
-					addDevices(result['name'], result['id']);
-				}else{
-					showMsg('Device create failed');
-				}
-			}
-		})
-	}
-</script>
-<script type="text/javascript">
-	$(document).on({
-		click:function(){
-			var name = $('#device-name').val(),
-			id = $('#menu').attr('project-id');
-			createDevice(name, id)
-		}
-	}, '#createChain');
-</script>
+<script src="/static/js/project.js"></script>
 </body>
 </html>

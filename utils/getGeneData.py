@@ -28,7 +28,7 @@ def getGeneByCompounds(cList):
             resStr = response.read()
         except:
             pass
-        geneList = resStr.split('\n')
+        geneList = resStr.split('\n')[:5]
         geneIdList = list()
         for g in geneList:
             gene_id = g.split('\t')[0]
@@ -72,10 +72,10 @@ def getCompounds(id_file):
         cId_list.append(c_id)
         cName_list.append(c_name)
         print 'geting data for %s ' % c_id
-        getInfoFile(c_id, 'Compound')
+        #getInfoFile(c_id, 'Compound')
     print 'compound process ended'
     print 'geting gene data'
-    #getGeneByCompounds(cName_list)
+    getGeneByCompounds(cName_list)
     print 'gene data ended'
     print 'geting reaction data'
     #getReactionData(cId_list)
