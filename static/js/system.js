@@ -109,7 +109,7 @@ function getCompoundMessage(compound_id){
       url:'/system/getCompound?id=' + compound_id,
       type:'GET',
       success:function(result){
-          if(result['isSuccesful']){
+          if(result['isSuccessful']){
             showCompoundMessage(result['info']);
           }else{
 
@@ -117,6 +117,30 @@ function getCompoundMessage(compound_id){
       }
    });  
 }
+
+function getGeneMessage(gene_id){
+  $.ajax({
+      url:'/system/getGene?id=' + gene_id,
+      type:'GET',
+      success:function(result){
+          if(result['isSuccessful']){
+            showGeneMessage(result['info']);
+          }else{
+
+          }
+      }
+   });
+}
+
+function showGeneMessage(info){
+ $('#gene-message span#gene-id').text(info['gene_id']);
+ $('#gene-message span#name').text(info['name']);
+ $('#gene-message span#definition').text(info['definition']);
+ $('#gene-message span#organism-short').text(info['organism_short']);
+ $('#gene-message span#organism').text(info['organism']);
+ $('#gene-message').removeClass('hide');
+}
+
 function showCompoundMessage(info){
    $('#message span#compound-id').text(info['compound_id']);
    $('#message span#name').text(info['name']);
@@ -126,6 +150,13 @@ function showCompoundMessage(info){
    $('#message span#formula').text(info['formula']);
    $('div#message').removeClass('hide');
 }
+
+$(document).on({
+   click:function(){
+      $('div#gene-message').addClass('hide');
+   }
+},'#close-gene-message');
+
 $(document).on({
    click:function(){
       $('div#message').addClass('hide');

@@ -9,7 +9,7 @@ from django.core.mail import send_mail
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 
-from system.gene import search_compound, get_compound_info, find_related_compound
+from system.gene import search_compound, get_compound_info, find_related_compound, get_gene_info
 
 @csrf_exempt
 def systemView(request):
@@ -31,6 +31,16 @@ def getCompound(request):
     result = {
         'isSuccessful': get_result[0],
         'info' : get_result[1]
+    }
+    return HttpResponse(json.dumps(result), content_type='application/json')
+
+@csrf_exempt
+def getGene(request):
+    gid = request.GET.get('id')
+    get_result = get_gene_info(gid)
+    result = {
+        'isSuccessful': get_result[0],
+        'info': get_result[1],
     }
     return HttpResponse(json.dumps(result), content_type='application/json')
 

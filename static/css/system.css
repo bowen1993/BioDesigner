@@ -153,3 +153,11 @@ div#message{
 	width:15%;
 	
 }
+
+div#gene-message{
+	position: absolute;
+	right: 0px;
+	top:100px;
+	width:20%;
+	
+}

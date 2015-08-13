@@ -82,6 +82,36 @@
 					</ul>
 				</div>
 			</div>
+			<div id="gene-message" class="text-info panel panel-success hide">
+				<div class="panel-heading">
+					<button type="button" class="close" id="close-gene-message" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				    <h3 class="panel-title" id="part_title">Gene Message</h3>
+				</div>
+				<div class="panel-body">
+					<ul>
+						<li>
+							<label for="gene-id">Gene-id:</label>
+							<span id="gene-id"></span>
+						</li>
+						<li>
+							<label for="name">Name:</label>
+							<span id="name"></span>
+						</li>
+						<li>
+							<label for="definition">Definition:</label>
+							<span id="definition"></span>
+						</li>
+						<li>
+							<label for="organism-short">Organism_short:</label>
+							<span id="organism-short"></span>
+						</li>
+						<li>
+							<label for="organism">Organism:</label>
+							<span id="organism"></span>
+						</li>
+					</ul>
+				</div>
+			</div>
 		</div><!-- main stop -->
 	</div>
 <script src="/static/js/jquery-2.1.1.min.js"></script>
@@ -203,7 +233,7 @@
 						});
 					})
 					.on("click", function(d, i){
-						getCompoundMessage(d.id);
+						getGeneMessage(d.id);
 					})
 					.on("dblclick",function(d,i){
 						d.fixed = false;

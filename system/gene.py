@@ -72,6 +72,21 @@ def format_fuzzy_result(es_result):
             result.append(compound_info)
     return result
 
+def get_gene_info(gid):
+    try:
+        gene_obj = gene.objects.get(gene_id=gid)
+        result = {
+            'gene_id': gene_obj.gene_id,
+            'name': gene_obj.name,
+            'definition': gene_obj.definition,
+            'organism_short': gene_obj.organism_short,
+            'organism': gene_obj.organism
+        }
+        return True, result
+    except:
+        traceback.print_exc()
+        return False, None
+
 def get_compound_info(cid):
     """
     get a specific compound's information

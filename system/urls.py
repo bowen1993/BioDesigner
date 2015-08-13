@@ -6,5 +6,6 @@ urlpatterns = patterns('',
     url(r'^searchCompound$', views.searchCompound),
     url(r'^getCompound$', views.getCompound),
     url(r'^related$', views.getRelatedCompound),
-    url(r'^system$', views.systemView)
+    url(r'^system$', views.systemView),
+    url(r'^getGene$', views.getGene),
 )
