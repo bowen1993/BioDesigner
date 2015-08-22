@@ -274,8 +274,8 @@ def find_related_compound(cid_str):
         except:
             traceback.print_exc()
             pass
-        result = {
-            'nodes': nodes,
-            'edges': edges
-        }
-        return result
+    result = {
+        'nodes': nodes,
+        'edges': edges
+    }
+    return result
