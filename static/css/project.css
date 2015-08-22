@@ -216,6 +216,21 @@ div#project-main-right-top span{
 	margin-left: 20px;
 }
 
+div.btn-recommend{
+	position: absolute;
+	right:20px;
+	background-color: rgba(0,0,0,0);
+	color:#4C4C4C;
+}
+
+div.btn-recommend:hover{
+	position: absolute;
+	right:20px;
+	background-color: rgba(0,0,0,0);
+	color:#191919;
+	font-weight: bold;
+}
+
 div#project-main-right-bottom{
 	width:100%;
 }

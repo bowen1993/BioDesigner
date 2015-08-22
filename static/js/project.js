@@ -363,7 +363,11 @@ $(document).on({
     }
 },'.label-delete');
 
-
+$(document).on({
+	click:function(){
+		window.location.href='/system/system'
+	}
+}, 'div#system-btn')
 
 $(document).on({
 	click:function(){

@@ -43,6 +43,7 @@ div#container div#sidebar div#search-container h1{
    font-size: 25px;
    line-height: 40px;
    text-align: center;
+   color:#DDDDDD;
    background: rgb(127,127,127);
 }
 div#container div#sidebar div#search-container ul#search-area{
@@ -107,7 +108,7 @@ div#container div#main{
 div#container div#main div#menu{
 	height:100px;
 	width:100%;
-	background:grey;
+	background-color: #B3B3B3;
 }
 div#container div#main div#menu ul#label-area{
 	float:left;
@@ -144,7 +145,7 @@ div#container div#main div#my-svg{
 	overflow: auto;
 }
 .label-click{
-	background: grey;
+	background-color: #999999;
 }
 div#message{
 	position: absolute;
@@ -158,6 +159,6 @@ div#gene-message{
 	position: absolute;
 	right: 0px;
 	top:100px;
-	width:20%;
+	width:auto;
 	
 }

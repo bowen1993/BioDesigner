@@ -1,4 +1,5 @@
 from django.db import models
+from design.models import parts
 
 # Create your models here.
 
@@ -57,3 +58,14 @@ class reaction_compound(models.Model):
 
     class Meta:
         db_table = 'bio_reaction_compounds' 
+
+class part_gene(models.Model):
+    part = models.ForeignKey(parts)
+    gene = models.ForeignKey(gene)
+    score = models.FloatField()
+
+    def __unicode__(self):
+        return self.score
+
+    class Meta:
+        db_table = 'bio_part_gene'
