@@ -59,6 +59,16 @@ class reaction_compound(models.Model):
     class Meta:
         db_table = 'bio_reaction_compounds' 
 
+class compound_gene(models.Model):
+    compound = models.ForeignKey(compound)
+    gene = models.ForeignKey(gene)
+
+    def __unicode__(self):
+        return self.compound.id
+
+    class Meta:
+        db_table = 'bio_compound_gene'
+
 class part_gene(models.Model):
     part = models.ForeignKey(parts)
     gene = models.ForeignKey(gene)

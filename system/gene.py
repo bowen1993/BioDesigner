@@ -4,10 +4,12 @@ gene.py realize the methods that are related to system recommendation.
 @author: Bowen
 """
 
-from system.models import gene, reaction, compound, reaction_compound
+from system.models import gene, reaction, compound, reaction_compound, compound_gene
+from system.fasta_reader import parse_fasta_str
 from elasticsearch import Elasticsearch
 import traceback
 import urllib2
+import json
 
 def search_compound(keyword):
     """
@@ -112,27 +114,93 @@ def get_compound_info(cid):
         traceback.print_exc()
         return False, None
 
-def search_gene_in_kegg(name, expect=None, index=0):
-    a = [['744915', '459084', '459437'], ['741110', '470727','737962', '470397']]
-    return a[index]
-    baseGeneFindUrl = 'http://rest.kegg.jp/find/genes/'
+def retrive_gene_detain(gid):
+    #get information from ncbi
+    baseUrl = 'http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=gene&retmode=json&version=2.0&id='
+    req = urllib2.Request(baseUrl + gid)
+    response = urllib2.urlopen(req)
+    resStr = response.read()
+    result = json.loads(resStr)
+    infos = result['result'][gid]
+    detail_info = dict()
+    detail_info['name'] = infos['name']
+    detail_info['definition'] = infos['description']
+    detail_info['organism'] = infos['organism']['scientificname']
+    return detail_info
+
+def get_or_create_gene(gid):
+    #get in database
+    try:
+        gene_obj = gene.objects.get(gene_id=gid)
+        return gene_obj
+    except:
+        #get from ncbi
+        baseUrl = 'http://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=nuccore&rettype=fasta&id='
+        req = urllib2.Request(baseUrl + gid)
+        response = urllib2.urlopen(req)
+        resStr = response.read()
+        gene_dict = parse_fasta_str(resStr)
+        for gn in gene_dict.keys():
+            gid = gn.split('|')[1]
+            #get detail information
+            new_gene_obj = gene(gene_id=gid)
+            detail_info = retrive_gene_detain(gid)
+            new_gene_obj.name = detail_info['name']
+            new_gene_obj.definition = detail_info['definition']
+            new_gene_obj.organism = detail_info['organism']
+            new_gene_obj.ntseq = gene_dict[gn]
+            new_gene_obj.ntseq_length = len(gene_dict[gn])
+            try:
+                new_gene_obj.save()
+                return new_gene_obj
+            except:
+                pass
+        return None
+
+
+def save_relation_to_db(geneIdList, compound_obj):
+    #create new obj
+    for gid in geneIdList:
+        new_rela_obj = compound_gene(compound=compound_obj)
+        gene_obj = get_or_create_gene(gid)
+        new_rela_obj.gene = gene_obj
+        try:
+            new_rela_obj.save()
+        except:
+            pass
+
+def search_gene_in_ncbi(name, expect=None, index=0):
+    #find in database
+    compound_obj = None
+    try:
+        compound_obj = compound.objects.get(name=name)
+    except:
+        compound_obj = get_compound(name)
+    if compound_obj == None:
+        return None
+    obj_list = compound_gene.objects.filter(compound=compound_obj)
+    if len(obj_list) != 0:
+        geneIdList = list()
+        for obj in obj_list:
+            geneIdList.append(obj.gene.gene_id)
+        return geneIdList
+    #retrive from kegg
+    baseGeneFindUrl = 'http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=gene&retmode=json&term='
     try:
         req = urllib2.Request(baseGeneFindUrl + name)
         response = urllib2.urlopen(req)
         resStr = response.read()
     except:
         traceback.print_exc()
-        pass
-    geneList = resStr.split('\n')[:5]
-    geneIdList = list()
-    for g in geneList:
-        gene_id = g.split('\t')[0]
-        if gene_id.endswith('\n'):
-            gene_id = gene_id[:-1].split(':')[1]
-        geneIdList.append(gene_id)
+        return None
+    if len(resStr) == 0:
+        return None
+    result = json.loads(resStr)
+    geneIdList = result['esearchresult']['idlist']
+    save_relation_to_db(geneIdList, compound_obj)
     if expect != None:
         del geneIdList[geneIdList.index(expect)]
-    return geneIdList
+    return geneIdList[:5]
 
 def find_related_compound(cid_str):
     """
@@ -158,7 +226,7 @@ def find_related_compound(cid_str):
             #get first gene and create new node
             cen_gene_id = None
             try:
-                cen_gene_id = search_gene_in_kegg(compound_obj.name,)[0]
+                cen_gene_id = search_gene_in_ncbi(compound_obj.name,)[0]
                 if not cen_gene_id in all_genes:
                     all_genes.append(cen_gene_id)
                     gene_obj = gene.objects.get(gene_id=cen_gene_id)
@@ -172,12 +240,13 @@ def find_related_compound(cid_str):
             except:
                 pass
             # find related reactions
-            related_rctns = reaction_compound.objects.filter(compound=compound_obj)
+            related_rctns = reaction_compound.objects.filter(compound=compound_obj, isReactant=True)
             for rc_obj in related_rctns:
                 cid = rc_obj.compound.compound_id
                 cname = rc_obj.compound.name
                 # find genes
-                gene_list = search_gene_in_kegg(cname, expect=cen_gene_id, index=1)
+                gene_list = search_gene_in_ncbi(cname, expect=cen_gene_id, index=1)
+                print gene_list
                 for gene_id in gene_list:
                     if gene_id in all_genes:
                         continue
