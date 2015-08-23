@@ -10,6 +10,7 @@ from elasticsearch import Elasticsearch
 import traceback
 import urllib2
 import json
+from django.db.models import Q
 
 def search_compound(keyword):
     """
@@ -183,6 +184,7 @@ def search_gene_in_ncbi(name, expect=None, index=0):
         geneIdList = list()
         for obj in obj_list:
             geneIdList.append(obj.gene.gene_id)
+        print 'no search performed'
         return geneIdList
     #retrive from kegg
     baseGeneFindUrl = 'http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=gene&retmode=json&term='
@@ -199,7 +201,10 @@ def search_gene_in_ncbi(name, expect=None, index=0):
     geneIdList = result['esearchresult']['idlist']
     save_relation_to_db(geneIdList, compound_obj)
     if expect != None:
-        del geneIdList[geneIdList.index(expect)]
+        try:
+            del geneIdList[geneIdList.index(expect)]
+        except:
+            pass
     return geneIdList[:5]
 
 def find_related_compound(cid_str):
@@ -240,10 +245,13 @@ def find_related_compound(cid_str):
             except:
                 pass
             # find related reactions
-            related_rctns = reaction_compound.objects.filter(compound=compound_obj, isReactant=True)
-            for rc_obj in related_rctns:
-                cid = rc_obj.compound.compound_id
-                cname = rc_obj.compound.name
+            rid_list = reaction_compound.objects.filter(compound=compound_obj, isReactant=True).values_list('reaction_id', flat=True)
+            cname_list = list()
+            for rid in rid_list:
+                rs = reaction_compound.objects.filter(Q(reaction_id=rid), ~Q(compound=compound_obj))[:5]
+                for r in rs:
+                    cname_list.append(r.compound.name)
+            for cname in cname_list:
                 # find genes
                 gene_list = search_gene_in_ncbi(cname, expect=cen_gene_id, index=1)
                 print gene_list
