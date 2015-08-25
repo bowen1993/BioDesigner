@@ -58,3 +58,6 @@ downloads/
 
 #gene data folder
 datas/
+
+#fasta data
+*.fsa*
