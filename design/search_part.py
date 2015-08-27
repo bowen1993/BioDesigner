@@ -1,5 +1,5 @@
 from elasticsearch import Elasticsearch
-from design.models import parts
+from design.models import parts, teams, team_parts
 
 def getPart(partName):
     try:
@@ -42,25 +42,53 @@ def getPart(partName):
         }
     return result
 
-def ambiguousSearch(keyword):
+def ambiguousSearch(keyword, funcs):
     es = Elasticsearch()
-    result = format_fuzzy_result(fuzzy_search_parts(es, keyword))
+    result = format_fuzzy_result(sort_result(fuzzy_search_parts(es, keyword), funcs))
     return result
 
 def fuzzy_search_parts(es, keyword):
     query_body = {
         "from" : 0,
-        "size" : 40,
+        "size" : 80,
         "query" : {
             "fuzzy_like_this" : {
                 "fields" : ["part_name", "part_type", "short_desc"],
                 "like_text" : keyword,
-                "max_query_terms" : 40
+                "max_query_terms" : 80
             }
         }
     }
     result = es.search(index="biodesigners", doc_type="parts", body=query_body)
     return result
+
+def get_func_parts(func_list):
+    part_list = list()
+    for func_id in func_list:
+        team_list = teams.objects.filter(function_id=func_id)
+        for team_obj in team_list:
+            part_list.extend(team_parts.objects.filter(team=team_obj))
+    result = list()
+    for part_obj in part_list:
+        result.append(part_obj.part_id)
+    return result
+
+
+def sort_result(es_result, funcs):
+    if funcs == None:
+        func_parts = list()
+    else:
+        if funcs.endswith('_'):
+            funcs = funcs[:-1]
+        if funcs.startswith('_'):
+            funcs = funcs[1:]
+        func_parts = get_func_parts(funcs.split('_'))
+    hits = es_result['hits']['hits']
+    for item in hits:
+        if item['_source']['part_id'] in func_parts:
+            item['_score'] += 1.5
+    hits = sorted(hits, key = lambda x:x['_score'], reverse = True)
+    return hits[:40]
 
 def exact_search_part(es, partName):
     query_body = {
@@ -75,8 +103,7 @@ def exact_search_part(es, partName):
     result = es.search(index="biodesigners", doc_type="part", body=query_body)
     return result
 
-def format_fuzzy_result(es_result):
-    hits = es_result['hits']['hits']
+def format_fuzzy_result(hits):
     part_list = list()
     for item in hits:
         info = item['_source']

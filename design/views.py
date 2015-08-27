@@ -10,9 +10,10 @@ import hashlib
 import json
 import datetime
 import random
+import traceback
 from search_part import ambiguousSearch, getPart
 from accounts.models import User
-from design.models import project, functions, tracks, user_project, tracks, chain
+from design.models import project, functions, tracks, user_project, tracks, chain, track_functions
 from design.project import searchProject, getUserProject, getChain, getChainList
 from design.recommend import getApriorRecommend, getMarkovRecommend
 from design.file import getSequenceResultImage
@@ -20,7 +21,11 @@ from design.file import getSequenceResultImage
 @csrf_exempt
 def searchParts(request):
     keyword = request.GET.get('keyword')
-    results = ambiguousSearch(keyword)
+    try:
+        funcs = request.GET.get('funcs')
+    except:
+        funcs = ''
+    results = ambiguousSearch(keyword, funcs)
     return HttpResponse(json.dumps(results), content_type="text/json")
 
 @csrf_exempt
@@ -279,6 +284,27 @@ def deleteProject(request):
     except:
         result['isSuccessful'] = False
     return HttpResponse(json.dumps(result), content_type="application/json")
+
+@csrf_exempt
+def getTrackFunctions(request):
+    track_id = request.GET.get('track_id')
+    result = {
+        'isSuccessful' : True
+    }
+    try:
+        tf_list = track_functions.objects.filter(track_id=track_id)
+        function_list = list()
+        for tf_obj in tf_list:
+            function_info = {
+                'id': tf_obj.function.id,
+                'name': tf_obj.function.function,
+            }
+            function_list.append(function_info)
+        result['functions'] = function_list
+    except:
+        result['isSuccessful'] = False
+        traceback.print_exc()
+    return HttpResponse(json.dumps(result), content_type='application/json')
 
 @csrf_exempt
 def getResultImage(request):

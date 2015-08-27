@@ -122,7 +122,6 @@ class project(models.Model):
     project_name = models.CharField(max_length=64)
     creator      = models.ForeignKey(User)
     create_time  = models.DateTimeField(auto_now_add=True)
-
     function     = models.ForeignKey(functions, null=True)
     track        = models.ForeignKey(tracks, null=True)
     is_deleted   = models.BooleanField(default=False)

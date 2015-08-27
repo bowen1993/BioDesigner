@@ -22,4 +22,5 @@ urlpatterns = patterns('',
     url(r'^changeProjectname', views.changeProjectName),
     url(r'^changeTrack', views.changeProjectTrack),
     url(r'^deleteProject', views.deleteProject),
+    url(r'^getTrackFunctions', views.getTrackFunctions),
 )
