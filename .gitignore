@@ -61,3 +61,7 @@ datas/
 
 #fasta data
 *.fsa*
+
+part_fsa/
+
+part_gene_result/
