@@ -1,240 +1,308 @@
-html, body{
+*{
 	padding:0px;
 	margin:0px;
-	border:0px solid red;
-	font-family:"Helvetica Neue","Helvetica","Arial","Verdana","sans-serif";
-    -webkit-font-smoothing: antialiased;
-    text-rendering: optimizeLegibility
+	border-width: 0px;
 }
-div#project-container{
-	padding: 0px;
-	min-width:800px;
-}
-div#project-bananer{
-	background: rgb(51,203,204);
-	margin:0px;
+body{
 	width:100%;
-	height:50px;
+	height:100%;
 }
-div#project-bananer-logo{
-	float:left;
+li{
+	list-style: none;
 }
-div#project-bananer-logo span{
+.box{
+	display: box;
+	display: -webkit-box;
+	display: -moz-box;
+	display: -o-box;
+}
+.block-box{
+	box-orient:vertical;
+	-webkit-box-orient:vertical;
+	-moz-box-orient:vertical;
+	-o-box-orient:vertical;
+}
+.inline-box{
+	box-orient:horizontal;
+	-webkit-box-orient:horizontal;
+	-moz-box-orient:horizontal;
+	-o-box-orient:horizontal;
+}
+.box-item{
+	box-flex:0;
+	-webkit-box-flex:0;
+	-moz-box-flex:0;
+	-o-box-flex:0;
+}
+div#container{
+	width:100%;
+}
+div#project-area{
+	width:250px;
+	height:100%;}
+div#project-area div#logo{
+	margin-bottom: 3px;
+	width:100%;
+	height:60px;
+	background: #4ea6ff;
+}
+div#project-area div#logo img{
+	width:60px;
+	height:60px;
+}
+div#project-area div#logo span{
 	color:white;
-	font-size: 1.5em;
-	line-height: 50px;
+	font-size: 30px;
+	line-height: 60px;
 }
-div.project-bananer-right{
-	float:right;
-    margin:0 20px;
-    position: relative;
-}
-div.project-bananer-right a{
-	font-size:30px/50px;
-	text-decoration:none;
-	margin-top: 5px;
-}
-
-div.project-bananer-right a#dropdown{
-	background-color: rgba(0,0,0,0);
-	border-width: 0;
-	font-size: 1.3em;
-}
-div#dropdown-menu{
-	
-	width:150px;
-	background: rgb(51,203,204);
-	position: absolute;
-	top:60px;
-}
-div.dropdown-menu-item{
-	height:30px;
+div#project-area ul#project-shop{
+	margin-bottom: 0px;  
 	width:100%;
-	font:20px/30px;
+	height:40px;
+	background: #4ea6ff;
+}
+div#project-area ul#project-shop li{
+	width:70px;
+	height:100%;
+}
+div#project-area ul#project-shop li:nth-of-type(2){
+	width:110px;
+	height:100%;
+}
+div#project-area ul#project-shop li span{
+	display: block;
+	width:100%;
+	height:100%;
+	text-align: center;
+	color:white;
+	font-size: 25px;
+	line-height: 40px;
+}
+/*div#project-area div#search{
+	padding-top: 10px;
+	width:100%;
+	height:80px;
+	background: #4ea6ff;
+}
+div#project-area div#search div#search-area{
+	margin: 0 20px ;
+	width:210px;
+	height:26px;
+}
+div#project-area div#search div#search-area input{
+	float:left;
+	width:80%;
+	height:100%;
+}
+div#project-area div#search div#search-area span{
+	display: block;
+	float: left;
+	width:20%;
+	height:100%;
+	text-align: center;
+	color:white;
+	font-size: 22px;
+	line-height: 26px;
+}*/
+div#project-area ul#project-content{
+	box-flex:1;
+	-webkit-box-flex:1;
+	-moz-box-flex:1;
+	-o-box-flex:1;
+	margin-bottom: 0px;
+	width:100%;
+	overflow: auto;
+	background: #3d80c4;
+}
+div#project-area ul#project-content li{
+	width:100%;
+	height:30px;
+	text-align: center;
+	color:white;
+	font-size: 18px;
+	line-height: 30px;
+}
+div#project-area ul#project-content li.project-label-click{
+	background: #e6e6e6;
+	color:black;
+}
+div#project-area ul#project-content li:hover{
+	/*background: #4ea6ff; */
+	background: #e6e6e6;
+	color:black;
+}
+div#device-area{
+	width:150px;
+	height:100%;
+}
+div#device-area div#device-title{
+	margin-bottom: 3px;
+	width:100%;
+	height:60px;
+	
+}
+div#device-area div#device-title span{
+	display: block;
+	width:100%;
+	height:100%;
+	color:#4ea6ff;
+	font-size: 24px;
+	line-height: 60px;
+	text-align: center;
+}
+div#device-area div#device-shop{
+	width:100%;
+	height:40px;
+	background: ;
+}
+div#device-area div#device-shop button{
+	margin-left:10px;
+	background: #4ea6ff;
+	color:white;
+}
+div#device-area ul#device-content{
+	box-flex:1;
+	-webkit-box-flex:1;
+	-moz-box-flex:1;
+	-o-box-flex:1;
+	width:100%;
+	overflow: auto;
+}
+div#device-area ul#device-content li{
+	width:100%;
+	height:30px;
+	text-align: center;
+	font-size: 18px;
+	line-height: 30px;
+}
+div#device-area ul#device-content li:hover{
+	background: #e6e6e6;
+	color:black;
+}
+div#device-area ul#device-content li.device-label-click{
+	background: #e6e6e6;
+	color:black;
+}
+div#main{
+	box-flex:1;
+	-webkit-box-flex:1;
+	-moz-box-flex:1;
+	-o-box-flex:1;
+	height:100%;
+}
+div#main div#main-shop{
+	margin-bottom: 3px;
+	width:100%;
+	height:60px;
+}
+div#main div#main-shop ul#label-container{
+	float:left;
+	height:100%;
+}
+div#main div#main-shop ul#button-nav{
+	float:right;
+	width:300px;
+	height:100%;
+}
+div#main div#main-shop ul#label-container li,div#main div#main-shop ul#button-nav li{
+	float: left;
+	height:100%;
+}
+div#main div#main-shop ul#label-container li span{
+	margin-left: 20px;
+	line-height: 60px;
+	font-size: 25px;
+}
+div#main div#main-shop ul#button-nav li button{
+	margin-left: 20px;
+	margin-top:17px;
+	padding: 0 5px;
+	height:26px;
+	color:white;
+	font-size: 16px;
+	line-height: 26px;
+	background: #4ea6ff;
+}
+div#main div#main-content{
+    box-flex:1;
+	-webkit-box-flex:1;
+	-moz-box-flex:1;
+	-o-box-flex:1;
+	width:100%;
+	background: #f2f2f2;
+}
+div#main div#main-content img#chain-img{
+	/*height:200px;
+	width:200px;*/
+}
+div#project-infos{
+	width:230px;
+	height:100%;
+}
+div#project-infos div#infos-shop{
+	position: relative;
+	margin-bottom: 3px;
+	width:100%;
+	height:60px;
+	background: #4ea6ff;
+}
+div#project-infos div#infos-shop div#dropdown{
+	margin-left: 20px;
+	height:100%;
+}
+div#project-infos div#infos-shop div#dropdown span{
+	line-height: 60px;
+	font-size: 30px;
 	text-align: center;
 	color: white;
 }
-div#project-main{
+div#project-infos div#infos-shop ul#dropdown-menu{
+	position: absolute;
+	top:60px;
+	right:0px;
+	background: #4ea6ff;
 }
-div#project-main-left{
-	width:250px;
-	height:100%;
-	float:left;
+.menu-hide{
+	display: none;
 }
-
-div#project-main-left-top{
-	background:rgb(10,40,40);
-	width:100%;
-	height:40px;
-}
-
-div#project-main-left-top span{
-	margin-left:25px;
-	font-size: 2em;
-	line-height: 40px;
-	color:white;
-	display: block;
-    float: left;
-}
-div#project-main-left-top button{
-	margin-top: 5px;
+div#project-infos div#infos-shop ul#dropdown-menu li{
 	height:30px;
-	background: rgb(51,203,204);
+	width:230px;
+}
+div#project-infos div#infos-shop ul#dropdown-menu li a{
+	display: block;
+	width:100%;
+	font-size:20px;
+	line-height: 30px;
 	text-align: center;
-	color:white;
-	border-radius: 4px;
-	border-width: 0;
+	color: white;
 }
-button#addProjectButton{
-	margin-left: 10px;
-	float:left;
-
-}
-button#editButton{
-	float:right;
-	margin-right: 10px
-}
-div#project-main-left-bottom{
+div#project-infos div#infos-content{
+	box-flex:1;
+	-webkit-box-flex:1;
+	-moz-box-flex:1;
+	-o-box-flex:1;
 	width:100%;
-	background: rgb(52,102,103);
-	position: relative;
-	overflow: auto;
 }
-
-div.hint-info{
-    position:absolute;
-    top:0;
-    right:0;
-    width:25%;
-    height:5%;
-    margin:0 auto;
-    font-size: 1.5em;
-    text-align: center;
-    color:#666666;
-}
-div.project-label{
+div#project-infos div#infos-content h1{
 	width:100%;
-	height:40px;
-	padding-left: 10px;
-	margin-top: 10px;
-	text-align: left;
-	font-size: 1.5em;
-	color:white;
-	position: relative;
-	overflow: hidden;
+	height:60px;
+	line-height: 60px;
+	font-size: 40px;
+	text-align: center;
 }
-div.project-label-over{
-	position: absolute;
-	width:100%;
-	height:100%;
-	top:0;
-	left:0;
+div#project-infos div#infos-content span{
+	display: block;
+	width: 100%;
+	line-height: 40px;
+	font-size: 24px;
+	text-align: center;
 }
-div.project-label-over button{
-	float: right;
-	height:100%;
-	margin-right: 5px;
-}
-
-div.toggle-class{
-	background-color: rgb(242,242,242);
-	color:black;
-}
-
-div.chain-infos{
-	height:100%;
-	float:left;
-}
-
-div.img-info{
-	width:80%;
-	height:60%;
-}
-
-img.info-image{
-	width:75%;
-	margin:0 auto;
-}
-
-div.text-info{
-	position: absolute;
-	right: 0px;
-	top:100px;
-	width:15%;
-	height:30%;
-}
-
-div.text-info .part-item{
+div#project-infos div#infos-content button{
 	margin-top: 20px;
-}
-
-div.text-info #doDesign{
+	margin-right: 20px;
 	float: right;
 }
-div#menu{
-	width:150px;
-	background-color: rgb(242,242,242);
-	float:left;
-	overflow: auto;
-}
-div.track-label{
-	height:40px;
-	width:70%;
-	margin:10px auto;
-	padding-top: 5px;
-	font-size:1.3em;
-	text-align: center;
-}
-
-div.device-choosen{
-	background-color: #4C4C4C;
-	color:#FFF;
-	border-radius: 5px;
-}
-div#project-main-right{
-	height:100%;
-	float:left;
-}
-div#project-main-right-top{
-	width:100%;
-	background: rgb(228,228,228);
-	height:40px;
-}
-div#buttondiv{
-	width:150px;
-	height:100%;
-	background: rgb(205,205,206);
-	float:left;
-	text-align: center;
-}
-div#buttondiv button{
-    margin-top: 2px;
-   
-}
-div#project-main-right-top span{
-	font:1.5em/40px gray;
-	margin-left: 20px;
-}
-
-div.btn-recommend{
-	position: absolute;
-	right:20px;
-	background-color: rgba(0,0,0,0);
-	color:#4C4C4C;
-}
-
-div.btn-recommend:hover{
-	position: absolute;
-	right:20px;
-	background-color: rgba(0,0,0,0);
-	color:#191919;
-	font-weight: bold;
-}
-
-div#project-main-right-bottom{
-	width:100%;
-}
-
 div.modal div.project-info{
 	width:80%;
 	margin:0 auto;
@@ -248,3 +316,29 @@ div.modal div.device-info{
 	width:80%;
 	margin:0 auto;
 }
+div#addProject input,div#addProject select,div#addDevice input{
+	border:1px solid #4ea6ff;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -14,10 +14,10 @@
 	<script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
 </head>
 <script id="search_part" type="text/x-jquery-tmpl">
-    <div class="part_style part_drag show_message " part_name="${part_name}" part_id="${part_id}" part_type="${part_type}"><img src="/static/img/${part_type}.png" alt="logo" class="img-rounded" style="width: 60px;height: 30px;" />${part_name}</div>
+    <div class="part_style part_drag show_message " part_name="${part_name}" part_id="${part_id}" part_type="${part_type}"><img src="/static/img/${part_type}.png" alt="logo" class="img-rounded"/>${part_name}</div>
 </script>
 <script id="recommand_part" type="text/x-jquery-tmpl">
-	<div class="part_style part_drag show_message " part_name="${part_name}" part_id="${part_id}" part_type="${part_type}" ><img src="/static/img/${part_type}.png" alt="logo" class="img-rounded" style="width: 60px;height: 30px;" />${part_name}</div>
+	<div class="part_style part_drag show_message " part_name="${part_name}" part_id="${part_id}" part_type="${part_type}" ><img src="/static/img/${part_type}.png" alt="logo" class="img-rounded"/>${part_name}</div>
     
 </script>
 <script id="recommand_part_list" type="text/x-jquery-tmpl">
@@ -42,8 +42,8 @@
     </div>
 </script>
 <body>
-    <div id="container">
-    	<div id="bananer">
+    <div id="container" class="box block-box">
+    	<div id="bananer" class="box-item">
     		<div id="logo">
                 <a href="/home/project">
         			<img src="/static/img/logo_white_small.png" alt="logo" class="img-rounded" >
@@ -52,49 +52,38 @@
     		</div>
             <button id="add" class="btn btn-primary" >Add</button>
             <ul id="buttonArea">
-               <!--  <li>
-                   <span class="label">123</span>
-                   <button class="close"><span class="glyphicon glyphicon-remove"></span></button>
-               </li>
-               <li>
-                   <span class="label">Phhh</span>
-                   <button class="close"><span class="glyphicon glyphicon-remove"></span></button>
-               </li>
-               <li>
-                   <span class="label">123</span>
-                   <button class="close"><span class="glyphicon glyphicon-remove"></span></button>
-               </li> -->
             </ul>
     	</div>
-    	<div id="main">
-    		<div id="sidebar">
+    	<div id="main" class="box-item box inline-box">
+    		<div id="sidebar" class="box-item">
 				<div id="search_part_container">
-                    <div class="title">search</div>
-                    <div class="search_container" >
+                    <h1>search</h1>
+                    <div id="search_container">
                         <input type="text" class="search_input" id="search_part_input" />
                         <button  class="btn btn-success search_button btn-lg" id="search_part_button" >search</button>
                     </div>
-                                    <div class="result_container" id="part_result_container"></div>
-                                </div>
+                    <div class="result_container" id="part_result_container">
+                    </div>
+                </div>
                 <div id="recommand_container">
-                    <div class="title">Recommandations</div>
+                    <h1>Recommandations</h1>
                     <div id="recommand_search_container"></div>
                 </div>
     		</div>
             <div class="hint-info hide"></div>
-            <div id="main_right"> 
-                <div id="dashboard_container">
+            <div id="main_right" class="box-item box block-box"> 
+                <div id="dashboard_container" class="box-item">
                     <div id="dashboard" class="row">
                         <div class="part-cell col-lg-2 col-md-2 col-sm-3 col-xs-4 ">
                             <div class="btn-front add_style add_button_receive"><span class=" glyphicon glyphicon-plus"></span></div>
-                            <div class="receive_style receive_click">
+                            <div class="receive_style receive_style_color receive_click">
                             </div>
                             <div class="add_style btn-back add_button_receive"><span class=" glyphicon glyphicon-plus"></span></div>
                         </div>
                     </div>
                     <canvas id="background" height="100" width="100"></canvas>
                 </div>
-                <div id="operation_recommand_container"></div>
+                <div id="operation_recommand_container" class="box-item"></div>
             </div>        
     	</div>
         <div id="part_info" class="hide panel panel-success">
@@ -111,7 +100,7 @@
                 <div class="part_detail_item part_short_desc"></div>
                 <div class="part_detail_title">Description</div>
                 <div class="part_detail_item part_description">
-                    <p></p>
+                <p></p>
                 </div>
                 
             </div>
@@ -123,69 +112,21 @@
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                         <h4 class="modal-title">Select tracks and functions</h4>
                     </div>
-                <div class="modal-body">
-                    <div class="row info-item">
-                        <ul class="select-track col-lg-5 col-md-5 col-sm-5 col-xs-">
-                            <li track-id="">treacmn</li>
-                            <li track-id="">treacmn</li>
-                            <li track-id="">treacmn</li>
-                            <li track-id="">treacmn</li>
-                            <li track-id="">treacmn</li>
-                            <li track-id="">treacmn</li>
-                            <li track-id="">treacmn</li>
-                            <li track-id="">treacmn</li>
-                            <li track-id="">treacmn</li>
-                            <li track-id="">treacmn</li>
-                            <li track-id="">treacmn</li>
-                            <li track-id="">treacmn</li>
-                        </ul>
-                        <ul class="select-function col-lg-7 col-md-7 col-sm-7 col-xs-7" >
-                            <li>
-                                <span function-id="" function-name="">1</span>
-                                <input name="select" type="checkbox" value="1">
-                            </li>
-                            <li>
-                                <span function-id="" function-name="">1</span>
-                                <input name="select" type="checkbox" value="1">
-                            </li>
-                            <li>
-                                <span function-id="" function-name="">1</span>
-                                <input name="select" type="checkbox" value="1">
-                            </li>
-                            <li>
-                                <span function-id="" function-name="">1</span>
-                                <input name="select" type="checkbox" value="1">
-                            </li>
-                            <li>
-                                <span function-id="" function-name="">1</span>
-                                <input name="select" type="checkbox" value="1">
-                            </li>
-                            <li>
-                                <span function-id="" function-name="">1</span>
-                                <input name="select" type="checkbox" value="1">
-                            </li>
-                            <li>
-                                <span function-id="" function-name="">1</span>
-                                <input name="select" type="checkbox" value="1">
-                            </li>
-                            <li>
-                                <span function-id="" function-name="">1</span>
-                                <input name="select" type="checkbox" value="1">
-                            </li>
-                            <li>
-                                <span function-id="" function-name="">1</span>
-                                <input name="select" type="checkbox" value="1">
-                            </li>
-                        </ul>
+                    <div class="modal-body">
+                        <div class="row info-item">
+                            <ul id="select-track" class=" col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                            </ul>
+                            <ul id="select-function" class=" col-lg-8 col-md-8 col-sm-8 col-xs-8" >
+                            </ul>
+                        </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button id="select" type="button" class="btn btn-primary" data-dismiss="modal">Submit</button>
-                </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button id="select" type="button" class="btn btn-primary" data-dismiss="modal">Submit</button>
+                    </div>
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->
-        </div><!-- /.modal -->
+        </div>
     </div>
 <script type="text/javascript">
 	window.chainId = {{id}};

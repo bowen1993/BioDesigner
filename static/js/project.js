@@ -1,34 +1,18 @@
 $(document).ready(function(){
     setProjectFrame();
-    $('#user-name').html(window.uname)
-    getUserProjects();
-    setTracks();
+    $('#user-name').html(window.uname);// set username
+    getUserProjects();  // get user's projects
 });
 window.onresize=function(){
 	setProjectFrame();
 }
 function setProjectFrame(){
-	var totalHeight = document.documentElement.clientHeight;//获取视口 高度 宽度
-	var totalWidth = document.documentElement.clientWidth;
-	var bananerHeight = $('#project-bananer').height();//获取bananer 高度
-	var projectMainHeight = totalHeight-bananerHeight;//计算主体区域高度
-	$('#project-main').css("height",projectMainHeight);//设置主题区域高度
-	var projectMainLeftTopHeight = $('#project-main-left-top').height();//获取左侧上方区域高度
-	var projectMainLeftBottomHeight = projectMainHeight-projectMainLeftTopHeight;//计算左侧下方区域高度
-	$('#project-main-left-bottom').css("height",projectMainLeftBottomHeight);//设置左侧下方区域高度
-    var projectMainLeftWidth = $('#project-main-left').width();//获取左侧宽度
-    var projectMainRightWidth = totalWidth-projectMainLeftWidth-20;//计算右侧宽度
-	$('#project-main-right').css("width",projectMainRightWidth);//设置右侧宽度
-
-	var projectMainRightTopHeight = $('#project-main-right-top').height();
-	var projectMainRightBottomHeight = projectMainHeight-projectMainRightTopHeight;
-	$('#project-main-right-bottom').css("height",projectMainRightBottomHeight);
-	$('#menu').css("height",projectMainRightBottomHeight);
-	var menuWidth = $('#menu').width();
-	var chainIdfosWidth = projectMainRightWidth-menuWidth;
-	$('.chain-infos').css("width",chainIdfosWidth);
+	var total_height = document.documentElement.clientHeight;
+	document.getElementById('project-area').style.height = total_height+'px';
+	document.getElementById('main').style.height = total_height+'px';
+	document.getElementById('device-area').style.height = total_height+'px';
+	document.getElementById('project-infos').style.height = total_height+'px';
 }
-//获取用户所有project
 function getUserProjects(){
 	$.ajax({
 		url : '/home/getUserProject',
@@ -41,14 +25,15 @@ function getUserProjects(){
 function displayProjects(result){
 	for (var i = 0; i < result['projects'].length; i++){
 		var projectInfo = result['projects'][i];
-		$('#project-main-left-bottom').append(getProjectLabel(projectInfo['id'], projectInfo['name'], projectInfo['track']));
+		var element = getProjectLabel(projectInfo['id'], projectInfo['name'], projectInfo['track']);
+		$('#project-content').append(element);
 	}
 }
+
 function getProjectLabel (project_id, project_name, track) {
-	return '<div class="project-label" track="'+track+'" project-id='+project_id+'>' + 
-			project_name + '</div>'
+	return '<li track="'+track+'" project-id='+project_id+'>' + 
+			project_name + '</li>';
 }
-//获取track信息
 function setTracks(){
     $.ajax({
         url:'/home/tracks',
@@ -73,10 +58,10 @@ function addTracks(result){
     }
 }
 // create a new project
-function createProject (name, track) {
+function createProject (name, track_id) {
 	var postData = {
 		'name':name,
-		'track': track
+		'track': track_id
 	};
 	$.ajax({
 		url:'/home/newProject',
@@ -93,9 +78,9 @@ function createProject (name, track) {
 		}
 	})
 }
-// add the new project into #project-main-left-bottom
+// add the new project into #project-content
 function addProject (name, track, id) {
-	$('#project-main-left-bottom').append(getProjectLabel(id, name, track));
+	$('#project-content').append(getProjectLabel(id, name, track));
 	showMsg('New Project Saved')
 }
 
@@ -121,11 +106,11 @@ function createDevice(name, id){
 	})
 }
 function addDevices (name, id) {
-	$('#menu').append(getChainDiv(id, name));
+	$('ul#device-content').append(getChainDiv(id, name));
 	showMsg("New Device Saved");
 }
 function getChainDiv(id, name){
-	return '<div class="track-label" chain-id="'+id+'">'+name+'</div>'
+	return '<li chain-id="'+id+'">'+name+'</li>'
 }
 
 //获取project 的 chain
@@ -140,26 +125,34 @@ function getProjectChains(id){
 }
 function displayChains(result){
 	for(var i = 0; i < result.length; i++){
-		$('#menu').append(getChainDiv(result[i]['id'], result[i]['name']));
+		$('#device-content').append(getChainDiv(result[i]['id'], result[i]['name']));
 	}
 }
-
-// delete a project
-function deleteProject(project_id){
-	var postData = {
-		'id':project_id,
-	};
+function getChainLength (chainId) {
+	var text = 'Length: 0';
 	$.ajax({
-		url:'/home/deleteProject',
-		type:'POST',
-		data:postData,
-		dataType:'JSON',
-		success: function(result){
-			showMsg("delete success");
-			$('#menu').empty();
+		url: '/home/getChainLength?id=' + chainId,
+		type: 'GET',
+		success:function(result){
+			if(result['isSuccessful']){
+				text = 'Length: ' + result['length'];
+			}
+			$('div#infos-content span').text(text);
 		}
 	});
 }
+function showChainImage(chainId){
+	$.ajax({
+		url:'/home/getResultImage?id=' + chainId,
+		type:'GET',
+		success:function(result){
+			if (result['isSuccessful']){
+				$('#chain-img').attr('src', result['filepath']);
+			}
+		}
+	});
+}
+
 // alter project name
 function alterProjectName(project_id, project_name){
     var postData={
@@ -182,10 +175,10 @@ function alterProjectName(project_id, project_name){
 	});
 }
 //alter project track
-function alterProjectTrack(project_id, project_track){
+function alterProjectTrack(project_id, track_id,track_name){
     var postData={
     	'id':project_id,
-    	'track_id':project_track,
+    	'track_id':track_id,
     };
     $.ajax({
     	url:'/home/changeTrack',
@@ -195,7 +188,7 @@ function alterProjectTrack(project_id, project_track){
     	success:function(result){
     		if(result['isSuccessful']){
     			showMsg('success');
-    			$('.altering').attr('track',project_track);
+    			$('.altering').attr('track',track_name);
     		}else{
     			showMsg('failed');
     		}
@@ -203,37 +196,8 @@ function alterProjectTrack(project_id, project_track){
     });
 }
 
-function showMsg(msg){
-    $('div.hint-info').html(msg);
-    $('div.hint-info').removeClass('hide');
-    $('div.hint-info').show(200).delay(1000).hide(200);
-}
-function getChainLength (chainId) {
-	$.ajax({
-		url: '/home/getChainLength?id=' + chainId,
-		type: 'GET',
-		success:function(result){
-			if(result['isSuccessful']){
-				$('.text-info').find('#length').html('Length: ' + result['length']);
-			}else{
-				$('.text-info').find('#length').html('Length: 0');
-			}
-		}
-	});
-}
-function showChainImage(chainId){
-	$.ajax({
-		url:'/home/getResultImage?id=' + chainId,
-		type:'GET',
-		success:function(result){
-			if (result['isSuccessful']){
-				$('.img-info #chain-img').attr('src', result['filepath'].replace('downloads/', 'static/'));
-			}else{
-				$('.img-info #chain-img').attr('src', '/static/img/logo_black_op.png');
-			}
-		}
-	});
-}
+
+
 
 //  logout click
 $(document).on({
@@ -248,149 +212,121 @@ $(document).on({
 	}
 },'#logout');
 
-//添加project按钮
 $(document).on({
 	click:function(){
+		setTracks();// get tracks 
 		var modal = $('#addProject');
 		$('#addProject .modal-header h4').text("add new project");
 		modal.attr("todo","add");
 		modal.modal('show');
 	}
-}, '#addProjectButton');
+}, '#add-project');
 
-//修改 project 按钮
-$(document).on({
-    click:function(){
-    	var modal = $('#addProject');
-    	$('#addProject .modal-header h4').text("alter your project");
-    	var id = $(this).parent().parent().attr("project-id");
-    	$('.altering').removeClass('altering');
-    	$(this).parent().parent().toggleClass('altering');//为这个project 加标记
-    	modal.attr("todo","alter").attr("alter_id",id);
-    	modal.modal('show');
-    	$('.project-label-over').remove();
-    }
-},".label-edit");
 
-// create-project click
+// submit-project click
 $(document).on({
 	click:function(){
 		var name = $('#project-name').val(),
-		trackid = $('#tracks').val();
+		track_id = $('#tracks').val();
+		track_name = $('#tracks option:selected').text();
 		var todo = $('#addProject').attr('todo');
 		if(todo=='add'){
-            createProject(name, trackid);
+            createProject(name, track_id);
 		}else if(todo=='alter'){
 			var alter_id = $('#addProject').attr('alter_id');
+			console.log(alter_id +"   "+name);
             alterProjectName(alter_id, name);
-            alterProjectTrack(alter_id, trackid);
+            alterProjectTrack(alter_id, track_id, track_name);
             $('#addProject').modal('hide');
 		}
 		
 	}
-},'#create-project');
+},'#submit-project');
 
 
-// add device click
+//修改 project 按钮
+$(document).on({
+    click:function(){
+    	if($('.project-label-click').length==1){
+    		setTracks();// get tracks 
+    		var element = $('.project-label-click');
+    		var modal = $('#addProject');
+	    	$('#addProject .modal-header h4').text("alter your project");
+	    	var id = element.attr("project-id");
+	    	$('.altering').removeClass('altering');
+	    	element.toggleClass('altering');//为这个project 加标记
+	    	modal.attr("todo","alter").attr("alter_id",id);
+	    	modal.modal('show');
+    	}else{
+    		$('#waring-modal').modal('show');
+    	}
+   }
+},"#edit-project");
+//  add a new device 
 $(document).on({
 	click:function(){
 		$('#addDevice').modal('show');
 	}
-},'#addDeviceBtn');
-
-// project-label click
-$(document).on({
-    click:function(){
-    	$('#menu').empty();
-    	$('.project-label').addClass("toggle-class").toggleClass("toggle-class");
-    	$(this).toggleClass("toggle-class");
-    	$('#menu').attr('project-id', $(this).attr('project-id'));
-    	var project = $(this).text() + ' ' +$(this).attr('track');
-    	$('#project').text(project);
-    	$('#track').text("");
-    	getProjectChains($(this).attr('project-id'));
-    }
-},'.project-label');
+},'#add-device');
 
 // create a new device click
 $(document).on({
 	click:function(){
 		var name = $('#device-name').val(),
-		id = $('#menu').attr('project-id');
+		id = $('ul#device-content ').attr('project-id');
 		createDevice(name, id)
 	}
 }, '#createChain');
 
+// project-label click
+$(document).on({
+    click:function(){
+    	$('#device-content').empty();
+    	$('div#project-area ul#project-content li').addClass("project-label-click").toggleClass("project-label-click");
+    	$(this).toggleClass("project-label-click");
+    	$('#device-content').attr('project-id', $(this).attr('project-id'));
+    	var project = $(this).text() + ' ' +$(this).attr('track');
+    	$('#project').text(project);
+    	$('#track').text('');
+    	getProjectChains($(this).attr('project-id'));
+    }
+},'div#project-area ul#project-content li');
+
 // track click
 $(document).on({
     click:function(){
-    	$('.track-label').addClass('device-choosen').toggleClass("device-choosen");
-    	$(this).toggleClass("device-choosen");
+    	$('div#device-area ul#device-content li').removeClass("device-label-click");
+    	$(this).addClass("device-label-click");
     	var track = $(this).text();
-    	$('.text-info').removeClass('hide');
-    	getChainLength($(this).attr('chain-id'));
-    	$('button#doDesign').attr('chain-id', $(this).attr('chain-id'));
-    	$('#part_title').html(track);
+    	$('div#infos-content h1').text(track);
     	$('#track').text(track); 
-    	showChainImage($(this).attr('chain-id'));
+    	var chain_id = $(this).attr('chain-id');
+    	$('div#infos-content button').attr('chain-id', chain_id);
+    	showChainImage(chain_id);
+    	getChainLength(chain_id);
     }
-},'.track-label');
-
-//为最上方修改按钮加事件
-$(document).on({
-	click:function(){
-		var html = "<button class=\"label-edit btn btn-primary\">edit</button>";
-		var edit = $(html);
-		html = "<button class=\"label-delete btn btn-primary\"><span class=\"glyphicon glyphicon-remove\"></span></button>";
-		var deleteButton = $(html);
-	    html = "<div class=\"project-label-over\"></div>";
-		var container = $(html);
-		container.append(deleteButton).append(edit);
-		$('.project-label').append(container);
-	}
-},'#editButton');
-
-
-
-//为每一个删除按钮加事件
-$(document).on({
-    click:function(){
-    	var project_id = $(this).parent().parent().attr("project-id");//获取删除工程的id
-    	$(this).parent().parent().remove();
-    	deleteProject(project_id);
-    	$('.project-label-over').remove();
-
-    }
-},'.label-delete');
-
-$(document).on({
-	click:function(){
-		window.location.href='/system/system'
-	}
-}, 'div#system-btn')
+},'div#device-area ul#device-content li');
 
 $(document).on({
 	click:function(){
 		window.location = '/home/dashboard?id=' + $(this).attr('chain-id');
 	}
-},'#doDesign');
+},'#infos-content button#doDesign');
 $(document).on({
-	click:function(){
-		$('div.text-info').addClass('hide');
+	mouseover:function(){
+		$('div#project-infos ul#dropdown-menu').removeClass('menu-hide');
+	},
+	mouseout:function(){
+		$('div#project-infos ul#dropdown-menu').addClass('menu-hide');
 	}
-}, '#close_info');
+},'div#project-infos div#dropdown, div#project-infos ul#dropdown-menu');
 
 
-
-
-
-
-
-
-
-
-
-
+function showMsg(msg){
+    $('div.hint-info').html(msg);
+    $('div.hint-info').removeClass('hide');
+    $('div.hint-info').show(200).delay(1000).hide(200);
+}
 
 
 

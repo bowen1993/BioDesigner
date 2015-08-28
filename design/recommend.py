@@ -191,6 +191,7 @@ def predict(m, count, s, A):
                 p = next_line.get(k, [0, None])[0]
                 if p < A[key][k] * line[key][0]:
                     next_line[k] = [A[key][k] * line[key][0], key]
+                    print next_line
         process.append(next_line)
 
     ans = process[-1]
