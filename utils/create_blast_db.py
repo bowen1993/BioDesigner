@@ -27,19 +27,26 @@ def part_FASTA_file(db_name):
     part_fasta_file.close()
 
 def gene_FASTA_file(db_name):
-    gene_obj_list = gene.objects.all()
+    start = 0
+    step = 1000
+    end = start + step
+    count  = gene.objects.count()
     gene_fsa_file = open(db_name+'.fsa', 'w')
-    for gene_obj in gene_obj_list:
-        gene_id = gene_obj.gene_id
-        sequence = gene_obj.ntseq
-        if sequence == None or len(sequence) == 0:
-            continue
-        gene_fsa_file.write('>%s\n' % gene_id)
-        sequence = sequence.replace('\n', '')
-        sequence = sequence.replace(' ', '')
-        for i in range(0, len(sequence), 80):
-            gene_fsa_file.write('%s\n' % sequence[i:i+80])
-        gene_fsa_file.flush()
+    while count > 0:
+        gene_obj_list = gene.objects.all()[start:end]
+        for gene_obj in gene_obj_list:
+            gene_id = gene_obj.gene_id
+            sequence = gene_obj.ntseq
+            if sequence == None or len(sequence) == 0:
+                continue
+            gene_fsa_file.write('>%s\n' % gene_id)
+            sequence = sequence.replace('\n', '')
+            sequence = sequence.replace(' ', '')
+            for i in range(0, len(sequence), 80):
+                gene_fsa_file.write('%s\n' % sequence[i:i+80])
+            gene_fsa_file.flush()
+        start += step
+        end += step
     gene_fsa_file.close()
 
 if __name__ == '__main__':
