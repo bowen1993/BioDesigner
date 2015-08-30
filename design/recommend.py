@@ -191,12 +191,12 @@ def predict(m, count, s, A):
                 p = next_line.get(k, [0, None])[0]
                 if p < A[key][k] * line[key][0]:
                     next_line[k] = [A[key][k] * line[key][0], key]
-                    print next_line
         process.append(next_line)
 
     ans = process[-1]
     # sort according to probability from high to low
     ans = sorted(ans.iteritems(), key=lambda item: item[1][0], reverse=True)
+    print ans
 
     if len(ans) == 0:
         return None     # Can't predict, because of no answer can be find

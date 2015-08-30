@@ -35,7 +35,8 @@ class parts(models.Model):
     categories       = models.CharField(max_length=500,null=True)
     sequence         = models.TextField(null=True)
     sequence_length  = models.IntegerField(null=True)
-    part_url = models.CharField(max_length=255, null=True)
+    part_url         = models.CharField(max_length=255, null=True)
+    score            = models.IntegerField(null=True)
 
     def __unicode__(self):
         return self.part_name
