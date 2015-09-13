@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.css"/>
+    <link rel="stylesheet" href="/static/css/simulation.css">
+</head>
+<script id="reaction-equation-area" type="text/x-jquery-tmpl">
+    <div class="reaction-equation-area">
+        <h1 class="title">Reaction Equation</h1>
+        <button class="remove-reaction-equation btn btn-primary">
+            remove
+        </button>
+        <ul class="input-table">
+            <li class="input-row">
+                <input type="text" class="material">
+                <span class="times">+</span>
+                <input type="text" class="amount">
+                <span class="remove-input-row glyphicon glyphicon-minus-sign btn"></span>
+            </li>
+        </ul>
+        <button class="new-input-row btn btn-primary">
+            <span class="glyphicon glyphicon-plus"></span>
+        </button>
+        <span class="point glyphicon glyphicon-arrow-down"></span>
+        <ul class="input-table resultant">
+            <li class="input-row">
+                <input type="text" class="material">
+                <span class="times">+</span>
+                <input type="text" class="amount">
+                <span class="remove-input-row glyphicon glyphicon-minus-sign btn"></span>
+            </li>
+        </ul>
+        <button class="new-input-row btn btn-primary">
+            <span class="glyphicon glyphicon-plus"></span>
+        </button>
+    </div>
+</script>
+<script id="input-row" type="text/x-jquery-tmpl">
+    <li class="input-row">
+        <input type="text" class="material">
+        <span class="times">+</span>
+        <input type="text" class="amount">
+        <span class="remove-input-row glyphicon glyphicon-minus-sign btn"></span>
+    </li>
+</script>
+<body>
+    <div id="container" class="box block-box">
+        <div id="header" class="box-item">
+            <div id="logo">
+                <a href="/home/project">
+                    <img src="/static/img/logo_white_small.png" alt="logo" class="img-rounded" >
+                    <span>BioDesigner</span>
+                </a>
+            </div>
+        </div>
+        <div id="main" class="box-item box inline-box">
+            <div id="sidebar" class="box-item">
+                <div id="sidebar-shop">
+                    <!-- <sapn id="back">back</sapn> -->
+                    <span id="back" class="btn default-btn"><</span>
+                    <span id="title">Simulation</span>
+                    <span id="reset" class="btn default-btn">reset</span>
+                </div>
+                <div id="parent-material-area">
+                    <h1 class="title">Parent Material</h1>
+                    <ul class="input-table">
+                        <li class="input-row">
+                            <input type="text" class="material">
+                            <span class="times">+</span>
+                            <input type="text" class="amount">
+                            <span class="remove-input-row glyphicon glyphicon-minus-sign btn"></span>
+                        </li>
+                    </ul>
+                    <button class="new-input-row btn btn-primary">
+                        <span class="glyphicon glyphicon-plus"></span>
+                    </button>
+                </div>
+                <div class="reaction-equation-area">
+                    <h1 class="title">Reaction Equation</h1>
+                    <button class="remove-reaction-equation btn btn-primary">
+                        remove
+                    </button>
+                    <ul class="input-table">
+                        <li class="input-row">
+                            <input type="text" class="material">
+                            <span class="times">+</span>
+                            <input type="text" class="amount">
+                            <span class="remove-input-row glyphicon glyphicon-minus-sign btn"></span>
+                        </li>
+                    </ul>
+                    <button class="new-input-row btn btn-primary">
+                        <span class="glyphicon glyphicon-plus"></span>
+                    </button>
+                    <span class="point glyphicon glyphicon-arrow-down"></span>
+                    <ul class="input-table resultant">
+                        <li class="input-row">
+                            <input type="text" class="material">
+                            <span class="times">+</span>
+                            <input type="text" class="amount">
+                            <span class="remove-input-row glyphicon glyphicon-minus-sign btn"></span>
+                        </li>
+                    </ul>
+                    <button class="new-input-row btn btn-primary">
+                        <span class="glyphicon glyphicon-plus"></span>
+                    </button>
+                </div>
+                <button id="add" class="btn btn-primary btn-block">
+                    <span class="glyphicon glyphicon-plus"></span>
+                </button>
+                <button id="run" class="btn btn-primary btn-block">
+                    run
+                </button>
+            </div>
+            <div id="content" class="box-item"></div>
+        </div>
+    </div>
+    <script src="/static/js/jquery-2.1.1.min.js"></script>
+    <script src="/static/js/jquery.tmpl.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+    <script src="/static/js/simulation.js"></script>
+</body>
+</html>

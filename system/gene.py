@@ -4,7 +4,7 @@ gene.py realize the methods that are related to system recommendation.
 @author: Bowen
 """
 
-from system.models import gene, reaction, compound, reaction_compound, compound_gene
+from system.models import gene, reaction, compound, reaction_compound, compound_gene, pathway, pathway_compound, organism
 from system.fasta_reader import parse_fasta_str
 from elasticsearch import Elasticsearch
 import traceback
@@ -184,8 +184,7 @@ def search_gene_in_ncbi(name, expect=None, index=0):
         geneIdList = list()
         for obj in obj_list:
             geneIdList.append(obj.gene.gene_id)
-        print 'no search performed'
-        return geneIdList
+        return geneIdList[:5]
     #retrive from kegg
     baseGeneFindUrl = 'http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=gene&retmode=json&term='
     try:
@@ -205,8 +204,193 @@ def search_gene_in_ncbi(name, expect=None, index=0):
             del geneIdList[geneIdList.index(expect)]
         except:
             pass
-    return geneIdList[:5]
+    return geneIdList[:2]
 
+class gene_graph:
+    def __init__(self, cid_list, ogm):
+        if cid_list.startswith('_'):
+            cid_list = cid_list[1:]
+        if cid_list.endswith('_'):
+            cid_list = cid_list[:-1]
+        self.cid_list = cid_list.split('_')
+        self.nodes = list()
+        self.edges = list()
+        self.index_dict = dict()
+        self.index = 0
+        if ogm != None:
+            if ogm.startswith('_'):
+                ogm = ogm[1:]
+            if ogm.endswith('_'):
+                ogm = ogm[:-1]
+            self.organisms = ogm.split('_')
+        else:
+            self.organisms = None
+
+
+    def get_compound_object(self, cid):
+        try:
+            compound_obj = compound.objects.get(compound_id=cid)
+            return compound_obj
+        except:
+            return None
+
+    def retrive_gene_detain(self, gid):
+        #get information from ncbi
+        baseUrl = 'http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=gene&retmode=json&version=2.0&id='
+        
+        try:
+            req = urllib2.Request(baseUrl + gid)
+            response = urllib2.urlopen(req)
+            resStr = response.read()
+            result = json.loads(resStr)
+            infos = result['result'][gid]
+            detail_info = dict()
+            detail_info['name'] = infos['name']
+            detail_info['definition'] = infos['description']
+            detail_info['organism'] = infos['organism']['scientificname']
+            return detail_info
+        except:
+            traceback.print_exc()
+            return None
+
+    def related_compound(self, cid):
+        compound_obj = self.get_compound_object(cid)
+        if self.organisms != None:
+            organism_pathway_id_list = pathway.objects.filter(organism_id__in=self.organisms).values_list('pathway_id', flat=True)
+        else:
+            organism_pathway_id_list = pathway.objects.all()
+        valued_pathway_id_list = pathway_compound.objects.filter(pathway_id__in=organism_pathway_id_list, compound=compound_obj)
+        valued_compound_list = pathway_compound.objects.filter(Q(pathway_id__in=valued_pathway_id_list), ~Q(compound=compound_obj)).values_list('compound', flat=True)
+        compound_list = compound.objects.filter(compound_id__in=valued_compound_list)
+        return compound_list
+
+    def create_node(self, name, id):
+        node_info = {
+            'name': name,
+            'id': id
+        }
+        self.nodes.append(node_info)
+        if id in self.index_dict.keys():
+            return True
+        self.index_dict[id] = self.index
+        self.index += 1
+        return True
+
+    def create_n_link(self, center_node, compound_obj):
+        gene_list = self.search_gene(compound_obj)
+        for gene_id in gene_list:
+            try:
+                gene_obj = gene.objects.get(gene_id=gene_id)
+                if self.create_node(gene_obj.name, gene_obj.gene_id):
+                    edge_info = {
+                        'source' : self.index_dict[center_node],
+                        'target' : self.index_dict[gene_obj.gene_id],
+                        'relation' : compound_obj.name
+                    }
+                    self.edges.append(edge_info)
+            except:
+                traceback.print_exc()
+                pass
+        return gene_list[0]
+
+    def get_or_create_gene(self, gid):
+    #get in database
+        try:
+            gene_obj = gene.objects.get(gene_id=gid)
+            return gene_obj
+        except:
+            #get from ncbi
+            baseUrl = 'http://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=nuccore&rettype=fasta&id='
+            req = urllib2.Request(baseUrl + gid)
+            response = urllib2.urlopen(req)
+            resStr = response.read()
+            gene_dict = parse_fasta_str(resStr)
+            for gn in gene_dict.keys():
+                gid = gn.split('|')[1]
+                #get detail information
+                new_gene_obj = gene(gene_id=gid)
+                detail_info = self.retrive_gene_detain(gid)
+                if detail_info == None:
+                    continue
+                new_gene_obj.name = detail_info['name']
+                new_gene_obj.definition = detail_info['definition']
+                new_gene_obj.organism = detail_info['organism']
+                new_gene_obj.ntseq = gene_dict[gn]
+                new_gene_obj.ntseq_length = len(gene_dict[gn])
+                try:
+                    new_gene_obj.save()
+                    return new_gene_obj
+                except:
+                    pass
+            return None
+
+    def save_relation_to_db(self, geneIdList, compound_obj):
+    #create new obj
+        for gid in geneIdList:
+            new_rela_obj = compound_gene(compound=compound_obj)
+            gene_obj = self.get_or_create_gene(gid)
+            if gene_obj == None:
+                continue
+            new_rela_obj.gene = gene_obj
+            try:
+                new_rela_obj.save()
+            except:
+                pass
+
+    def search_gene(self, compound_obj):
+        #search in database
+        obj_list = compound_gene.objects.filter(compound=compound_obj)
+        if len(obj_list) != 0:
+            geneIdList = list()
+            for obj in obj_list:
+                geneIdList.append(obj.gene.gene_id)
+            return geneIdList[:2]
+        else:
+            baseGeneFindUrl = 'http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=gene&retmode=json&term='
+            try:
+                req = urllib2.Request(baseGeneFindUrl + compound_obj.name)
+                response = urllib2.urlopen(req)
+                resStr = response.read()
+            except:
+                traceback.print_exc()
+                return None
+            if len(resStr) == 0:
+                return None
+            result = json.loads(resStr)
+            geneIdList = result['esearchresult']['idlist']
+            self.save_relation_to_db(geneIdList, compound_obj)
+            return geneIdList[:2]
+
+    def cal_graph(self):
+        for cid in self.cid_list:
+            center_compound_obj = self.get_compound_object(cid)
+            if center_compound_obj == None:
+                continue
+            self.create_node(center_compound_obj.name, center_compound_obj.compound_id)
+            related_list = self.related_compound(center_compound_obj.compound_id)[:5]
+            for compound_obj in related_list:
+                new_center = self.create_n_link(center_compound_obj.compound_id, compound_obj)
+                self.create_node(compound_obj.name, compound_obj.compound_id)
+                edge_info = {
+                    'source': self.index_dict[center_compound_obj.compound_id],
+                    'target': self.index_dict[compound_obj.compound_id],
+                    'relation': compound_obj.name,
+                }
+                deep_related_list = self.related_compound(compound_obj.compound_id)[:2]
+                for deep_compound_obj in deep_related_list:
+                    self.create_n_link(compound_obj.compound_id, deep_compound_obj)
+        print self.index_dict
+
+    def get_graph(self):
+        result = {
+            'nodes': self.nodes,
+            'edges' : self.edges
+        }
+        return result
+
+
+
+'''
 def find_related_compound(cid_str):
     """
     find the compound that are related to current compound in reaction
@@ -254,7 +438,6 @@ def find_related_compound(cid_str):
             for cname in cname_list:
                 # find genes
                 gene_list = search_gene_in_ncbi(cname, expect=cen_gene_id, index=1)
-                print gene_list
                 for gene_id in gene_list:
                     if gene_id in all_genes:
                         continue
@@ -287,3 +470,4 @@ def find_related_compound(cid_str):
         'edges': edges
     }
     return result
+'''

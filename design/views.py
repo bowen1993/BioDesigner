@@ -197,7 +197,7 @@ def getARecommend(request):
         chainStr = chainStr[1:]
     if chainStr.endswith('_'):
         chainStr = chainStr[:-1]
-    getApriorRecommend(chainStr)
+    
     return HttpResponse(json.dumps(getApriorRecommend(chainStr)), content_type="application/json")
 
 @csrf_exempt

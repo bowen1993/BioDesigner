@@ -166,4 +166,22 @@ class chain(models.Model):
     class Meta:
         db_table = 'bio_chain'
 
+class paper(models.Model):
+    paper_id = models.CharField(max_length=128, primary_key=True)
+    paper_name = models.CharField(max_length=255, null=True)
+    paper_file_location = models.CharField(max_length=256, null=True)
+    paper_url = models.CharField(max_length=255, null=True)
+    def __unicode__(self):
+        return self.paper_name
 
+    class Meta:
+        db_table = 'bio_paper'
+
+class part_papers(models.Model):
+    part = models.ForeignKey(parts)
+    paper = models.ForeignKey(paper)
+    def __unicode__(self):
+        return self.part.part_name + ' ' + self.paper.paper_name
+
+    class Meta:
+        db_table = 'bio_part_papers'

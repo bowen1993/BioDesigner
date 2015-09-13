@@ -79,3 +79,37 @@ class part_gene(models.Model):
 
     class Meta:
         db_table = 'bio_part_gene'
+
+class organism(models.Model):
+    organism_id = models.CharField(primary_key=True, max_length=32)
+    organism_short = models.CharField(max_length=16, null=True)
+    organism_name = models.TextField(null=True)
+
+    def __unicode__(self):
+        return self.organism_short
+
+    class Meta:
+        db_table = 'bio_organism'
+
+class pathway(models.Model):
+    pathway_id = models.CharField(primary_key=True, max_length=32)
+    pathway_name = models.CharField(max_length=255, null=True)
+    organism = models.ForeignKey(organism)
+
+    def __unicode__(self):
+        return self.pathway_name
+
+    class Meta:
+        db_table = 'bio_pathway'
+
+class pathway_compound(models.Model):
+    pathway = models.ForeignKey(pathway)
+    compound = models.ForeignKey(compound)
+    score = models.IntegerField(null=True)
+
+    def __unicode__(self):
+        return self.pathway.pathway_name
+
+    class Meta:
+        db_table = 'bio_pathway_compound'
+        

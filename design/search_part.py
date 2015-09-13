@@ -1,9 +1,11 @@
 from elasticsearch import Elasticsearch
-from design.models import parts, teams, team_parts
+from design.models import parts, teams, team_parts, part_papers, paper
+import traceback
 
 def getPart(partName):
     try:
         partObj = parts.objects.get(part_name=partName)
+        papers = part_papers.objects.filter(part=partObj)
         result = {
                 'isSuccessful': True,
                 'isEmpty': False,
@@ -36,7 +38,16 @@ def getPart(partName):
                 'sequence_length' : partObj.sequence_length,
                 'part_url' : partObj.part_url
             }
+        paper_list = list()
+        for paper in papers:
+            paper_info = {
+                'name': paper.paper.paper_name,
+                'url' : paper.paper.paper_url
+            }
+            paper_list.append(paper_info)
+        result['paper'] = paper_list
     except:
+        traceback.print_exc()
         result = {
             'isSuccessful': False
         }

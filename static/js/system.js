@@ -5,9 +5,10 @@ $(document).ready(function(){
     setFrame();
 });
 function setFrame(){
-   var total_width = document.documentElement.clientWidth;  // get total width
-   var total_height = document.documentElement.clientHeight;  // get total height
-   //$('#container').css('height',total_height);   // set #container height
+   var total_height = document.documentElement.clientHeight; 
+   $('#container').css('height',total_height); 
+   $('#sidebar').css('height',total_height); 
+   $('#main').css('height',total_height); 
    var logo_height = $('#logo').height();     // get #logo height
    var search_container_height = total_height-logo_height;  // figure #search-container height
    $('#search-container').css('height',search_container_height); //set #search-container height
@@ -15,16 +16,27 @@ function setFrame(){
    var search_area_height = $('#search-container #search-area').height(); // get #search-container #search-area height
    var search_result_height = search_container_height-search_container_h1_height-search_area_height; //figure #search-result height
    $('#search-result').css('height',search_result_height); //set #search-result height 
+   
+   // var total_width = document.documentElement.clientWidth;  // get total width
+   // var total_height = document.documentElement.clientHeight;  // get total height
+   // $('#container').css('height',total_height);   // set #container height
+   // var logo_height = $('#logo').height();     // get #logo height
+   // var search_container_height = total_height-logo_height;  // figure #search-container height
+   // $('#search-container').css('height',search_container_height); //set #search-container height
+   // var search_container_h1_height = $('#search-container h1').height(); // get #search-container h1 height
+   // var search_area_height = $('#search-container #search-area').height(); // get #search-container #search-area height
+   // var search_result_height = search_container_height-search_container_h1_height-search_area_height; //figure #search-result height
+   // $('#search-result').css('height',search_result_height); //set #search-result height 
 
-   var sidebar_width = $('#sidebar').width();    // get #sidebar width
-   var main_width = total_width-sidebar_width;   // figure #main width
-   $('#main').css('width',main_width);  //set #main width
-   var main_ul_buttonArea_width = $('#button-area').width(); //get ul button-area width
-   var main_ul_labelArea_width = main_width-main_ul_buttonArea_width;
-   $('#label-area').css('width',main_ul_labelArea_width);
-   var menu_height = $('#menu').height();
-   var my_svg_height = total_height-menu_height; // figure #my-svg height
-   $('#my-svg').css('height',my_svg_height);  // set #my-svg height
+   // var sidebar_width = $('#sidebar').width();    // get #sidebar width
+   // var main_width = total_width-sidebar_width;   // figure #main width
+   // $('#main').css('width',main_width);  //set #main width
+   // var main_ul_buttonArea_width = $('#button-area').width(); //get ul button-area width
+   // var main_ul_labelArea_width = main_width-main_ul_buttonArea_width;
+   // $('#label-area').css('width',main_ul_labelArea_width);
+   // var menu_height = $('#menu').height();
+   // var my_svg_height = total_height-menu_height; // figure #my-svg height
+   // $('#my-svg').css('height',my_svg_height);  // set #my-svg height
 }
 $(document).on({
    click:function(){
@@ -33,7 +45,9 @@ $(document).on({
       //var insert = [{"compound_id": "C00001", "name": "H2O"}, {"compound_id": "C00137", "name": "myo-Inositol"}, {"compound_id": "C00288", "name": "HCO3-"}, {"compound_id": "C00619", "name": "3-Oxo-delta4-steroid"}, {"compound_id": "C01243", "name": "1D-myo-Inositol1,3,4-trisphosphate"}, {"compound_id": "C01245", "name": "D-myo-Inositol1,4,5-trisphosphate"}, {"compound_id": "C02941", "name": "3-Oxo-delta1-steroid"}, {"compound_id": "C04226", "name": "6-Oxo-1,4,5,6-tetrahydronicotinate"}, {"compound_id": "C02797", "name": "3-Oxo-5beta-steroid"}, {"compound_id": "C02940", "name": "3-Oxo-5alpha-steroid"}];
       //insertSearchResult(insert);
    }
-},'#search-area button');
+},'#search-area span#search');
+
+
 function getSearchResult(input){
    $.ajax({
       url:'/system/searchCompound?keyword=' + input,
@@ -58,7 +72,7 @@ function getInsertLabel(compound_id, compound_name){
    }
    var html = "<li class=\"search-result-item\">"+
                   "<span  compound-name=\""+compound_name+"\" compound-id=\""+compound_id+"\">"+name+"</span>"+
-                  "<button class=\"add-label btn btn-primary\">add</button></li>";
+                  "<button class=\"add-label btn\">add</button></li>";
    return $(html);
 }
 $(document).on({
@@ -174,6 +188,7 @@ $(document).on({
         data: postData,
         dataType: 'JSON',
         success:function(result){
+          console.log(result);
           draw(result);
 
         }
@@ -196,4 +211,12 @@ function getIdStr(id_array){
   }
   return result;
 }
+$(document).on({
+    mouseover:function(){
+      $(this).children('button').toggleClass('show');
+    },
+    mouseout:function(){
+      $(this).children('button').toggleClass('show');
+    }
+},'li.search-result-item');
 

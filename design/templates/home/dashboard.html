@@ -4,12 +4,11 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
 	<title>BioDesiger</title>
-	<link rel="stylesheet" href="/static/css/dashboard.css">
-	<link rel="stylesheet" type="text/css" href="/static/css/bootstrap.css" />
-	<!--<script type="text/javascript" src="/static/js/jquery-2.1.1.min.js"></script>-->
+	 
+	<link rel="stylesheet" type="text/css" href="/static/css/bootstrap.css"/>
+    <link rel="stylesheet" href="/static/css/dashboard.css">
 	<script type="text/javascript" src="/static/js/jquery-1.7.js" ></script>
 	<script type="text/javascript" src="/static/js/jquery-ui-1.8.16.custom.js" ></script>
-	
 	<script type="text/javascript" src="/static/js/jquery.tmpl.js"></script>
 	<script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
 </head>
@@ -43,15 +42,15 @@
 </script>
 <body>
     <div id="container" class="box block-box">
-    	<div id="bananer" class="box-item">
-    		<div id="logo">
+    	<div id="bananer" class="box-item box inline-box">
+    		<div id="logo" class="box-item">
                 <a href="/home/project">
         			<img src="/static/img/logo_white_small.png" alt="logo" class="img-rounded" >
         		    <span>BioDesigner</span>
                 </a>
     		</div>
-            <button id="add" class="btn btn-primary" >Add</button>
-            <ul id="buttonArea">
+            <button id="add" class="box-item" >Add Function Tags</button>
+            <ul id="buttonArea" class="box-item">
             </ul>
     	</div>
     	<div id="main" class="box-item box inline-box">
@@ -59,8 +58,8 @@
 				<div id="search_part_container">
                     <h1>search</h1>
                     <div id="search_container">
-                        <input type="text" class="search_input" id="search_part_input" />
-                        <button  class="btn btn-success search_button btn-lg" id="search_part_button" >search</button>
+                        <input type="text" class="search_input" id="search_part_input" placeholder="Input" />
+                        <span id="search_part_button" class="glyphicon glyphicon-search"></span>
                     </div>
                     <div class="result_container" id="part_result_container">
                     </div>
@@ -84,27 +83,16 @@
                     <canvas id="background" height="100" width="100"></canvas>
                 </div>
                 <div id="operation_recommand_container" class="box-item"></div>
-            </div>        
+            </div>  
+            <div id="message" class="box-item">
+                <h1 id="part_name">partname</h1>
+                <span id="part_type">Type:part_type</span>
+                <span id="part_nickname">part_nickname</span>
+                <span id="part_short_desc">part_short_desc</span>
+                <span id="description">desprition</span>
+
+            </div>      
     	</div>
-        <div id="part_info" class="hide panel panel-success">
-            <div class="panel-heading">
-                <button type="button" class="btn btn-close" id="close_info">
-                    <span class="glyphicon glyphicon-remove"></span>
-                </button>
-                <h3 class="panel-title" id="part_title"></h3>
-            </div>
-            <div class="panel-body" id="part_detail">
-                <div class="part_detail_item part_type"></div>
-                <div class="part_detail_item part_nickname"></div>
-                <div class="part_detail_title">Short Description</div>
-                <div class="part_detail_item part_short_desc"></div>
-                <div class="part_detail_title">Description</div>
-                <div class="part_detail_item part_description">
-                <p></p>
-                </div>
-                
-            </div>
-        </div>
         <div class="modal fade" id="myModal">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -124,117 +112,104 @@
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                         <button id="select" type="button" class="btn btn-primary" data-dismiss="modal">Submit</button>
                     </div>
-                </div><!-- /.modal-content -->
-            </div><!-- /.modal-dialog -->
+                </div>
+            </div>
         </div>
     </div>
-<script type="text/javascript">
-	window.chainId = {{id}};
-	window.uname = '{{username}}';
-</script>
-<script type="text/javascript" src="/static/js/dashboard.js"></script>
-<script type="text/javascript">
-	$('#close_info').click(function(event) {
-		$('#part_info').addClass('hide');
-	});
-</script>
-<script type="text/javascript">
-	$('#newpro-btn').click(function(event) {
-		$('#new-project').modal('show');
-	});
-</script>
-<script type="text/javascript">
-	$('#create-pro').click(function(event) {
-		createProject();
-	});
-</script>
-<script>
-    
-    function setDashBoardFloat(){
-    	var number;
-    	var total_width = document.body.clientWidth;
-    	if(total_width<768){
-            number=3;
-        }
-        if(768 <= total_width && total_width<992 ){
-            number=4;
-        }
-        if(992 <= total_width){
-            number=6;
-        }
-    	var elements = $('#dashboard').children().filter('*').removeClass("pull-right");
-    	for( var i = 0; i<elements.length; i++){
-    	    var row = parseInt(i/number+1);	 
-    	    if( row%2==0 ){
-    	    	$(elements[i]).addClass("pull-right");
-    	    }
-    	}
-        
-        draw(); 
-
-        function draw(){
-            var width = $('#dashboard').width();
-            var rowNumber = parseInt(elements.length/number)+1;
-            
-            var height = rowNumber*84;
-            $('#background').attr("height",height).attr("width",width);
-
-            var canvas = document.getElementById("background");
-            var context = canvas.getContext("2d");
-            context.lineWidth = 10;
-            context.strokeStyle = "#008080";
-            var radius = 42;
-            var start;
-            var stop ;
-            var centerX;
-            var centerY=86;
-            var moveToX ;
-            var moveToY = 44;
-            var lineToX ;
-            var lineToY = 44;
-            for(var i=0; i<rowNumber; i++){
-                if(i%2==0){
-                    start = 1.5*Math.PI;
-                    stop = 0.5*Math.PI;
-                    centerX=width-50;
-                    moveToX = 50;
-                    lineToX = width-50;
-                    context.moveTo(moveToX,moveToY);
-                    context.lineTo(lineToX,lineToY);
-                    context.stroke();
-                    context.beginPath();
-                    context.arc(centerX,centerY,radius,start,stop);
-                    context.stroke();
-                    context.beginPath();
-                }else{
-                    start = 0.5*Math.PI;
-                    stop = 1.5*Math.PI;
-                    centerX=50;
-                    moveToX = width-50;
-                    lineToX = 50;
-                    context.moveTo(moveToX,moveToY);
-                    context.lineTo(lineToX,lineToY);
-                    context.stroke();
-                    context.beginPath();
-                    context.arc(centerX,centerY,radius,start,stop);
-                    context.stroke();
-                    context.beginPath();
-                }
-                
-                moveToY+=84;
-                lineToY+=84;
-                centerY+=84;
-
-          
+    <script type="text/javascript">
+    	window.chainId = {{id}};
+    	window.uname = '{{username}}';
+    </script>
+    <script type="text/javascript" src="/static/js/dashboard.js"></script>
+    <script type="text/javascript">
+    	$('#close_info').click(function(event) {
+    		$('#part_info').addClass('hide');
+    	});
+    </script>
+    <script type="text/javascript">
+    	$('#newpro-btn').click(function(event) {
+    		$('#new-project').modal('show');
+    	});
+    </script>
+    <script type="text/javascript">
+    	$('#create-pro').click(function(event) {
+    		createProject();
+    	});
+    </script>
+    <script>   
+        function setDashBoardFloat(){
+        	var number;
+        	var total_width = document.body.clientWidth;
+        	if(total_width<768){
+                number=3;
             }
-            
-            
-        } 
-    }
-   
-</script>
-<script>
-    
-</script>
+            if(768 <= total_width && total_width<992 ){
+                number=4;
+            }
+            if(992 <= total_width){
+                number=6;
+            }
+        	var elements = $('#dashboard').children().filter('*').removeClass("pull-right");
+        	for( var i = 0; i<elements.length; i++){
+        	    var row = parseInt(i/number+1);	 
+        	    if( row%2==0 ){
+        	    	$(elements[i]).addClass("pull-right");
+        	    }
+        	}       
+            draw(); 
+            function draw(){
+                var width = $('#dashboard').width();
+                var rowNumber = parseInt(elements.length/number)+1;           
+                var height = rowNumber*84;
+                $('#background').attr("height",height).attr("width",width);
+                var canvas = document.getElementById("background");
+                var context = canvas.getContext("2d");
+                // context.lineWidth = 10;
+                context.lineWidth = 6;
+                context.strokeStyle = "#bbbbbb";
+                var radius = 42;
+                var start;
+                var stop ;
+                var centerX;
+                var centerY=86;
+                var moveToX ;
+                var moveToY = 44;
+                var lineToX ;
+                var lineToY = 44;
+                for(var i=0; i<rowNumber; i++){
+                    if(i%2==0){
+                        start = 1.5*Math.PI;
+                        stop = 0.5*Math.PI;
+                        centerX=width-50;
+                        moveToX = 50;
+                        lineToX = width-50;
+                        context.moveTo(moveToX,moveToY);
+                        context.lineTo(lineToX,lineToY);
+                        context.stroke();
+                        context.beginPath();
+                        context.arc(centerX,centerY,radius,start,stop);
+                        context.stroke();
+                        context.beginPath();
+                    }else{
+                        start = 0.5*Math.PI;
+                        stop = 1.5*Math.PI;
+                        centerX=50;
+                        moveToX = width-50;
+                        lineToX = 50;
+                        context.moveTo(moveToX,moveToY);
+                        context.lineTo(lineToX,lineToY);
+                        context.stroke();
+                        context.beginPath();
+                        context.arc(centerX,centerY,radius,start,stop);
+                        context.stroke();
+                        context.beginPath();
+                    }                
+                    moveToY+=84;
+                    lineToY+=84;
+                    centerY+=84;         
+                }            
+            } 
+        }   
+    </script>
 </body>
 </html>

@@ -4,12 +4,13 @@ import json
 import os.path
 import pickle
 
+from design.search_part import get_func_parts
+
 BASE = os.path.dirname(os.path.abspath(__file__))
 
-def getApriorRecommend(chainStr):
+def getApriorRecommend(chainStr, funcStr=None):
     dataList = chainStr.split('_')
     #dataList = dataList[len(dataList)-2:len(dataList)]
-    print dataList
     fList = list()
     with open(BASE+'/../freq.txt', 'rb') as f:
         fList = pickle.load(f)
@@ -196,7 +197,6 @@ def predict(m, count, s, A):
     ans = process[-1]
     # sort according to probability from high to low
     ans = sorted(ans.iteritems(), key=lambda item: item[1][0], reverse=True)
-    print ans
 
     if len(ans) == 0:
         return None     # Can't predict, because of no answer can be find

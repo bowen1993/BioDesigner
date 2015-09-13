@@ -11,14 +11,20 @@
 <body>
 	<div id="container" class="box inline-box">
 	    	<div id="project-area" class="box-item box block-box">
-	    		<div id="logo" class="box-item">
+	    		<div id="logo">
 	    			<img src="/static/img/logo_white_small.png" alt="logo">
 	    			<span>BioDesigner</span>
 	    		</div>
-	    		<ul id="project-shop" class="box-item box inline-box">
-	    			<li class="box-item"><span id="add-project" class="glyphicon glyphicon-plus"></span></li>
-	    			<li class="box-item"><span>Project</span></li>
-	    			<li class="box-item"><span id="edit-project">Edit</span></li>
+	    		<ul id="project-shop" class=" box inline-box">
+	    			<li class="box-item">
+	    				<span id="add-project" class="glyphicon glyphicon-plus"></span>
+	    			</li>
+	    			<li class="box-item">
+	    				<span>Project</span>
+	    			</li>
+	    			<li class="box-item">
+	    				<span id="edit-project">Edit</span>
+	    			</li>
 	    		</ul>
 	    		<!-- <div id="search" class="box-item">
 	                <div id="search-area">
@@ -26,17 +32,9 @@
 	                	<span class="glyphicon glyphicon-search"></span>
 	                </div>
 	    		</div> -->
-	    		<ul id="project-content" class="box-item"></ul>
+	    		<ul id="project-content">
+	    		</ul>
 	    	</div>
-			<div id="device-area" class="box-item box block-box">
-				<div id="device-title" class="box-item">
-					<span>DEVICES</span>
-				</div>
-				<div id="device-shop" class="box-item">
-					<button id="add-device" class="btn btn-default">New Device</button>
-				</div>
-				<ul id="device-content" class="box-item"></ul>
-			</div>	
 			<div id="main" class="box-item box block-box">
 				<div id="main-shop" class="box-item">
 					<ul id="label-container">
@@ -45,9 +43,9 @@
 						<li><span id="track">device</span></li>
 					</ul>
 					<ul id="button-nav">
-						<li><button class="btn btn-default">Design</button></li>
-						<li><button class="btn btn-default">Design</button></li>
-						<li><button class="btn btn-default">Design</button></li>
+						<li><button class="btn btn-default" id="get_result">Get Result</button></li>
+						<li><button class="btn btn-default" id="version">Version</button></li>
+						<li><button class="btn btn-default" id="to_system">System Recommendation</button></li>
 					</ul>
 				</div>
 				<div id="main-content" class="box-item">
@@ -68,9 +66,10 @@
 				<div id="infos-content" class="box-item">
 					<h1>device</h1>
 					<span>Length: 0</span>
-					<button id="doDesign" class="btn btn-primary">Design</button>
+					<button id="doDesign" disabled="disabled">Design</button>
 				</div>
-			</div>		
+			</div>	
+			<div class="hint-info hide"></div>	
 	</div>
 	<div class="modal fade add-window" id="addProject">
 		<div class="modal-dialog">
@@ -94,7 +93,10 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-warning btn-close" data-dismiss="modal">Close</button>
-					<button type="button" id="submit-project" class="btn btn-primary"><span class="glyphicon glyphicon-ok"></span>OK</button>
+					<button type="button" id="submit-project" class="btn btn-primary">
+						<span class="glyphicon glyphicon-ok"></span>
+						OK
+					</button>
 				</div>
 			</div>
 		</div>
@@ -128,11 +130,12 @@
         			<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         			<h4 class="modal-title" id="myModalLabel">Waring </h4>
       			</div>
-      			<div class="modal-body">
+      			<div id="waring-content" class="modal-body">
         			Please select a project to edit
       			</div>
       			<div class="modal-footer">
         			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        			<button id="delete-project" type="button" class="btn btn-default hide" data-dismiss="modal">Delete</button>
       			</div>
     		</div>
   		</div>

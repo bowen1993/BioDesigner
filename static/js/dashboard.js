@@ -4,7 +4,7 @@ var part_type;
 var copy_id;
 var copy_name;
 var copy_type;
-var isCopy;
+var isCopy = 0;
 var recommandIDs = new Array();
 var recommandNames = new Array();
 var recommandTypes = new Array();
@@ -23,7 +23,8 @@ $(document).ready(function(){
     setFrame();//根据浏览器计算框架
     setDroppable($('.receive_style'));//将本地的接收组件设置为可以接受
     setDashboardDroppable($('#dashboard'));
-    //为bananer 添加按钮加事件
+    // setAddDroppable( $('.add_button_receive') );
+    // add functions button click
     $(document).on({
         click:function(){
             var elems = $('ul#select-track').children('li');
@@ -58,16 +59,30 @@ $(document).ready(function(){
     $(document).on({
         click:function(){
             $(this).parent().remove();//删除标签
-            //后台交互
         }
     },'#bananer ul#buttonArea li button.close');
     //为搜索加事件
     $(document).on({
         click:function(){
             var input=$('#search_part_input').val();
-            getSearchPart(input);
+            if(input.length==0){
+                $('input#search_part_input').addClass('error').attr('placeholder','waring');
+            }else{
+                $('input#search_part_input').removeClass('error').attr('placeholder','shuru');
+                getSearchPart(input);
+            }
         }
     },'#search_part_button');
+    // $(document).on({
+    //     keyup:function(){
+
+    //     },
+    //     blur:function(){
+    //         if($('#search_part_input').val().length==0){
+
+    //         }
+    //     }
+    // },'input#search_part_input');
     //为组件 添加 点击出 信息 事件
     $(document).on({
         click:function(){
@@ -80,24 +95,86 @@ $(document).ready(function(){
     },'.show_message');
      //处理右键点击出 复制 粘贴 删除
     $(document).on({
-        mousedown: function(e){
-            if(e.which==3){
+        mousedown: function(ev){
+            if(ev.which==3){
                 $('.click_div').remove();
                 var html="<div class='click_div'></div>";
                 var click_div=$(html);
+                var pos = getPos($(this), ev);
+                click_div.css('top', pos.y).css('left',pos.x);
+                var element = $(this).parent();
+                var nextElem = element.next('.part-cell');
+                var nextPart = nextElem.children('.receive_style').children('.operation_part_style ');
+                var isNextDropped = nextPart.length == 1;
                 if($(this).children('.operation_part_style').length==0){
-                    html="<div class='paste'>paste</div>";
+                    if( isNextDropped){
+                        var next_id = nextPart.attr('part_id');
+                        var prevElem = element.prev('.part-cell');
+                        var prevPart = prevElem.children('.receive_style').children('.operation_part_style');
+                        if(prevPart.length == 1){
+                            var prev_id = prevPart.attr('part_id');
+                            html = "<div class='recommend'>recommend</div>";
+                            var recommend = $(html);
+                            recommend.attr('recommend_ids',prev_id+'_'+next_id);
+                            click_div.prepend( recommend );
+                        }
+                    }
+                    if( isCopy == 1){
+                        html="<div class='paste'>paste</div>";
+                        click_div.prepend( $(html) );
+                    }
                 }else{
+                    if( isNextDropped ){
+                        var next_id = nextPart.attr('part_id');
+                        var this_id = $(this).children('.operation_part_style').attr('part_id');
+                        html = "<div class='recommend'>recommend</div>";
+                        var recommend = $(html);
+                        recommend.attr('recommend_ids',this_id+'_'+next_id);
+                        click_div.prepend( recommend );
+                    }
                     html="<div class='copy'>copy</div>";
+                    var copy=$(html);
+                    click_div.prepend(copy);
                 }
-                var copy=$(html);
                 html="<div class='delete'>delete</div>";
                 var remove=$(html);
-                click_div.prepend(copy).prepend(remove);
+                // if(){
+                //     html = "<div class='recommend'>recommend</div>";
+                //     var recommend = $(html);
+                //     click_div.prepend( recommend );
+                // }
+                click_div.prepend(remove);
                 $(this).prepend(click_div);
             }
         }
     },'.receive_style');
+    $(document).on({
+        click:function(){
+            $('.click_div').remove();
+        }
+    },'#container');
+    $(document).on({
+        keydown: function(ev){
+           var oEvent = ev || event;
+            if(oEvent.keyCode == 13){
+                $('#search_part_button').trigger('click');
+            } 
+        }
+    },'input#search_part_input');
+    function getPos(element, ev){
+        var elementX = element.offset().left,
+            elementY = element.offset().top;
+        var oEvent = ev || event;
+        var scrollTop = document.documentElement.scrollTop || 
+                        document.body.scrollTop;
+        var scrollLeft = document.documentElement.scrollLeft || 
+                        document.body.scrollLeft;
+        var clientX = oEvent.clientX;
+        var clientY = oEvent.clientY;
+        var x = clientX + scrollLeft -elementX,
+            y = clientY + scrollTop - elementY;
+        return {'x': x, 'y': y};
+    }
     //点击 复制
     $(document).on({
         click: function(){
@@ -150,7 +227,12 @@ $(document).ready(function(){
             }
         }
     },'.delete');
-
+    $(document).on({
+        click:function(){
+            var recommend_ids = $(this).attr('recommend_ids');
+            //  龚博文 
+        }
+    },'.recommend');
     //为加号按钮设置点击的事件
     $(document).on({
         click:function(){
@@ -210,6 +292,7 @@ function setFrame () {
     var operation_recommand_height=$('#operation_recommand_container').height();
     var dashboard_container_height = sidebar_height-operation_recommand_height;
     $('#dashboard_container').css("height",dashboard_container_height);
+    $('#message').css('height',sidebar_height);
     setDashBoardFloat();
 
     // var total_width=document.documentElement.clientWidth;//获得屏幕宽度
@@ -247,19 +330,18 @@ function setFrame () {
      
 }
 function getFunctions(track_id){
-    // $.ajax({
-    //     url:'/home/getTrackFunctions?track_id='+track_id,
-    //     type:'GET',
-    //     success:function(result){
-    //         if(result['isSuccessful']){
-    //             addFunctions(result['functions']);
-    //         }
-    //     }
-    //});
-var result = {"functions": [{"id": 25, "name": "artificial biofilm"}, {"id": 30, "name": "Genetic memory devices "}, {"id": 27, "name": "water purification"}, {"id": 26, "name": "degrading, and decolourising azo-dyes"}, {"id": 28, "name": "genetic lock"}, {"id": 29, "name": "intracellular calcium spikes"}, {"id": 61, "name": "phage cocktail"}, {"id": 64, "name": "biological signals"}, {"id": 38, "name": "target gene replacement "}, {"id": 63, "name": "chlorophyll biosynthetic pathway "}, {"id": 80, "name": "gene therapy"}, {"id": 85, "name": "environment  threaten"}, {"id": 84, "name": "decontamination"}, {"id": 99, "name": "extract metal\u2028"}, {"id": 98, "name": "raising n-butanol"}, {"id": 90, "name": "circuits implementing intercellular regulation"}, {"id": 104, "name": "electricity"}, {"id": 106, "name": "antibiotic resistant bacteria"}, {"id": 143, "name": "protein libraries "}, {"id": 177, "name": "bio-imaging system"}, {"id": 175, "name": "detecte and prevent bacteria"}, {"id": 157, "name": "degrade smelly molecules"}, {"id": 170, "name": "human body for healthcare"}], "isSuccessful": true};
+    $.ajax({
+        url:'/home/getTrackFunctions?track_id='+track_id,
+        type:'GET',
+        success:function(result){
+            console.log(result);
+            //var result = {"functions": [{"id": 25, "name": "artificial biofilm"}, {"id": 30, "name": "Genetic memory devices "}, {"id": 27, "name": "water purification"}, {"id": 26, "name": "degrading, and decolourising azo-dyes"}, {"id": 28, "name": "genetic lock"}, {"id": 29, "name": "intracellular calcium spikes"}, {"id": 61, "name": "phage cocktail"}, {"id": 64, "name": "biological signals"}, {"id": 38, "name": "target gene replacement "}, {"id": 63, "name": "chlorophyll biosynthetic pathway "}, {"id": 80, "name": "gene therapy"}, {"id": 85, "name": "environment  threaten"}, {"id": 84, "name": "decontamination"}, {"id": 99, "name": "extract metal\u2028"}, {"id": 98, "name": "raising n-butanol"}, {"id": 90, "name": "circuits implementing intercellular regulation"}, {"id": 104, "name": "electricity"}, {"id": 106, "name": "antibiotic resistant bacteria"}, {"id": 143, "name": "protein libraries "}, {"id": 177, "name": "bio-imaging system"}, {"id": 175, "name": "detecte and prevent bacteria"}, {"id": 157, "name": "degrade smelly molecules"}, {"id": 170, "name": "human body for healthcare"}], "isSuccessful": true};
             if(result['isSuccessful']){
                 addFunctions(result['functions']);
+                console.log(result['functions']);
             }
+        }
+    });
 }
 function addFunctions(functions){
     $('div#myModal ul#select-function').empty();
@@ -341,8 +423,13 @@ function showMsg(msg){
 
 //获取组件搜索的结果并显示出来
 function getSearchPart(input){
+    var str = '';
+    var span_elems = $('ul#buttonArea span.label');
+    for(var i = 0; i<span_elems.length; i++){
+        str = str+ '_' +span_elems[i].getAttribute('function-id');
+    }
     $.ajax({
-		url:'/home/search?keyword='+input,
+		url:'/home/search?keyword='+ input + '&func=' +str ,
 		type:'GET' ,
         dateType:'JSON',
         success:function(result){
@@ -465,36 +552,33 @@ function setDashboardDroppable(elems){
     });
 }
 //设置操作区 加号按钮的接收
-/*function setAddDroppable(elems){
-    elems.droppable({        
-        drop:function(){
-            //var element = $(this).parent();
-             //$('.operation_recommends_list').remove();
-             //判断是前按钮 还是后按钮
-             
-            if( $(this).is('.btn-front') ){
-                     有问题
-                $('.btn-front').trigger('click');
-                getInsert( $( $('receive_style')[0] ) );
+// function setAddDroppable(elems){
+//     elems.droppable({        
+//         drop:function(){
+//             //var element = $(this).parent();
+//              //$('.operation_recommends_list').remove();
+//              //判断是前按钮 还是后按钮
+//              alert(1);
+//             // if( $(this).is('.btn-front') ){
+//             //          有问题
+//             //     $('.btn-front').trigger('click');
+//             //     getInsert( $( $('receive_style')[0] ) );
                 
-            }else{
-                $('.btn-back').trigger('click');
-                getInsert( $(this).parent().next('.part-cell').children('.receive_style') );
-            }
+//             // }else{
+//             //     $('.btn-back').trigger('click');
+//             //     getInsert( $(this).parent().next('.part-cell').children('.receive_style') );
+//             // }
             
-            saveChain();
+//             // saveChain();
             
-        },
-        out:function(){
-            success=0;
-        },
-        over:function(){
-            success=1;
-        },
-        hoverClass:"receive_hover"
-    });
-}*/
-//巩的方法
+//         },
+//         over:function(){
+//             alert('over');
+//         },
+//         hoverClass:"receive_hover"
+//     });
+// }
+//  保存 链
 function saveChain(){
     //showMsg('Saving...');
     var chain = getCurrChain();
@@ -516,7 +600,7 @@ function saveChain(){
         }
     });
 }
-//巩的方法
+// 获取链  
 function getCurrChain(){
     var chain = "";
     $('.operation_part_style').each(function(index,elem){
@@ -534,17 +618,21 @@ function getPartInfo(part_name){
         }
     });
 }
-//巩的方法
+//  显示 组件信息
 function showPartInfo(result){
     if (result['isSuccessful']){
-        $('#part_info').removeClass('hide');
-        $('#part_info h3').html(result['part_name']);
-        $('#part_info div.part_type').html('Type: ' + result['part_type']);
-        $('#part_info div.part_nickname').html('Nickname: '+result['nickname']);
-        $('#part_info div.part_short_desc').html(result['short_desc']);
-        $('#part_info div.part_description').html(result['description']);
-        $('#part_info div.part_url a').html(result['part_url'])
-        $('#part_info div.part_url a').attr('href' ,result['part_url'])
+        $('#message h1#part_name').html(result['part_name']);
+        $('#message span#part_type').html('Type: ' + result['part_type']);
+        $('#message span#part_nickname').html('Nickname: '+result['nickname']);
+        $('#message span#part_short_desc').html(result['short_desc']);
+        $('#message span#part_description').html(result['description']);
+        // $('#message span#part_url').html('click to show ')
+        $('#message a').attr('href' ,result['part_url'])
+        for (var i = 0; i < result['paper'].length; i++){
+            var paper = result['paper'][i];
+            var htmlStr = $('<a href="'+paper['url']+'"><span id="part_url">'+paper['name']+'</span></a>')
+            $('#message').append(htmlStr);
+        }
     }
 }
 //获取左侧推荐的组件并显示
@@ -577,9 +665,10 @@ function getOperationRecommend(){
                     var insertElems=$('#recommand_part_list').tmpl(result_list);
                     var row = $("<div class='row'></div>");
                     row.append(insertElems);
-                    var line = $("<div class='line'></div>");
+                    var line = $("<div class='line col-xs-9 col-sm-9 col-md-9'></div>");
+                    row.append(line);
                     var list = $("<div class='operation_recommand_list'></div>");
-                    list.append(row).append(line);
+                    list.append(row);
                     $('#operation_recommand_container').append(list);
                 }  
                 setOperationRecommandDraggable($('.operation_recommand_part'));

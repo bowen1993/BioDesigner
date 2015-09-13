@@ -32,20 +32,25 @@ a{
     -moz-box-flex:0;
     -o-box-flex:0;
 }
+
 div#container{
     width:100%;
+    min-width: 800px;
     height:100%;
+    min-height: 600px;
 }
 div#bananer{
     width:100%;
     height:50px;
     background: rgb(221,221,221);
+    background: #f7f7f7;
 }
 div#logo{
     height:50px;
     width:250px;
-    background: rgb(98,206,104);
-    float:left;
+    /*background: rgb(98,206,104);*/
+    background: #5faeff;
+    /*float:left;*/
 }
 div#logo img{
     height:50px;
@@ -55,28 +60,37 @@ div#logo img{
 }
 div#logo span{
     color:white;
-    font-size: 20px;
+    font-size: 30px;
     line-height: 50px;
     display: block;
     float:left;
 }
 div#bananer button#add{
-    height:40px;
-    font-size: 20px;
-    margin:5px 10px;
-    float: left;
+    height:30px;
+    width:200px;
+    border-radius: 5px;
+    border-width: 0;
+    background: #ff8f4e;
+    line-height: 30px;
+    font-size: 18px;
+    margin:10px 10px;
+    color: white;
+    /*float: left;*/
 }
 div#bananer ul#buttonArea{
+    box-flex:1;
+    -webkit-box-flex:1;
+    -moz-box-flex:1;
+    -o-box-flex:1;
     margin:0;
     padding-left: 0;
-    /* padding: 0;
-    border:0 solid grey; */
-    float:left;
+    /*float:left;*/
     height:50px;
+    overflow: auto;
 }
 div#bananer ul#buttonArea li{
     list-style-type: none;
-    float:left;
+    float: left;
     height:40px;
     margin-left:2px;
     margin-top: 5px;
@@ -106,31 +120,36 @@ div#search_part_container{
     -webkit-box-flex:3;
     -moz-box-flex:3;
     -o-box-flex:3;*/
-    background: rgb(44,47,50);
+    /*background: rgb(44,47,50);*/
+    background: #3d414d;
 }
 div#search_part_container h1{
     margin: 0;
     height:33px;
-    background-color: rgb(127,127,127);
+    /*background-color: rgb(127,127,127);*/
+    background: #4d99e0;
     color:#FFF;
-    font-size: 1.65em;
+    font-size: 24px;
+    line-height: 33px;
     text-align: center;
 }
 div#search_part_container div#search_container{
     height:40px;
     width:100%;
+    background: #4d99e0;
 }
-
 div#search_part_container div#search_container input.search_input{
-    width:61.8%;
-    height: 32px;
-    margin-top: 4px;
-    border-radius: 15px;
+    float: left;
+    width:190px;
+    /*width:61.8%;*/
+    height: 26px;
+    margin-top: 5px;
+    margin-left: 15px;
+    border-radius: 5px;
     box-shadow: none;
     border-width: 0;
     padding-left: 10px;
 }
-
 div#search_part_container div#search_container input.search_input:focus{
     box-shadow: none;
     border-left: 0px;
@@ -138,15 +157,30 @@ div#search_part_container div#search_container input.search_input:focus{
     border-top: 0px;
     border-bottom: 0px;
 }
-
-div#search_part_container div#search_container button.search_button{
-    font-size: 1.2em;
-    text-align: center;
-    padding:2%;
-    width:30%;
-    border-radius: 10px;   
+div#search_part_container div#search_container input.error::-webkit-input-placeholder{
+    color:red;
 }
-
+div#search_part_container div#search_container input.error::-moz-placeholder{
+    /* firefox 19+ */
+    color:red;
+}
+div#search_part_container div#search_container input.error::input-moz-placeholder{
+    color:red;
+}
+div#search_part_container div#search_container input.error:-ms-input-placeholder{
+    /*ie*/
+    color:red;
+}
+div#search_part_container div#search_container span#search_part_button{
+    display: block;
+    float: right;
+    height:26px;
+    line-height: 26px;
+    font-size: 20px;
+    margin-right: 15px; 
+    margin-top: 5px;
+    color: white;
+}
 div#part_result_container{
    /* box-flex:1;
     -webkit-box-flex:1;
@@ -172,7 +206,6 @@ div#part_result_container div.part_style img,div#recommand_search_container img{
     height:30px;
     width:30px;
 }
-
 div#recommand_container{
     /*box-flex:2;
     -webkit-box-flex:2;
@@ -184,7 +217,8 @@ div#recommand_container{
 div#recommand_container h1{
     margin: 0;
     height:33px;
-    background-color: rgb(127,127,127);
+    /*background-color: rgb(127,127,127);*/
+    background: #5faeff;
     color:#FFF;
     font-size: 1.65em;
     text-align: center;
@@ -196,6 +230,7 @@ div#recommand_search_container{
     -o-box-flex:2;*/
     width:100%;
     overflow: auto;
+    background: #3d414d;
 }
 div#main_right{
     box-flex:1;
@@ -203,11 +238,10 @@ div#main_right{
     -moz-box-flex:1;
     -o-box-flex:1;
     height: 100%;
-    /*float:left;*/
 }
 div#operation_recommand_container{
-    border-top: 3px solid black;
-    height:200px;
+    border-top: 3px solid #eeeeee;
+    height:250px;
     width:100%;
     overflow: auto;
 }
@@ -218,21 +252,23 @@ div#operation_recommand_container div.operation_recommand_list{
     height:80px;
    /* background: #008080;*/
 }
-div#operation_recommand_container div.operation_recommand_list div.line{
+div#operation_recommand_container div.row div.line{
     position: absolute;
-    top:35px;
+    margin-left: 10px;
+    top:22px;
     left:0;
-    width:100%;
-    height:10px;
-    background: #008080;
+    z-index: -1;
+    height:4px;
+    background: #bbbbbb;
 }
 div#operation_recommand_container div.row{
-    position: absolute;
+   /* position: absolute;
     top: 0px;
-    left: 0px;
-    width:100%;
+    left: 0px;*/
+    position: relative;
+    margin-left: 10%;
+    width:80%;
     height:80px;
-    border-radius: 10px;
 }
 div#operation_recommand_container div.row div.operation_recommand_part{
     height:80px;
@@ -305,9 +341,9 @@ div.operation_recommends_list div.operation_part_style{
     float: left;
 } */
 div.click_div{
-    height:100%;
-    width:100%;
-    border-radius: 10px;
+    /*height:100%;
+    width:100%;*/
+    width:120px;
     background: rgb(102,102,102);
   
     position: absolute;
@@ -315,16 +351,15 @@ div.click_div{
     left:0;
     z-index: 3;
 }
-div.copy,div.paste,div.delete{
+div.copy,div.paste,div.delete,div.recommend{
     height:40px;
     width:100%;
-    border-radius: 10px;
     color:white;
-    font-size: 25px;
+    font-size: 20px;
     line-height: 40px;
     text-align: center;
 }
-div.copy:hover,div.paste:hover,div.delete:hover{
+div.copy:hover,div.paste:hover,div.delete:hover,div.recommend:hover{
     background: rgb(3,147,201);
 }
 
@@ -337,6 +372,7 @@ div.operation_part_style img{
     width:60px;
     display: block;
     margin: 0 auto;
+    margin-top: 6px;
 }
 div.operation_part_style span{
     display: block;
@@ -390,7 +426,31 @@ div.floatRight{
 }
 canvas#background{
 }
-
+div#message{
+    width:240px;
+    height:100%;
+    /*border-left: 1px solid grey;*/
+    overflow: auto;
+}
+div#message h1{
+    margin:0;
+    padding-top: 15px;
+    width:100%;
+    height:70px;
+    line-height: 40px;
+    font-size: 24px;
+    text-align: center;
+    color: #ff4e74;
+}
+div#message span{
+    display: block;
+    margin-top: 10px;
+    padding-left: 20px;
+    width:100%;
+    line-height: 24px;
+    font-size: 16px;
+    text-align: left;
+}
 
 div#part_info{
     position: absolute;

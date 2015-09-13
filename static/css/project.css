@@ -10,6 +10,25 @@ body{
 li{
 	list-style: none;
 }
+.btn {
+  -webkit-user-select:none;
+  background-image:none;
+  border:1px solid transparent;
+  border-bottom-left-radius:0px;
+  border-bottom-right-radius:0px;
+  border-top-left-radius:0px;
+  border-top-right-radius:0px;
+  cursor:pointer;
+  display:inline-block;
+  font-size:14px;
+  font-weight:normal;
+  line-height:1.42857143;
+  margin-bottom:0;
+  padding:0;
+  text-align:center;
+  vertical-align:middle;
+  white-space:nowrap;
+}
 .box{
 	display: box;
 	display: -webkit-box;
@@ -36,15 +55,17 @@ li{
 }
 div#container{
 	width:100%;
+	min-width: 800px;
+    height:100%;
+    min-height: 600px;
 }
 div#project-area{
 	width:250px;
 	height:100%;}
 div#project-area div#logo{
-	margin-bottom: 3px;
 	width:100%;
 	height:60px;
-	background: #4ea6ff;
+	background: #5faeff;
 }
 div#project-area div#logo img{
 	width:60px;
@@ -59,7 +80,7 @@ div#project-area ul#project-shop{
 	margin-bottom: 0px;  
 	width:100%;
 	height:40px;
-	background: #4ea6ff;
+	background: #4d99e0;
 }
 div#project-area ul#project-shop li{
 	width:70px;
@@ -105,16 +126,17 @@ div#project-area div#search div#search-area span{
 	line-height: 26px;
 }*/
 div#project-area ul#project-content{
-	box-flex:1;
+	/*box-flex:1;
 	-webkit-box-flex:1;
 	-moz-box-flex:1;
-	-o-box-flex:1;
+	-o-box-flex:1;*/
 	margin-bottom: 0px;
 	width:100%;
 	overflow: auto;
-	background: #3d80c4;
+	/*background: #3d80c4;*/
+	background: #3d414d;
 }
-div#project-area ul#project-content li{
+/*div#project-area ul#project-content li{
 	width:100%;
 	height:30px;
 	text-align: center;
@@ -127,61 +149,101 @@ div#project-area ul#project-content li.project-label-click{
 	color:black;
 }
 div#project-area ul#project-content li:hover{
-	/*background: #4ea6ff; */
 	background: #e6e6e6;
 	color:black;
+}*/
+div#project-area ul#project-content li.project-label {
+	position: relative;
+	margin-top: 1px;
 }
-div#device-area{
-	width:150px;
-	height:100%;
-}
-div#device-area div#device-title{
-	margin-bottom: 3px;
-	width:100%;
-	height:60px;
-	
-}
-div#device-area div#device-title span{
-	display: block;
-	width:100%;
-	height:100%;
-	color:#4ea6ff;
-	font-size: 24px;
-	line-height: 60px;
-	text-align: center;
-}
-div#device-area div#device-shop{
+div#project-area ul#project-content li.project-label div.button{
+	margin:0;
 	width:100%;
 	height:40px;
-	background: ;
-}
-div#device-area div#device-shop button{
-	margin-left:10px;
-	background: #4ea6ff;
+	/*border-radius: 5px;*/
+	background: #3d80c4;
 	color:white;
 }
-div#device-area ul#device-content{
-	box-flex:1;
-	-webkit-box-flex:1;
-	-moz-box-flex:1;
-	-o-box-flex:1;
-	width:100%;
-	overflow: auto;
+div#project-area ul#project-content li.project-label-click div.button{
+	background: #4ea6ff;
 }
-div#device-area ul#device-content li{
+div#project-area ul#project-content li.project-label div.button:hover{
+	background: #4ea6ff;
+}
+div#project-area ul#project-content li.project-label div.button span{
+	display: block;
+	float: left;
+	margin: 0;
+	padding: 0;
+	height:100%;
+	line-height: 40px;
+}
+div#project-area ul#project-content li.project-label div.button span.first{
+	width:10%;
+	font-size: 14px;
+}
+div#project-area ul#project-content li.project-label div.button span.second{
+	padding-left: 20px;
+	width:90%;
+	font-size: 24px;
+	text-align: left;
+}
+div#project-area ul#project-content li.project-label div.project-label-shop{
+	display: none;
+	position: absolute;
+	top:0;
+	right:0;
+	height:100%;
+}
+div#project-area ul#project-content li.project-label div.show{
+	display: block;
+}
+div#project-area ul#project-content li.project-label div.project-label-shop span{
+	margin-right: 10px;
+	line-height: 40px;
+	font-size: 24px;
+	color: white;
+}
+/*div#project-area ul#project-content li.project-label button div.project-label-shop span:hover{
+	background: red;
+}*/
+div#project-area ul#project-content li.project-label ul.device-menu{
 	width:100%;
-	height:30px;
-	text-align: center;
+	background: #3d414d;
+}
+div#project-area ul#project-content li.project-label ul.device-menu-hide{
+	display: none;
+}
+div#project-area ul#project-content li.project-label ul.device-menu li.device-label{
+	position: relative;
+	width:100%;
+	height:40px;
+	line-height: 40px;
 	font-size: 18px;
+	text-align: center;
+	color: white;
+
+}
+div#project-area ul#project-content li.project-label ul.device-menu li.device-label:hover{
+	background: #4ea6ff;
+}
+div#project-area ul#project-content li.project-label ul.device-menu li.device-label-click{
+	background: #4ea6ff;
+	color: white;
+}
+div#project-area ul#project-content li.project-label ul.device-menu li.device-label div.device-label-shop{
+	display: none;
+	position: absolute;
+	top: 0;
+	right: 0;
+}
+div#project-area ul#project-content li.project-label ul.device-menu li.device-label div.device-label-shop.show{
+	display: block;
+}
+div#project-area ul#project-content li.project-label ul.device-menu li.device-label div.device-label-shop span{
+	margin-right: 7px;
 	line-height: 30px;
-}
-div#device-area ul#device-content li:hover{
-	background: #e6e6e6;
-	color:black;
-}
-div#device-area ul#device-content li.device-label-click{
-	background: #e6e6e6;
-	color:black;
+	font-size: 18px;
 }
 div#main{
 	box-flex:1;
@@ -191,35 +253,41 @@ div#main{
 	height:100%;
 }
 div#main div#main-shop{
+	position: relative;
 	margin-bottom: 3px;
 	width:100%;
 	height:60px;
 }
-div#main div#main-shop ul#label-container{
-	float:left;
-	height:100%;
-}
-div#main div#main-shop ul#button-nav{
-	float:right;
-	width:300px;
-	height:100%;
-}
-div#main div#main-shop ul#label-container li,div#main div#main-shop ul#button-nav li{
+div#main div#main-shop ul li{
 	float: left;
 	height:100%;
 }
-div#main div#main-shop ul#label-container li span{
+div#main div#main-shop ul#label-container{
+	height:100%;
+}
+div#main div#main-shop ul#label-container li span {
 	margin-left: 20px;
 	line-height: 60px;
-	font-size: 25px;
+	font-size: 24px;
+	color:rgb(152,152,152);
+}
+div#main div#main-shop ul#label-container span#track {
+	color:rgb(0,205,119);
+}
+div#main div#main-shop ul#button-nav{
+	position: absolute;
+	top:0;
+	right:0;
+	height:100%;
+	background: white;
 }
 div#main div#main-shop ul#button-nav li button{
-	margin-left: 20px;
+	margin-right: 15px;
 	margin-top:17px;
 	padding: 0 5px;
 	height:26px;
 	color:white;
-	font-size: 16px;
+	font-size: 18px;
 	line-height: 26px;
 	background: #4ea6ff;
 }
@@ -229,7 +297,7 @@ div#main div#main-content{
 	-moz-box-flex:1;
 	-o-box-flex:1;
 	width:100%;
-	background: #f2f2f2;
+	background: #f7f7f7;
 }
 div#main div#main-content img#chain-img{
 	/*height:200px;
@@ -247,14 +315,20 @@ div#project-infos div#infos-shop{
 	background: #4ea6ff;
 }
 div#project-infos div#infos-shop div#dropdown{
-	margin-left: 20px;
+	margin:0 auto;
 	height:100%;
 }
 div#project-infos div#infos-shop div#dropdown span{
+	display: block;
+	float: left;
+	width:20%;
 	line-height: 60px;
-	font-size: 30px;
+	font-size: 24px;
 	text-align: center;
 	color: white;
+}
+div#project-infos div#infos-shop div#dropdown span#user {
+	width:70%;
 }
 div#project-infos div#infos-shop ul#dropdown-menu{
 	position: absolute;
@@ -286,10 +360,12 @@ div#project-infos div#infos-content{
 }
 div#project-infos div#infos-content h1{
 	width:100%;
-	height:60px;
+	/*height:60px;*/
 	line-height: 60px;
-	font-size: 40px;
+	font-size: 30px;
 	text-align: center;
+	color: rgb(252,50,110);
+	word-break:break-all;
 }
 div#project-infos div#infos-content span{
 	display: block;
@@ -298,10 +374,20 @@ div#project-infos div#infos-content span{
 	font-size: 24px;
 	text-align: center;
 }
-div#project-infos div#infos-content button{
-	margin-top: 20px;
-	margin-right: 20px;
-	float: right;
+div#project-infos div#infos-content button#doDesign{
+	width:150px;
+	height:30px;
+	margin:0 auto;
+	margin-left: 40px;
+	margin-top: 30px;
+	border-radius: 5px;
+	line-height: 30px;
+	font-size: 18px;
+	background: rgb(0,221,118);
+	color: white;
+}
+div#project-infos div#infos-content button#doDesign:hover {
+	background: rgb(0,254,167);
 }
 div.modal div.project-info{
 	width:80%;
@@ -318,6 +404,18 @@ div.modal div.device-info{
 }
 div#addProject input,div#addProject select,div#addDevice input{
 	border:1px solid #4ea6ff;
+}
+.hint-info{
+    position: fixed;
+    top:0;
+    right:0;
+    width: 150px;
+    height:40px;
+    background-color: rgba(0, 204, 255, 0.5);
+    text-align: center;
+    font-size:1.5em;
+    padding-top: 10px;
+    color:#FFFFFF;
 }
 
 

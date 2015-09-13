@@ -9,7 +9,8 @@ from django.core.mail import send_mail
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 
-from system.gene import search_compound, get_compound_info, find_related_compound, get_gene_info
+from system.gene import search_compound, get_compound_info, get_gene_info
+from system.gene import gene_graph
 
 @csrf_exempt
 def systemView(request):
@@ -47,5 +48,7 @@ def getGene(request):
 @csrf_exempt
 def getRelatedCompound(request):
     cstr = request.POST.get('id')
-    result = find_related_compound(cstr)
+    graph = gene_graph(cstr, None)
+    graph.cal_graph()
+    result = graph.get_graph()
     return HttpResponse(json.dumps(result), content_type='application/json')
