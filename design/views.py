@@ -17,6 +17,7 @@ from design.models import project, functions, tracks, user_project, tracks, chai
 from design.project import searchProject, getUserProject, getChain, getChainList
 from design.recommend import getApriorRecommend, getMarkovRecommend
 from design.file import getSequenceResultImage
+from design.simulation import reaction_simulator
 
 @csrf_exempt
 def searchParts(request):
@@ -335,4 +336,33 @@ def getResultImage(request):
                 chainObj.save()
     except:
         result['isSuccessful'] = False
+    return HttpResponse(json.dumps(result), content_type="application/json")
+
+@csrf_exempt
+def simulationView(request):
+    try:
+        isLoggedIn = request.session['isLoggedIn']
+        if isLoggedIn:
+            template = loader.get_template('home/simulation.html')
+            context = RequestContext(request, {
+                })
+            return HttpResponse(template.render(context))
+        else:
+            return HttpResponseRedirect('/')
+    except KeyError:
+        return HttpResponseRedirect('/')
+
+@csrf_exempt
+def simulate(request):
+    received_json_data = json.loads(request.body)
+    reactions = received_json_data['reactions']
+    martials = received_json_data['martials']
+    reation_time = received_json_data['reaction_time']
+    try:
+        rs = reaction_simulator(reactions, martials, reation_time)
+        rs.doSimulation()
+        result = rs.getProcess()
+    except:
+        result = {}
+        traceback.print_exc()
     return HttpResponse(json.dumps(result), content_type="application/json")

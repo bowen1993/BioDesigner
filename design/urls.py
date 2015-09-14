@@ -23,4 +23,6 @@ urlpatterns = patterns('',
     url(r'^changeTrack', views.changeProjectTrack),
     url(r'^deleteProject', views.deleteProject),
     url(r'^getTrackFunctions', views.getTrackFunctions),
+    url(r'^simulation$', views.simulationView),
+    url(r'^simulate$', views.simulate)
 )
