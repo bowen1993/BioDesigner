@@ -33,6 +33,11 @@ $(document).on({
 		insertElems.insertBefore( $(this) );
 	}
 },'button#add');
+
+$(document).on({
+
+}, 'button#reset');
+
 $(document).on({
 	click:function(){
 		if( $('div.reaction-equation-area').length != 1 ){
@@ -40,6 +45,7 @@ $(document).on({
 		}
 	}
 },'div.reaction-equation-area button.remove-reaction-equation');
+
 function getElement(tag,inner){
     var element = document.createElement(tag); // create a element 
     element.innerHTML = inner;   // set element's inner html
@@ -49,5 +55,7 @@ function getElement(tag,inner){
     return element;
 }
 
+$(document).on({
+}, 'button#run');
 
 

@@ -47,7 +47,7 @@ def getGene(request):
 
 @csrf_exempt
 def getRelatedCompound(request):
-    cstr = request.POST.get('id')
+    cstr = request.POST.get('id', '')
     graph = gene_graph(cstr, None)
     graph.cal_graph()
     result = graph.get_graph()

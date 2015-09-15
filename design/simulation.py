@@ -100,11 +100,22 @@ class reaction_simulator:
             self.currentTime += tt
             self.history[self.currentTime] = copy.deepcopy(self.compound_pool)
 
+    def form_result(self):
+        formed_result = list()
+        for key in self.history:
+            compound_index = 0
+            for comp in self.history[key]:
+                item_info = {
+                    'date': key,
+                    'pv' : self.history[key][comp],
+                    'name' : comp,
+                    'order' : compound_index,
+                }
+                formed_result.append(item_info)
+                compound_index += 1
+        return sorted(formed_result, key=lambda x: (x['order'] ,x['date']))
+
     def getProcess(self):
-        sorted_rest = sorted(self.history)
-        result = dict()
-        for key in sorted_rest:
-            result[key] = self.history[key]
-        return result
+        return self.form_result()
 
 

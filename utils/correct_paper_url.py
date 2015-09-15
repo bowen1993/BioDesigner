@@ -13,6 +13,8 @@ from design.models import paper
 def main():
     paper_list = paper.objects.all()
     for paper_obj in paper_list:
+        paper_obj.paper_url = 'http://www.ncbi.nlm.nih.gov/pubmed/%s' % paper_obj.paper_id
+        paper_obj.save() 
         set_paper_title(paper_obj)
 
 def set_paper_title(paper_obj):
