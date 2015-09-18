@@ -13,6 +13,8 @@ from importlib import import_module
 from django.conf import settings
 from django.contrib.sessions.backends.db import SessionStore
 from django.contrib.sessions.models import Session 
+from design.recommend import analyseData,getResult,toBeOne,toFrozenset
+from design.simulation import reaction_simulator
 import time
 import datetime
 import os.path
@@ -504,5 +506,219 @@ class getChainLengthTestCase(TestCase):
         self.lenResponse = self.client.get('/home/getChainLength',{'id':3})
         self.realResult = JSONDecoder().decode(self.lenResponse.content)
         self.assertEqual(self.realResult['length'],1)
+class testSimulation(TestCase):
+    data = {
+        'reactions' : [
+            {
+                'reactants' : ['a', 'a'],
+                'products' : ['c'],
+                'k' : 0.0001
+            },
+            {
+                'reactants' : ['a', 'b'],
+                'products' : ['d'],
+                'k' : 0.001
+            }
+        ],
+        'martials':[
+            ['a', 200],
+            ['b', 100]
+        ],
+        'reaction_time': 100
+    }
 
+    reactions = data['reactions']
+    martials = data['martials']
+    reation_time = data['reaction_time']
+    rs = reaction_simulator(reactions, martials, reation_time)
 
+    #preparing to testSimulation
+    def setUp(self):
+        testName = self.shortDescription()
+        print testName
+
+    #ending the test
+    def tearDown(self):
+        print "end"
+
+    #test calTT from simulation.py
+    def test_1_1(self):
+        "test calTT from simulation.py"
+        result = self.rs.calTT(1,2.0)
+        expectResult = -0.69314718056
+        isTrue = expectResult - result < 0.0001
+        self.assertTrue(isTrue,"calTT")
+
+    def test_1_2(self):
+        "test calTT from simulation.py"
+        result = self.rs.calTT(1.0,2.0)
+        expectResult = -0.69314718056
+        isTrue = expectResult - result < 0.0001
+        self.assertTrue(isTrue,"calTT")
+
+    def test_1_3(self):
+        "test calTT from simulation.py"
+        result = self.rs.calTT(1,2)
+        expectResult = -0.69314718056
+        isTrue = expectResult - result < 0.0001
+        self.assertTrue(isTrue,"calTT")
+
+    def test_1_4(self):
+        "test calTT from simulation.py"
+        result = self.rs.calTT(1.0,2)
+        expectResult = -0.69314718056
+        isTrue = expectResult - result < 0.0001
+        self.assertTrue(isTrue,"calTT")
+
+    def test_1_5(self):
+        "test calTT from simulation.py"
+        result = self.rs.calTT(-1,2.0)
+        expectResult = 0.69314718056
+        isTrue = expectResult - result < 0.0001
+        self.assertTrue(isTrue,"calTT")
+
+    def test_1_6(self):
+        "test calTT from simulation.py"
+        result = self.rs.calTT(-1.0,2.0)
+        expectResult = 0.69314718056
+        isTrue = expectResult - result < 0.0001
+        self.assertTrue(isTrue,"calTT")
+
+    #test calA from simulation.py
+    def test_2_1(self):
+        "test calA from simulation.py"
+        result = self.rs.calA(self.data['reactions'][0])
+        expectResult = 4.0
+        isTrue = expectResult - result < 0.0001
+        self.assertTrue(isTrue,"calA")
+
+    def test_2_2(self):
+        "test calA from simulation.py"
+        result = self.rs.calA(self.data['reactions'][1])
+        expectResult = 20.0
+        isTrue = expectResult - result < 0.0001
+        self.assertTrue(isTrue,"calA")
+
+    #test calA0 from simulation.py
+    def test_3_1(self):
+        "test calA0 from simulation.py"
+        result = self.rs.calA0()
+        expectResult = 24.0
+        isTrue = expectResult - result < 0.0001
+        self.assertTrue(isTrue,"calA0")
+
+class FooTest(TestCase):
+    #preparing to test
+    def setUp(self):
+        testName = self.shortDescription()
+        print testName
+
+    #ending the test
+    def tearDown(self):
+        print "end"
+
+    #test analyseData from recommend.py
+    def test_7_1(self):
+        "test analyseData from recommend.py"
+        dataList = [1,2,3,4]
+        c2 = analyseData(dataList)
+        expectResult = [set([1,2]),set([1,3]),set([1,4]),set([2,3]),set([2,4]),set([3,4])]
+        self.assertListEqual(c2,expectResult,"nalyseData Error")
+
+    def test_7_2(self):
+        "test analyseData from recommend.py"
+        dataList = []
+        c2 = analyseData(dataList)
+        expectResult = []
+        self.assertListEqual(c2,expectResult,"nalyseData Error")
+
+    #test toFrozenset from recommend.py
+    def test_8_1(self):
+        "test toFrozenset from recommend.py"
+        simdata = [[['1']],[['2']],[['3']],[['4']],[['5']]]
+        result = toFrozenset(simdata)
+        expectResult = [[frozenset(['1'])],[frozenset(['2'])],[frozenset(['3'])],[frozenset(['4'])],[frozenset(['5'])]]
+        self.assertListEqual(result,expectResult,"toFrozenset Error")
+
+    def test_8_2(self):
+        "test toFrozenset from recommend.py"
+        simdata = []
+        result = toFrozenset(simdata)
+        expectResult = []
+        self.assertListEqual(result,expectResult,"toFrozenset Error")
+
+    def test_8_3(self):
+        "test toFrozenset from recommend.py"
+        simdata = [set(['1']),set(['2']),set(['3']),set(['4'])]
+        result = toFrozenset(simdata)
+        expectResult = [[frozenset(['1'])],[frozenset(['2'])],[frozenset(['3'])],[frozenset(['4'])]]
+        self.assertListEqual(result,expectResult,"toFrozenset Error")
+
+    def test_8_4(self):
+        "test toFrozenset from recommend.py"
+        simdata = [frozenset(['1']),frozenset(['2']),frozenset(['3']),frozenset(['4'])]
+        result = toFrozenset(simdata)
+        expectResult = [[frozenset(['1'])],[frozenset(['2'])],[frozenset(['3'])],[frozenset(['4'])]]
+        self.assertListEqual(result,expectResult,"toFrozenset Error")
+
+    #test getResult from recommend.py
+    def test_9_1(self):
+        "test getResult from recommend.py"
+        c2 = [[['1'],['2'],['3'],['5']],[['1','3'],['3','2'],['2','5'],['3','5']],[['3','2','5']]]
+        dataList = ['1']
+        result = getResult(dataList,c2)
+        expectResult = ['3']
+        self.assertListEqual(result,expectResult,"getResult Error")
+
+    def test_9_2(self):
+        "test getResult from recommend.py"
+        c2 = [[['1'],['2'],['3'],['5']],[['1','3'],['3','2'],['2','5'],['3','5']],[['3','2','5']]]
+        dataList = []
+        result = getResult(dataList,c2)
+        expectResult = []
+        self.assertListEqual(result,expectResult,"getResult Error")
+
+    def test_9_3(self):
+        "test getResult from recommend.py"
+        c2 = []
+        dataList = ['1']
+        result = getResult(dataList,c2)
+        expectResult = []
+        self.assertListEqual(result,expectResult,"getResult Error")
+
+    def test_9_4(self):
+        "test getResult from recommend.py"
+        c2 = []
+        dataList = []
+        result = getResult(dataList,c2)
+        expectResult = []
+        self.assertListEqual(result,expectResult,"getResult Error")
+
+    #test toBeOne from recommend.py
+    def test_10_1(self):
+        "test toBeOne from recommend.py"
+        data = [frozenset(['1','2']),frozenset(['2','3']),frozenset(['1','2','3','4'])]
+        result = toBeOne(data)
+        expectResult = ['1','2','3','4']
+        self.assertListEqual(result,expectResult,"toBeOne Error")
+
+    def test_10_2(self):
+        "test toBeOne from recommend.py"
+        data = []
+        result = toBeOne(data)
+        expectResult = []
+        self.assertListEqual(result,expectResult,"toBeOne Error")
+
+    def test_10_3(self):
+        "test toBeOne from recommend.py"
+        data = [set(['1','2']),set(['2','3']),set(['1','2','3','4'])]
+        result = toBeOne(data)
+        expectResult = ['1','2','3','4']
+        self.assertListEqual(result,expectResult,"toBeOne Error")
+
+    def test_10_4(self):
+        "test toBeOne from recommend.py"
+        data = [['1','2'],['2','3'],['1','2','3','4']]
+        result = toBeOne(data)
+        expectResult = ['1','2','3','4']
+        self.assertListEqual(result,expectResult,"toBeOne Error")      
