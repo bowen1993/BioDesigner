@@ -20,6 +20,6 @@ before_script:
   - python manage.py syncdb --noinput
 
 script: 
-  - coverage run --source=BioDesigner manage.py test
+  - coverage run --source=design,system manage.py test
 after_success:
   - coveralls

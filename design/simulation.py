@@ -41,7 +41,7 @@ class reaction_simulator:
         self.history[self.currentTime] = copy.deepcopy(self.compound_pool)
         self.reaction_time = reaction_time
 
-    def get_compound_amount(self, t, compound):
+    def __get_compound_amount(self, t, compound):
         """
         compound amount at time t
 
@@ -77,13 +77,13 @@ class reaction_simulator:
         lastItem = ''
         for reactant in reaction['reactants']:
             if reactant == lastItem:
-                result *= self.get_compound_amount(self.currentTime-1, reactant)
+                result *= self.__get_compound_amount(self.currentTime-1, reactant)
             else:
-                result *= self.get_compound_amount(self.currentTime, reactant)
+                result *= self.__get_compound_amount(self.currentTime, reactant)
             lastItem = reactant
         return result
 
-    def calItoJ(self, i, j):
+    def __calItoJ(self, i, j):
         result = 0
         for index in range(i, j+1):
             result += self.calA(self.reactions[index])
@@ -122,9 +122,9 @@ class reaction_simulator:
         for product in reaction['products']:
             self.compound_pool[product] += 1
 
-    def isJOccurs(self, j, a0, r2):
-        leftBound = (1.0/a0)*self.calItoJ(0, j-1)
-        rightBound = (1.0/a0)*self.calItoJ(0, j)
+    def __isJOccurs(self, j, a0, r2):
+        leftBound = (1.0/a0)*self.__calItoJ(0, j-1)
+        rightBound = (1.0/a0)*self.__calItoJ(0, j)
         if leftBound <= r2 < rightBound and self.isReactantReady(j):
             return True
         else:
@@ -154,7 +154,7 @@ class reaction_simulator:
             tt = self.calTT(a0, r1)
             self.reaction_time -= tt
             for i in range(len(self.reactions)):
-                if self.isJOccurs(i, a0, r2):
+                if self.__isJOccurs(i, a0, r2):
                     self.doReaction(i)
             self.currentTime += tt
             self.history[self.currentTime] = copy.deepcopy(self.compound_pool)
