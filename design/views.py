@@ -1,3 +1,8 @@
+"""
+
+@author: Bowen
+"""
+
 from django.shortcuts import render
 from django.db.models import Q
 from django.http import HttpResponse, HttpResponseRedirect
@@ -354,6 +359,7 @@ def simulationView(request):
 
 @csrf_exempt
 def simulate(request):
+    #received_json_data = request.POST
     received_json_data = json.loads(request.body)
     reactions = received_json_data['reactions']
     martials = received_json_data['martials']
@@ -364,5 +370,4 @@ def simulate(request):
         result = rs.getProcess()
     except:
         result = {}
-        traceback.print_exc()
     return HttpResponse(json.dumps(result), content_type="application/json")

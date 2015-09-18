@@ -23,13 +23,14 @@ def gene_part_fsa(part_obj):
     print 'processing %s' % name
     sequence = part_obj.sequence
     filename = '%s.fsa' % name
-    fsa_file = open(basepath + filename, 'w')
-    fsa_file.write('>%s\n' % name)
-    sequence = sequence.replace('\n', '')
-    sequence = sequence.replace(' ', '')
-    for i in range(0, len(sequence), 80):
-            fsa_file.write('%s\n' % sequence[i:i+80])
-    fsa_file.close()
+    if not os.path.exists(basepath + filename):
+        fsa_file = open(basepath + filename, 'w')
+        fsa_file.write('>%s\n' % name)
+        sequence = sequence.replace('\n', '')
+        sequence = sequence.replace(' ', '')
+        for i in range(0, len(sequence), 80):
+                fsa_file.write('%s\n' % sequence[i:i+80])
+        fsa_file.close()
     blast_search(name, basepath + filename)
 
 def search_part_in_gene():

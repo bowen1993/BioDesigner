@@ -76,6 +76,14 @@ def format_fuzzy_result(es_result):
     return result
 
 def get_gene_info(gid):
+    """
+    get gene information from the database
+
+    @param gid: the gene id
+    @ytpe gid: str
+    @return: gene information dict
+    @rtype: dict
+    """
     try:
         gene_obj = gene.objects.get(gene_id=gid)
         result = {
@@ -116,6 +124,14 @@ def get_compound_info(cid):
         return False, None
 
 def retrive_gene_detain(gid):
+    """
+    get gene data from ncbi
+
+    @param gid: gene id
+    @type gid: str
+    @return: a dictionary that contains gene information
+    @rtype: dict
+    """
     #get information from ncbi
     baseUrl = 'http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=gene&retmode=json&version=2.0&id='
     req = urllib2.Request(baseUrl + gid)
@@ -130,6 +146,14 @@ def retrive_gene_detain(gid):
     return detail_info
 
 def get_or_create_gene(gid):
+    """
+    get gene object from database, or get from ncbi and create one
+
+    @param gid: gene id
+    @type gid: str
+    @return: gene object
+    @rtype: gene
+    """
     #get in database
     try:
         gene_obj = gene.objects.get(gene_id=gid)
@@ -157,7 +181,7 @@ def get_or_create_gene(gid):
             except:
                 pass
         return None
-
+"""
 
 def save_relation_to_db(geneIdList, compound_obj):
     #create new obj
@@ -169,7 +193,8 @@ def save_relation_to_db(geneIdList, compound_obj):
             new_rela_obj.save()
         except:
             pass
-
+"""
+"""
 def search_gene_in_ncbi(name, expect=None, index=0):
     #find in database
     compound_obj = None
@@ -205,9 +230,20 @@ def search_gene_in_ncbi(name, expect=None, index=0):
         except:
             pass
     return geneIdList[:2]
-
+"""
 class gene_graph:
+    """
+        gene graph, including calculation and generate of gene & protein relation graph
+    """
     def __init__(self, cid_list, ogm):
+        """
+        constructor for gene_graph class
+
+        @param cid_list: compound id list
+        @type cid_list: str
+        @param ogm: organisms
+        @type ogm:str
+        """
         if cid_list.startswith('_'):
             cid_list = cid_list[1:]
         if cid_list.endswith('_'):
@@ -228,6 +264,14 @@ class gene_graph:
 
 
     def get_compound_object(self, cid):
+        """
+        get compound object by compound id
+
+        @param cid: compound id
+        @type cid: str
+        @return: compound object or none if not found
+        @rtype: compound
+        """
         try:
             compound_obj = compound.objects.get(compound_id=cid)
             return compound_obj
@@ -235,6 +279,15 @@ class gene_graph:
             return None
 
     def retrive_gene_detain(self, gid):
+        """
+        get gene data from ncib
+
+        @param gid: gene id
+        @type gid: str
+        @return: gene information in dict or none
+        @rtype: dict
+
+        """
         #get information from ncbi
         baseUrl = 'http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=gene&retmode=json&version=2.0&id='
         
@@ -254,6 +307,15 @@ class gene_graph:
             return None
 
     def related_compound(self, cid):
+        """
+        find a compound's related compound
+
+        @param cid: compound id
+        @type cid: str
+        @return: list of related compound
+        @rtype: list
+
+        """
         compound_obj = self.get_compound_object(cid)
         if self.organisms != None:
             organism_pathway_id_list = pathway.objects.filter(organism_id__in=self.organisms).values_list('pathway_id', flat=True)
@@ -265,6 +327,15 @@ class gene_graph:
         return compound_list
 
     def create_node(self, name, id):
+        """
+        create a node (gene or compound) in the graph
+        
+        @param name: name for the node
+        @param id: id for the node
+        @type name : str
+        @type id : str
+
+        """
         node_info = {
             'name': name,
             'id': id
@@ -277,6 +348,14 @@ class gene_graph:
         return True
 
     def create_n_link(self, center_node, compound_obj):
+        """
+        create nodes and link them
+        @param center_node: source node
+        @type center_node:compound
+        @param compound_obj: compound object
+        @type compound_obj: compound
+
+        """
         gene_list = self.search_gene(compound_obj)
         for gene_id in gene_list:
             try:
@@ -294,6 +373,15 @@ class gene_graph:
         return gene_list[0]
 
     def get_or_create_gene(self, gid):
+        """
+        find gene in database, if found, return gene, or search in ncbi
+
+        @param gid: gene id
+        @type gid: str
+        @return gene object
+        @rtype: gene
+        
+        """
     #get in database
         try:
             gene_obj = gene.objects.get(gene_id=gid)
@@ -325,6 +413,15 @@ class gene_graph:
             return None
 
     def save_relation_to_db(self, geneIdList, compound_obj):
+        """
+        save relation between compound_obj and gene to database
+
+        @param geneIdList: gene id in a list
+        @type geneIdList: list
+        @param compound_obj: compound object
+        @type compound_obj: compound
+
+        """
     #create new obj
         for gid in geneIdList:
             new_rela_obj = compound_gene(compound=compound_obj)
@@ -338,6 +435,14 @@ class gene_graph:
                 pass
 
     def search_gene(self, compound_obj):
+        """
+        find gene realted to a compound
+
+        @param compound_obj: the compound object
+        @type compound_obj: compound
+        @return related genes
+        @rtype: list
+        """
         #search in database
         obj_list = compound_gene.objects.filter(compound=compound_obj)
         if len(obj_list) != 0:
@@ -362,6 +467,9 @@ class gene_graph:
             return geneIdList[:2]
 
     def cal_graph(self):
+        """
+        calculate the relation graph
+        """
         for cid in self.cid_list:
             center_compound_obj = self.get_compound_object(cid)
             if center_compound_obj == None:
@@ -379,9 +487,14 @@ class gene_graph:
                 deep_related_list = self.related_compound(compound_obj.compound_id)[:2]
                 for deep_compound_obj in deep_related_list:
                     self.create_n_link(compound_obj.compound_id, deep_compound_obj)
-        print self.index_dict
 
     def get_graph(self):
+        """
+        get the graph
+
+        @return: th graph
+        @rtype: dict
+        """
         result = {
             'nodes': self.nodes,
             'edges' : self.edges

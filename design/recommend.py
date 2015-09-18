@@ -1,3 +1,9 @@
+"""
+implement recommend for parts
+
+@author: Bowen, Ray, Yu
+"""
+
 from design.models import parts, team_parts, teams
 from elasticsearch import Elasticsearch
 import json
@@ -9,6 +15,14 @@ from design.search_part import get_func_parts
 BASE = os.path.dirname(os.path.abspath(__file__))
 
 def getApriorRecommend(chainStr, funcStr=None):
+    """
+    get recommendations with aprior algorithm
+
+    @param chainStr: part chain
+    @type chainStr: str
+    @return : recommendations
+    @rytpe: dict
+    """
     dataList = chainStr.split('_')
     #dataList = dataList[len(dataList)-2:len(dataList)]
     fList = list()
@@ -104,6 +118,14 @@ def toFrozenset(data):
 
 
 def getMarkovRecommend(part_id):
+    """
+    get recommendations with Markov algorithm
+
+    @param part_id: part id
+    @type part_id: str
+    @return : recommendations
+    @rytpe: dict
+    """
     result = {
         'isSuccessful' : True,
     }

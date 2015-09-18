@@ -99,6 +99,7 @@ div#bananer ul#buttonArea li{
 div#bananer ul#buttonArea li span.label{
     line-height: 40px;
     font-size: 25px;
+    color:#000;
 }
 div#bananer ul#buttonArea li button.close{
     height:20px;

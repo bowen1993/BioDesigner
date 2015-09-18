@@ -620,17 +620,25 @@ function getPartInfo(part_name){
 }
 //  显示 组件信息
 function showPartInfo(result){
+    $('#message h1#part_name').html('name');
+    $('#message span#part_type').html('type');
+    $('#message span#part_nickname').html('nickname');
+    $('#message span#part_short_desc').html('short description');
+    $('#message span#part_description').html('description');
+    $('#message span#score').html('score');
+    $('#message span.part_url').remove();
     if (result['isSuccessful']){
+        console.log(result);
         $('#message h1#part_name').html(result['part_name']);
         $('#message span#part_type').html('Type: ' + result['part_type']);
         $('#message span#part_nickname').html('Nickname: '+result['nickname']);
         $('#message span#part_short_desc').html(result['short_desc']);
         $('#message span#part_description').html(result['description']);
+        $('#message span#score').html('Score: ' + result.score);
         // $('#message span#part_url').html('click to show ')
-        $('#message a').attr('href' ,result['part_url'])
         for (var i = 0; i < result['paper'].length; i++){
             var paper = result['paper'][i];
-            var htmlStr = $('<a href="'+paper['url']+'"><span id="part_url">'+paper['name']+'</span></a>')
+            var htmlStr = $('<a href="'+paper['url']+'"><span class="part_url">'+paper['name']+'</span></a>')
             $('#message').append(htmlStr);
         }
     }

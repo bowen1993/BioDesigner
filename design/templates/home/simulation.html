@@ -5,14 +5,19 @@
     <title>BioDesigner | Simulator</title>
     <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.css"/>
     <link rel="stylesheet" href="/static/css/simulation.css">
+    <script src="/static/js/d3.min.js"></script>
 </head>
 <script id="reaction-equation-area" type="text/x-jquery-tmpl">
-    <div class="reaction-equation-area">
+   <div class="reaction-equation-area">
         <h1 class="title">Reaction Equation</h1>
         <button class="remove-reaction-equation btn btn-primary">
             remove
         </button>
-        <ul class="input-table">
+        <div class="rate">
+        	<label for="rate">Input the rate: </label>
+        	<input id="rate" type="text" placeholder="rate">
+        </div>
+        <ul class="input-table reactant">
             <li class="input-row">
                 <input type="text" class="material">
                 <span class="remove-input-row glyphicon glyphicon-minus-sign btn"></span>
@@ -33,11 +38,17 @@
         </button>
     </div>
 </script>
-<script id="input-row" type="text/x-jquery-tmpl">
+<script id="parent-input-row" type="text/x-jquery-tmpl">
     <li class="input-row">
         <input type="text" class="material">
-        <span class="times">+</span>
+        <span class="times">X</span>
         <input type="text" class="amount">
+        <span class="remove-input-row glyphicon glyphicon-minus-sign btn"></span>
+    </li>
+</script>
+<script id="reaction-input-row" type="text/x-jquery-tmpl">
+    <li class="input-row">
+        <input type="text" class="material">
         <span class="remove-input-row glyphicon glyphicon-minus-sign btn"></span>
     </li>
 </script>
@@ -54,7 +65,6 @@
         <div id="main" class="box-item box inline-box">
             <div id="sidebar" class="box-item">
                 <div id="sidebar-shop">
-                    <!-- <sapn id="back">back</sapn> -->
                     <span id="back" class="btn default-btn"><</span>
                     <span id="title">Simulation</span>
                     <span id="reset" class="btn default-btn">Reset</span>
@@ -69,17 +79,20 @@
                             <span class="remove-input-row glyphicon glyphicon-minus-sign btn"></span>
                         </li>
                     </ul>
-                    <button class="new-input-row btn btn-primary">
+                    <button class="new-parent-input-row btn btn-primary">
                         <span class="glyphicon glyphicon-plus"></span>
                     </button>
                 </div>
                 <div class="reaction-equation-area">
                     <h1 class="title">Reaction Equation</h1>
-                    <input type="text" class="material">
                     <button class="remove-reaction-equation btn btn-primary">
-                        Remove
+                        remove
                     </button>
-                    <ul class="input-table">
+                    <div class="rate">
+                    	<label for="rate">Input the rate: </label>
+                    	<input id="rate" type="text" placeholder="rate">
+                    </div>
+                    <ul class="input-table reactant">
                         <li class="input-row">
                             <input type="text" class="material">
                             <span class="remove-input-row glyphicon glyphicon-minus-sign btn"></span>
@@ -99,8 +112,12 @@
                         <span class="glyphicon glyphicon-plus"></span>
                     </button>
                 </div>
-                <button id="add" class="btn btn-primary btn-block">Add Reaction</button>
-                <button id="run" class="btn btn-primary btn-block">Simulate</button>
+                <button id="add" class="btn btn-primary">
+                    Add Reaction
+                </button>
+                <button id="run" class="btn btn-primary">
+                    Simulate
+                </button>
             </div>
             <div id="content" class="box-item"></div>
         </div>

@@ -1,3 +1,9 @@
+"""
+generate design result image
+
+@author: Bowen
+"""
+
 from PIL import Image, ImageDraw, ImageFont
 import os.path
 import time
@@ -16,6 +22,14 @@ icon_space_small = 30
 icon_space_large = 30
 
 def createFolder(contentType):
+    """
+    create the folders with time steamp
+
+    @param contentType: file type in the folder
+    @type contentType: str
+    @return: created path
+    @rtype: str
+    """
     basePath = BASE+'/../downloads/'
     year     = str(time.localtime().tm_year)
     month    = str(time.localtime().tm_mon)
@@ -35,6 +49,16 @@ def createFolder(contentType):
     return basePath
 
 def geneFileName(name, surfix):
+    """
+    generate file name with time and given name
+
+    @param name: name for the file
+    @type name: str
+    @param surfix: file extension
+    @type surfix:str
+    @return : filename
+    @rtype: str
+    """
     now = datetime.datetime.now()
     name = name.replace(' ', '')
     fileNameFormat = '%(year)i-%(month)i-%(day)i-%(hour)i-%(minute)i-%(second)i-%(name)s.%(extension)s'
@@ -118,6 +142,19 @@ def drawSequence(sequenceInfo, width, height, file_path):
     newImage.save(file_path)
 
 def getSequenceResultImage(sequence, width, height, name):
+    """
+    get a part sequence image
+
+    @param sequence: part sequence
+    @type sequence: str
+    @param width: image width
+    @type width: int
+    @param height: image height
+    @param name: name for that image
+    @type name:str
+    @return : image file path
+    @rtype: str
+    """
     if sequence.startswith('_'):
         sequence = sequence[1:]
     sequenceList = sequence.split('_')

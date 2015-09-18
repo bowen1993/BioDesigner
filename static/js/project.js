@@ -168,7 +168,7 @@ function showChainImage(chainId){
 		type:'GET',
 		success:function(result){
 			if (result['isSuccessful']){
-				$('#chain-img').attr('src', result['filepath'].replace('downloads', 'static'));
+				$('#chain-img').attr('src', result['filepath']);
 			}
 		}
 	});
@@ -433,9 +433,22 @@ $(document).on({
 
 $(document).on({
 	click:function(){
-		
+		$.ajax({
+		url:'/home/getResultImage?id=' + chainId,
+		type:'GET',
+		success:function(result){
+			if (result['isSuccessful']){
+				window.location.href = result['filepath'];
+			}
+		}
+	});
 	}
-}, '#get_result')
+}, '#get_result');
+$(document).on({
+	click:function(){
+		window.location = '/home/simulation'
+	}
+}, '#version');
 $(document).on({
 	mouseover:function(){
 		$('div#project-infos ul#dropdown-menu').removeClass('menu-hide');

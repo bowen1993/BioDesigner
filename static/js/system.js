@@ -39,15 +39,26 @@ function setFrame(){
    // $('#my-svg').css('height',my_svg_height);  // set #my-svg height
 }
 $(document).on({
+    keydown: function(ev){
+      $('#search-area input').removeClass('error').attr('placeholder','input key word');
+       var oEvent = ev || event;
+        if(oEvent.keyCode == 13){
+            $('#search-area span#search').trigger('click');
+        } 
+    }
+},'input');
+$(document).on({
    click:function(){
       var input = $('#search-area input').val();  // get input value 
-      getSearchResult(input);
+      if(input.length==0){
+          $('#search-area input').addClass('error').attr('placeholder','waring');
+      }else{
+          getSearchResult(input);
+      }
       //var insert = [{"compound_id": "C00001", "name": "H2O"}, {"compound_id": "C00137", "name": "myo-Inositol"}, {"compound_id": "C00288", "name": "HCO3-"}, {"compound_id": "C00619", "name": "3-Oxo-delta4-steroid"}, {"compound_id": "C01243", "name": "1D-myo-Inositol1,3,4-trisphosphate"}, {"compound_id": "C01245", "name": "D-myo-Inositol1,4,5-trisphosphate"}, {"compound_id": "C02941", "name": "3-Oxo-delta1-steroid"}, {"compound_id": "C04226", "name": "6-Oxo-1,4,5,6-tetrahydronicotinate"}, {"compound_id": "C02797", "name": "3-Oxo-5beta-steroid"}, {"compound_id": "C02940", "name": "3-Oxo-5alpha-steroid"}];
       //insertSearchResult(insert);
    }
 },'#search-area span#search');
-
-
 function getSearchResult(input){
    $.ajax({
       url:'/system/searchCompound?keyword=' + input,
@@ -115,6 +126,8 @@ $(document).on({
       $(this).addClass('label-click');
       var compound_id = $(this).children('span')[0].getAttribute('compound-id');
       //var compound_name = $(this).children('span')[0].getAttribute('compound-name');
+      $('div#message-area ul#message').removeClass('hide');
+      $('div#message-area ul#gene-message').addClass('hide');
       getCompoundMessage(compound_id);
    }
 },'ul#search-result li.search-result-item,#menu ul#label-area li');
@@ -131,7 +144,14 @@ function getCompoundMessage(compound_id){
       }
    });  
 }
-
+function showCompoundMessage(info){
+   $('#message span.compound-id').text(info['compound_id']);
+   $('#message span.name').text(info['name']);
+   $('#message span.nicknames').text(info['nicknames']);
+   $('#message span.mol-weight').text(info['mol_weight']);
+   $('#message span.exact-mass').text(info['exact_mass']);;
+   $('#message span.formula').text(info['formula']);
+}
 function getGeneMessage(gene_id){
   $.ajax({
       url:'/system/getGene?id=' + gene_id,
@@ -147,22 +167,11 @@ function getGeneMessage(gene_id){
 }
 
 function showGeneMessage(info){
- $('#gene-message span#gene-id').text(info['gene_id']);
- $('#gene-message span#name').text(info['name']);
- $('#gene-message span#definition').text(info['definition']);
- $('#gene-message span#organism-short').text(info['organism_short']);
- $('#gene-message span#organism').text(info['organism']);
- $('#gene-message').removeClass('hide');
-}
-
-function showCompoundMessage(info){
-   $('#message span#compound-id').text(info['compound_id']);
-   $('#message span#name').text(info['name']);
-   $('#message span#nicknames').text(info['nicknames']);
-   $('#message span#mol-weight').text(info['mol_weight']);
-   $('#message span#exact-mass').text(info['exact_mass']);;
-   $('#message span#formula').text(info['formula']);
-   $('div#message').removeClass('hide');
+ $('#gene-message span.gene-id').text(info['gene_id']);
+ $('#gene-message span.name').text(info['name']);
+ $('#gene-message span.definition').text(info['definition']);
+ $('#gene-message span.organism-short').text(info['organism_short']);
+ $('#gene-message span.organism').text(info['organism']);
 }
 
 $(document).on({
@@ -188,13 +197,28 @@ $(document).on({
         data: postData,
         dataType: 'JSON',
         success:function(result){
-          console.log(result);
           draw(result);
 
         }
       });
     }
 },'button#run');
+// $(document).on({
+//     mouseover:function(){
+//         $(this).next('span.hide').addClass('show');
+//     },
+//     mouseout:function(){
+//         $(this).next('span.hide').removeClass('show');
+//     }
+// },'div#message-area li span.normal');
+// $(document).on({
+//     mouseover:function(){
+//         $(this).addClass('show');
+//     },
+//     mouseout:function(){
+//         $(this).removeClass('show');
+//     }
+// },'div#message-area li span.hide');
 function getArray(){
    var id_array = new Array();
    var elements = $('#menu #label-area li');

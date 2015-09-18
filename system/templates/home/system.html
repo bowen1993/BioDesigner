@@ -27,7 +27,7 @@
 			<div id="search-container"><!-- search-container start -->
 				<h1>search</h1>
 				<ul id="search-area">
-					<li><input type="text"></li>
+					<li><input type="text" placeholder="input key word"></li>
 					<li><span id="search" class="glyphicon glyphicon-search"></span></li>
 				</ul>
 				<ul id="search-result">
@@ -46,7 +46,7 @@
 			<div id="my-svg">
 				<!-- <svg width="1000" height="700"></svg> -->
 			</div>
-		    <div id="message" class="text-info panel panel-success hide">
+		    <!-- <div id="message" class="text-info panel panel-success hide">
 				<div class="panel-heading">
 					<button type="button" class="close" id="close-message" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 				    <h3 class="panel-title" id="part_title">Message</h3>
@@ -109,8 +109,75 @@
 						</li>
 					</ul>
 				</div>
-			</div>
+			</div> -->
 		</div><!-- main stop -->
+		<div id="message-area" class="box-item">
+			<ul id="message">
+				<li>
+					<h1 class="title">Message</h1>
+				</li>
+				<li>
+					<label for="compound-id">compound-id:</label>
+					<span class="normal compound-id"></span>
+					<span class="hide compound-id"></span>
+				</li>
+				<li>
+					<label for="name">name:</label>
+					<span class="normal name"></span>
+					<span class="hide name"></span>
+				</li>
+				<li>
+					<label for="nicknames">nicknames:</label>
+					<span class="normal nicknames"></span>
+					<span class="hide nicknames"></span>
+				</li>
+				<li>
+					<label for="mol-weight">mol-weight:</label>
+					<span class="normal mol-weight"></span>
+					<span class="hide mol-weight"></span>
+				</li>
+				<li>
+					<label for="exact-mass">exact-mass:</label>
+					<span class="normal exact-mass"></span>
+					<span class="hide exact-mass"></span>
+				</li>
+				<li>
+					<label for="formula">formula:</label>
+					<span class="normal formula"></span>
+					<span class="hide formula"></span>
+				</li>
+			</ul>
+			<ul id="gene-message" class="hide">
+				<li>
+					<h1 class="title">Gene Message</h1>
+				</li>
+				<li>
+					<label for="gene-id">Gene-id:</label>
+					<span class="normal gene-id"></span>
+					<span class="hide gene-id"></span>
+				</li>
+				<li>
+					<label for="name">Name:</label>
+					<span class="normal name"></span>
+					<span class="hide name"></span>
+				</li>
+				<li>
+					<label for="definition">Definition:</label>
+					<span class="normal definition"></span>
+					<span class="hide definition"></span>
+				</li>
+				<li>
+					<label for="organism-short">Organism_short:</label>
+					<span class="normal organism-short"></span>
+					<span class="hide organism-short"></span>
+				</li>
+				<li>
+					<label for="organism">Organism:</label>
+					<span class="normal organism"></span>
+					<span class="hide organism"></span>
+				</li>
+			</ul>
+		</div>
 	</div>
 <script src="/static/js/jquery-2.1.1.min.js"></script>
 <script src="/static/js/system.js"></script>
@@ -231,6 +298,8 @@
 						});
 					})
 					.on("click", function(d, i){
+						$('div#message-area ul#message').addClass('hide');
+      					$('div#message-area ul#gene-message').removeClass('hide');
 						getGeneMessage(d.id);
 					})
 					.on("dblclick",function(d,i){

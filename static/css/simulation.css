@@ -56,7 +56,6 @@ div#container {
 }
 div#header {
 	height:50px;
-
 	width:100%;
     height:50px;
     background: rgb(221,221,221);
@@ -87,11 +86,9 @@ div#main {
 	width:100%;
 }
 div#main div#sidebar {
-	/*position: relative;*/
 	width:220px;
 	height:100%;
 	overflow: auto;
-	/*background: rgb(44,47,50);*/
 	background: #3d414d;
 }
 div#sidebar div#sidebar-shop {
@@ -100,14 +97,15 @@ div#sidebar div#sidebar-shop {
 	left: 0;*/
 	height:40px;
 	width:100%;
-	background: grey;
+	background: rgb(63,150,227);
 }
 div#sidebar-shop span {
 	display: block;
 	float: left;
 	text-align: center;
 	font-size: 1.5em;
-	line-height: 40px
+	line-height: 40px;
+	color: white;
 }
 div#sidebar-shop span#back {
 	width:25%;
@@ -145,41 +143,89 @@ div#sidebar h1.title{
 	height:34px;
 	line-height: 34px;
 }
+div.reaction-equation-area div.rate {
+	margin: 5px auto;
+	width:80%;
+	height:30px;
+}
+div.reaction-equation-area div.rate label {
+	display: block;
+	float: left;
+	width:60%;
+	line-height: 30px;
+	font-size: 18px;
+	text-align: right;
+	color: white;
+}
+div.reaction-equation-area div.rate input {
+	float: left;
+	margin-top: 3px;
+	margin-left: 10%;
+	width:20%;
+	height:25px;
+	border-radius: 5px;
+
+}
 div#sidebar ul.input-table {
 	width:100%;
 }
-div#sidebar ul.input-table li.input-row {
+div#sidebar div#parent-material-area ul.input-table li.input-row {
 	margin-right: 10%;
 	margin-top: 10px;
 	width:90%;
 	height:30px;
 }
-div#sidebar ul.input-table li.input-row input {
+div#sidebar div#parent-material-area ul.input-table li.input-row input {
 	display: block;
 	float:left;
 	height:100%;
 	border-radius: 5px;
 }
-div#sidebar ul.input-table li.input-row input.material {
+div#sidebar div#parent-material-area ul.input-table li.input-row input.material {
 	width:60%;
 }
-div#sidebar ul.input-table li.input-row input.amount {
+div#sidebar div#parent-material-area ul.input-table li.input-row input.amount {
 	width:15%;
 }
-div#sidebar ul.input-table li.input-row span {
+div#sidebar div#parent-material-area ul.input-table li.input-row span {
 	display: block;
 	float: left;
 	line-height: 30px;
 	font-size: 2em;
 	color:white;
 }
-div#sidebar ul.input-table li.input-row span.times {
+div#sidebar div#parent-material-area ul.input-table li.input-row span.times {
 	width:10%;
 	text-align: center;
 }
-div#sidebar ul.input-table li.input-row span.remove-input-row {
+div#sidebar div#parent-material-area ul.input-table li.input-row span.remove-input-row {
 	width:15%;
 	text-align: right;
+}
+
+div#sidebar div.reaction-equation-area ul.input-table li.input-row {
+	margin-right: 10%;
+	margin-top: 10px;
+	width:90%;
+	height:30px;
+}
+div#sidebar div.reaction-equation-area ul.input-table li.input-row input.material {
+	display: block;
+	float:left;
+	height:100%;
+	border-radius: 5px;
+	width:60%;
+}
+div#sidebar div.reaction-equation-area ul.input-table li.input-row span.remove-input-row {
+	margin-left: 20%;
+	display: block;
+	float: left;
+	line-height: 30px;
+	font-size: 2em;
+	color:white;
+	width:15%;
+	text-align: right;
+	color:white;
 }
 div#sidebar button.new-input-row {
 	display: block;
@@ -188,15 +234,24 @@ div#sidebar button.new-input-row {
 	height:40px;
 	border-radius:20px;
 }
-div#sidebar button#add {
+div#sidebar button.new-parent-input-row {
+	display: block;
+	margin:0 auto 20px;
+	width:40px;
 	height:40px;
-	margin-top: 10px;
-	margin-bottom: 20px;
+	border-radius:20px;
+}
+div#sidebar button#add {
+	float: left;
+	margin: 10px 20px;
+	height:30px;
+	border-radius: 5px;
 }
 div#sidebar button#run {
-	height:40px;
-	margin-top: 10px;
-	margin-bottom: 20px;
+	float: right;
+	margin: 10px 20px;
+	height:30px;
+	border-radius: 5px;
 }
 /*div#sidebar button.new-input-row span {
 	line-height: 40px;
@@ -219,7 +274,7 @@ div#main div#content {
     -moz-box-flex:1;
     -o-box-flex:1;
 	height:100%;
-	background: green;
+	/*background: green;*/
 }
 @media (min-width: 800px){
 	div#container {
@@ -285,8 +340,75 @@ div#main div#content {
 }
 
 
+svg, g {
+  pointer-events: all;
+}
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.title {
+  text-anchor: middle;
+  font-weight: 700;
+}
 
 
+/*.x.axis path {
+  display: none;
+}*/
+
+
+
+.flag {
+  stroke: gray;
+  stroke-dasharray: 5;
+  stroke-width: 1.5;
+  display: none;
+  pointer-events: none;
+}
+.tips {
+  pointer-events: none;
+  display: none;
+}
+.tips-border {
+  fill: #F3E4E4;
+  stroke: gray;        
+  stroke-width: 2;
+}
+.grid .tick {
+  stroke: lightgrey;
+  opacity: 0.7;
+}
+.grid path {
+  stroke-width: 0;
+}
+
+
+div#header div.list{
+	margin-left:10%;
+	margin-top: 10px;
+	float: left;
+	font-size: 2em;
+}
+.ckbox{
+	font-size: 2em;
+	margin-right: 20px;
+}
+
+div#header button{
+	float: right;
+	margin-right: 10%;
+	margin-top: 10px;
+	border-width: 0;
+	border-radius: 7px;
+	width: 70px;
+	height: 40px;
+	background-color: #0080FF;
+	color:#FFFFFF;
+}
 
 
 

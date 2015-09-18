@@ -8,14 +8,15 @@ pro_dir = os.getcwd()
 sys.path.append(pro_dir)
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "BioDesigner.settings")
 
-from design.models import paper
+from design.models import paper, parts, part_papers
 
 def main():
-    paper_list = paper.objects.all()
-    for paper_obj in paper_list:
-        paper_obj.paper_url = 'http://www.ncbi.nlm.nih.gov/pubmed/%s' % paper_obj.paper_id
-        paper_obj.save() 
-        set_paper_title(paper_obj)
+    partObj = parts.objects.get(part_name="BBa_B0011")
+    pp = part_papers.objects.filter(part=partObj)
+
+    for paper_obj in pp:
+        pobj = paper_obj.paper
+        set_paper_title(pobj)
 
 def set_paper_title(paper_obj):
     print paper_obj.paper_id

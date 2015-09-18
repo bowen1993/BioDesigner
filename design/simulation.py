@@ -1,16 +1,36 @@
+"""
+simulation.py implement the simulation function
+
+@author: Bowen
+"""
+
 import math
 import random
 import copy
 
 class reaction_simulator:
+    """
+    reaction simulator
+    """
     def __init__(self, reaction_list, martial_list, reaction_time=100):
+        """
+        init function
+
+        @param reaction_list: reactions
+        @type reaction_list: list
+        @param martial_list : init materials
+        @type martial_list: list
+        @param reaction_time: the reaction time
+        @type reaction_time: int
+        """
         self.compound_pool = dict()
         self.reactions = list()
         self.history = dict()
         self.currentTime = 0
         for martial in martial_list:
-            self.compound_pool[martial[0]] = martial[1]
+            self.compound_pool[martial[0]] = int(martial[1])
         for reaction in reaction_list:
+            reaction['k'] = float(reaction['k'])
             for reactant in reaction['reactants']:
                 if reactant not in self.compound_pool.keys():
                     self.compound_pool[reactant] = 0
@@ -22,6 +42,16 @@ class reaction_simulator:
         self.reaction_time = reaction_time
 
     def get_compound_amount(self, t, compound):
+        """
+        compound amount at time t
+
+        @param t: time point
+        @type t: int
+        @param compound: compound name
+        @type compound: str
+        @return: amount of compound
+        @rtype:int
+        """
         if t == self.currentTime:
             return self.compound_pool[compound]
         elif t > self.currentTime:
@@ -35,6 +65,14 @@ class reaction_simulator:
 
 
     def calA(self, reaction):
+        """
+        cal a in SSA
+
+        @param reaction: reaction to cal with
+        @type reaction: dict
+        @return : a0
+        @rtype: float
+        """
         result = reaction['k']
         lastItem = ''
         for reactant in reaction['reactants']:
@@ -58,10 +96,26 @@ class reaction_simulator:
         return result
 
     def calTT(self, a0, r1):
+        """
+        cal when reaction happens
+
+        @param a0 : a0 in SSA
+        @type a0: int
+        @param r1: random number
+        @type r1: float
+        @return : reaction happend time point
+        @rtype: float
+        """
         tt = (1.0 / a0) * math.log((1.0/r1))
         return tt
 
     def doReaction(self, index):
+        """
+        make reaction happens
+
+        @param index: reaction index
+        @type index: int
+        """
         reaction = self.reactions[index]
         for reactant in reaction['reactants']:
             self.compound_pool[reactant] -= 1
@@ -84,6 +138,9 @@ class reaction_simulator:
         return True
 
     def doSimulation(self):
+        """
+        simulate the reaction
+        """
         while self.reaction_time > 0:
             r1 = random.random()
             r2 = random.random()
@@ -92,6 +149,8 @@ class reaction_simulator:
             if r2 == 0:
                 r2 = 0.0000001
             a0 = self.calA0()
+            if a0 == 0:
+                a0 = 0.0000001
             tt = self.calTT(a0, r1)
             self.reaction_time -= tt
             for i in range(len(self.reactions)):
@@ -116,6 +175,12 @@ class reaction_simulator:
         return sorted(formed_result, key=lambda x: (x['order'] ,x['date']))
 
     def getProcess(self):
+        """
+        get the simulate result
+
+        @return: simulate result
+        @rtype: list
+        """
         return self.form_result()
 
 
