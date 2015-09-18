@@ -4,3 +4,9 @@
 
 Synthetic Biology Design toolkit
 
+##Package Requires
+
+####Django
+####mysql-python
+####elasticsearch
+####Pillow

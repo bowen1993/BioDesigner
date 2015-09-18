@@ -12,10 +12,14 @@ install:
   - pip install mysql-python
   - pip install elasticsearch
   - pip install Pillow
+  - pip install coveralls
 
 # command to run test
 before_script:
   - mysql -e 'CREATE DATABASE biodesigner'
   - python manage.py syncdb --noinput
 
-script: python manage.py test
+script: 
+  - coverage run --source=BioDesigner manage.py test
+after_success:
+  - coveralls
