@@ -600,6 +600,17 @@ class testSimulation(TestCase):
         expectResult = 20.0
         isTrue = expectResult - result < 0.0001
         self.assertTrue(isTrue,"calA")
+        self.client = Client()
+        self.lenResponse = self.client.get('/home/get?partname=BBa_B0010')
+        self.lenResponse = self.client.get('/home/getChainList?id=1')
+        self.lenResponse = self.client.get('/home/getProject?id=1')
+        self.lenResponse = self.client.get('/home/getUserProject')
+
+        self.lenResponse = self.client.post('/home/changeProjectname', {'id':1, 'name':'new'})
+        self.lenResponse = self.client.post('/home/changeTrack', {'id':1, 'track_id':1})
+        self.lenResponse = self.client.post('/home/deleteProject', {'id':1, })
+        self.lenResponse = self.client.get('/home/getTrackFunctions?track_id=1')
+        self.lenResponse = self.client.get('/home/getResultImage?id=1')
 
     #test calA0 from simulation.py
     def test_3_1(self):

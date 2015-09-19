@@ -71,6 +71,8 @@ class testcase(TestCase):
         self.gr.get_graph()
 class testSystemView(TestCase):
     def setUp(self):
-        pass
+        self.client = Client()
     def test_normal(self):
-        pass
+        self.client.post('/system/related',{'id':'C00002'})
+        self.client.get('/system/getGene',{'id':'100008683'})
+        self.client.get('/system/getCompound',{'id':'C00002'})
