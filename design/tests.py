@@ -14,10 +14,12 @@ from django.conf import settings
 from django.contrib.sessions.backends.db import SessionStore
 from django.contrib.sessions.models import Session 
 from design.recommend import analyseData,getResult,toBeOne,toFrozenset
+from recommend import getPartNameAndType,getMarkovRecommend,getApriorRecommend
 from design.simulation import reaction_simulator
 import time
 import datetime
 import os.path
+from design.search_part import getPart,ambiguousSearch,get_func_parts
 
 BASE = os.path.dirname(os.path.abspath(__file__))
 
@@ -606,6 +608,16 @@ class testSimulation(TestCase):
         expectResult = 24.0
         isTrue = expectResult - result < 0.0001
         self.assertTrue(isTrue,"calA0")
+        self.rs.doReaction(1)
+        self.rs.doSimulation()
+        self.rs.form_result()
+        self.rs.getProcess()
+        getPartNameAndType("603")
+        getMarkovRecommend("603")
+        getPart("BBa_C0062")
+        ambiguousSearch("603",None)
+        get_func_parts([1,2,3])
+
 
 class FooTest(TestCase):
     #preparing to test

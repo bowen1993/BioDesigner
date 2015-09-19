@@ -7,7 +7,6 @@ from django.template import RequestContext, loader
 from django.core.mail import send_mail
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
-from EmailVery import EmailVerity
 import hashlib
 import json
 import datetime
@@ -172,19 +171,7 @@ def saveNewUser(username, password, email):
     newUser.save()
     #varifyEmail(email, newUser, username)
 
-def varifyEmail(email, user, username):
-    """email confirmation
 
-    makesure the email is valid
-
-    Args:
-        email: the email to be confirmed
-        user: the user of the email
-    """
-    # get active key with salt and email
-    emailThread = EmailVerity(email, username)
-    emailThread.start()
-    return
 
 def isUserExists(username):
     try:
