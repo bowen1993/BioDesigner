@@ -615,7 +615,7 @@ class testSimulation(TestCase):
         getPartNameAndType("603")
         getMarkovRecommend("603")
         getPart("BBa_C0062")
-        ambiguousSearch("603",None)
+        #ambiguousSearch("603",None)
         get_func_parts([1,2,3])
 
 
