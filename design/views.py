@@ -199,12 +199,13 @@ def saveChain(request):
 @csrf_exempt
 def getARecommend(request):
     chainStr = request.GET.get('seq', '')
+    funcStr = request.GET.get('funcs', '')
     if chainStr.startswith('_'):
         chainStr = chainStr[1:]
     if chainStr.endswith('_'):
         chainStr = chainStr[:-1]
     
-    return HttpResponse(json.dumps(getApriorRecommend(chainStr)), content_type="application/json")
+    return HttpResponse(json.dumps(getApriorRecommend(chainStr, funcStr)), content_type="application/json")
 
 @csrf_exempt
 def getMRecommend(request):

@@ -646,8 +646,13 @@ function showPartInfo(result){
 //获取左侧推荐的组件并显示
 function getRecommend(){
     var message = getCurrChain();
+    var str = '';
+    var span_elems = $('ul#buttonArea span.label');
+    for(var i = 0; i<span_elems.length; i++){
+        str = str+ '_' +span_elems[i].getAttribute('function-id');
+    }
     $.ajax({
-        url:'/home/arecommend?seq='+ message,
+        url:'/home/arecommend?seq='+ message + '&funcs='+str,
         type:'GET',
         dataType:'JSON',
         success:function(result){

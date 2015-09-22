@@ -6,6 +6,7 @@ implement recommend for parts
 
 from design.models import parts, team_parts, teams
 from elasticsearch import Elasticsearch
+from operator import itemgetter
 import json
 import os.path
 import pickle
@@ -28,7 +29,7 @@ def getApriorRecommend(chainStr, funcStr=None):
     fList = list()
     with open(BASE+'/../freq.txt', 'rb') as f:
         fList = pickle.load(f)
-    strResult = getResult(dataList, fList)
+    strResult = getResult(dataList, fList, funcStr)
     recommend_list = list()
     for partId in strResult:
         partObj = parts.objects.get(part_id=int(partId))
@@ -75,7 +76,7 @@ def analyseData(dataList,dataLength = 2):
                 flag = True
     return tempData2
         
-def getResult(currentList,dataList):#currentList ,dataList pin fan xiang ji
+def getResult(currentList,dataList, funcStr):#currentList ,dataList pin fan xiang ji
     dataList = toFrozenset(dataList)
     dataLength = len(currentList)
     max_length = 4
@@ -96,7 +97,27 @@ def getResult(currentList,dataList):#currentList ,dataList pin fan xiang ji
         currentList = currentList[1:]
         dataLength = dataLength - 1
     resultList = toBeOne(resultList)
-    return resultList
+    result_part_count = len(resultList)
+    dictionary_result = {}
+    for each_part in range(result_part_count):
+        dictionary_result[resultList[each_part]] = 100 - (100 * each_part) / result_part_count
+    if funcStr != None and funcStr != '':
+        adjuct_to_func(funcStr, dictionary_result)
+    final_result = list()
+    for part_pair in sorted(dictionary_result.items(), key=itemgetter(1), reverse=True):
+        final_result.append(part_pair[0])
+    return final_result
+
+def adjuct_to_func(funcStr, dictionary_result):
+    if funcStr.startswith('_'):
+        funcStr = funcStr[1:]
+    if funcStr.endswith('_'):
+        funcStr = funcStr[:-1]
+    func_part_list = get_func_parts(funcStr.split('_'))
+    for key in dictionary_result:
+        if long(key) in func_part_list:
+            dictionary_result[key] += 10
+
 
 def toBeOne(data):#delete chong fu xiang
     result = []
@@ -219,7 +240,7 @@ def predict(m, count, s, A):
     ans = process[-1]
     # sort according to probability from high to low
     ans = sorted(ans.iteritems(), key=lambda item: item[1][0], reverse=True)
-
+    
     if len(ans) == 0:
         return None     # Can't predict, because of no answer can be find
     else:

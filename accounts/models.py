@@ -30,7 +30,7 @@ class UserSafety(models.Model):
 
 class loginRecord(models.Model):
     identity  = models.CharField(max_length=64)
-    login_time = models.DateTimeField(auto_now_add=True, auto_now=True)
+    login_time = models.DateTimeField(auto_now_add=True)
     login_ip = models.CharField(max_length=64, null=True)
     isSuccess = models.BooleanField(default=False)
 

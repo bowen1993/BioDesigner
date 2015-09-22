@@ -67,3 +67,7 @@ datas/
 part_fsa/
 
 part_gene_result/
+
+utils/get_all_sequence.py
+utils/testRecommendAc.py
+
