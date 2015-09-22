@@ -37,7 +37,7 @@ git checkout master
    For users who has installed `pip`
    
    ```
-   pip install django
+   pip install django==1.7.6
    ```
    Or you can install Django manually.
 
