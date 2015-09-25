@@ -84,6 +84,7 @@ def get_gene_info(gid):
     @return: gene information dict
     @rtype: dict
     """
+    base_gene_url = 'http://www.ncbi.nlm.nih.gov/gene/'
     try:
         gene_obj = gene.objects.get(gene_id=gid)
         result = {
@@ -91,7 +92,8 @@ def get_gene_info(gid):
             'name': gene_obj.name,
             'definition': gene_obj.definition,
             'organism_short': gene_obj.organism_short,
-            'organism': gene_obj.organism
+            'organism': gene_obj.organism,
+            'gene_url' : base_gene_url + gene_obj.gene_id
         }
         return True, result
     except:

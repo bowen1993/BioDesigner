@@ -20,7 +20,7 @@ from search_part import ambiguousSearch, getPart
 from accounts.models import User
 from design.models import project, functions, tracks, user_project, tracks, chain, track_functions
 from design.project import searchProject, getUserProject, getChain, getChainList
-from design.recommend import getApriorRecommend, getMarkovRecommend
+from design.recommend import getApriorRecommend, getMarkovRecommend, getBetweenMarkovRecommend
 from design.file import getSequenceResultImage
 from design.simulation import reaction_simulator
 
@@ -277,6 +277,13 @@ def changeProjectTrack(request):
     except:
         result['isSuccessful'] = False
     return HttpResponse(json.dumps(result), content_type="application/json")
+
+@csrf_exempt
+def get_between_recommend(request):
+    part_twin = request.GET.get('pairs', '').split('_')
+    first = part_twin[0]
+    second = part_twin[1]
+    return HttpResponse(json.dumps(getBetweenMarkovRecommend(first)), content_type="application/json")
 
 @csrf_exempt
 def deleteProject(request):

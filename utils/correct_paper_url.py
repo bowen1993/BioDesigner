@@ -11,12 +11,10 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "BioDesigner.settings")
 from design.models import paper, parts, part_papers
 
 def main():
-    partObj = parts.objects.get(part_name="BBa_B0011")
-    pp = part_papers.objects.filter(part=partObj)
+    pp = paper.objects.all()
 
     for paper_obj in pp:
-        pobj = paper_obj.paper
-        set_paper_title(pobj)
+        set_paper_title(paper_obj)
 
 def set_paper_title(paper_obj):
     print paper_obj.paper_id

@@ -58,10 +58,13 @@ div#container{
 	min-width: 800px;
     height:100%;
     min-height: 600px;
+    font-size: 10px;
 }
+/* screen width <= 800 start   */
 div#project-area{
-	width:250px;
-	height:100%;}
+	width:200px;
+	height:100%;
+}
 div#project-area div#logo{
 	width:100%;
 	height:60px;
@@ -73,7 +76,7 @@ div#project-area div#logo img{
 }
 div#project-area div#logo span{
 	color:white;
-	font-size: 30px;
+	font-size: 2.2em;
 	line-height: 60px;
 }
 div#project-area ul#project-shop{
@@ -83,11 +86,17 @@ div#project-area ul#project-shop{
 	background: #4d99e0;
 }
 div#project-area ul#project-shop li{
-	width:70px;
+	box-flex:7;
+	-webkit-box-flex:7;
+	-moz-box-flex:7;
+	-o-box-flex:7;
 	height:100%;
 }
 div#project-area ul#project-shop li:nth-of-type(2){
-	width:110px;
+	box-flex:11;
+	-webkit-box-flex:11;
+	-moz-box-flex:11;
+	-o-box-flex:11;
 	height:100%;
 }
 div#project-area ul#project-shop li span{
@@ -96,62 +105,15 @@ div#project-area ul#project-shop li span{
 	height:100%;
 	text-align: center;
 	color:white;
-	font-size: 25px;
+	font-size: 2em;
 	line-height: 40px;
 }
-/*div#project-area div#search{
-	padding-top: 10px;
-	width:100%;
-	height:80px;
-	background: #4ea6ff;
-}
-div#project-area div#search div#search-area{
-	margin: 0 20px ;
-	width:210px;
-	height:26px;
-}
-div#project-area div#search div#search-area input{
-	float:left;
-	width:80%;
-	height:100%;
-}
-div#project-area div#search div#search-area span{
-	display: block;
-	float: left;
-	width:20%;
-	height:100%;
-	text-align: center;
-	color:white;
-	font-size: 22px;
-	line-height: 26px;
-}*/
 div#project-area ul#project-content{
-	/*box-flex:1;
-	-webkit-box-flex:1;
-	-moz-box-flex:1;
-	-o-box-flex:1;*/
 	margin-bottom: 0px;
 	width:100%;
 	overflow: auto;
-	/*background: #3d80c4;*/
 	background: #3d414d;
 }
-/*div#project-area ul#project-content li{
-	width:100%;
-	height:30px;
-	text-align: center;
-	color:white;
-	font-size: 18px;
-	line-height: 30px;
-}
-div#project-area ul#project-content li.project-label-click{
-	background: #e6e6e6;
-	color:black;
-}
-div#project-area ul#project-content li:hover{
-	background: #e6e6e6;
-	color:black;
-}*/
 div#project-area ul#project-content li.project-label {
 	position: relative;
 	margin-top: 1px;
@@ -160,7 +122,6 @@ div#project-area ul#project-content li.project-label div.button{
 	margin:0;
 	width:100%;
 	height:40px;
-	/*border-radius: 5px;*/
 	background: #3d80c4;
 	color:white;
 }
@@ -180,12 +141,12 @@ div#project-area ul#project-content li.project-label div.button span{
 }
 div#project-area ul#project-content li.project-label div.button span.first{
 	width:10%;
-	font-size: 14px;
+	font-size: 1.4em;
 }
 div#project-area ul#project-content li.project-label div.button span.second{
 	padding-left: 20px;
 	width:90%;
-	font-size: 24px;
+	font-size: 2.4em;
 	text-align: left;
 }
 div#project-area ul#project-content li.project-label div.project-label-shop{
@@ -201,12 +162,9 @@ div#project-area ul#project-content li.project-label div.show{
 div#project-area ul#project-content li.project-label div.project-label-shop span{
 	margin-right: 10px;
 	line-height: 40px;
-	font-size: 24px;
+	font-size: 2.4em;
 	color: white;
 }
-/*div#project-area ul#project-content li.project-label button div.project-label-shop span:hover{
-	background: red;
-}*/
 div#project-area ul#project-content li.project-label ul.device-menu{
 	width:100%;
 	background: #3d414d;
@@ -219,7 +177,7 @@ div#project-area ul#project-content li.project-label ul.device-menu li.device-la
 	width:100%;
 	height:40px;
 	line-height: 40px;
-	font-size: 18px;
+	font-size: 1.8em;
 	text-align: center;
 	color: white;
 
@@ -243,7 +201,7 @@ div#project-area ul#project-content li.project-label ul.device-menu li.device-la
 div#project-area ul#project-content li.project-label ul.device-menu li.device-label div.device-label-shop span{
 	margin-right: 7px;
 	line-height: 30px;
-	font-size: 18px;
+	font-size: 1em;
 }
 div#main{
 	box-flex:1;
@@ -268,7 +226,7 @@ div#main div#main-shop ul#label-container{
 div#main div#main-shop ul#label-container li span {
 	margin-left: 20px;
 	line-height: 60px;
-	font-size: 24px;
+	font-size: 2.4em;
 	color:rgb(152,152,152);
 }
 div#main div#main-shop ul#label-container span#track {
@@ -282,7 +240,7 @@ div#main div#main-shop ul#button-nav{
 	background: white;
 }
 div#main div#main-shop ul#button-nav li button{
-	margin-right: 15px;
+	margin-right: 5px;
 	margin-top:17px;
 	padding: 0 5px;
 	height:26px;
@@ -300,11 +258,14 @@ div#main div#main-content{
 	background: #f7f7f7;
 }
 div#main div#main-content img#chain-img{
-	/*height:200px;
-	width:200px;*/
+	display: block;
+	margin:0 auto;
+	margin-top: 10px;
+	width:300px;
+	height:300px;
 }
 div#project-infos{
-	width:230px;
+	width:200px;
 	height:100%;
 }
 div#project-infos div#infos-shop{
@@ -323,7 +284,7 @@ div#project-infos div#infos-shop div#dropdown span{
 	float: left;
 	width:20%;
 	line-height: 60px;
-	font-size: 24px;
+	font-size: 2.4em;
 	text-align: center;
 	color: white;
 }
@@ -341,12 +302,12 @@ div#project-infos div#infos-shop ul#dropdown-menu{
 }
 div#project-infos div#infos-shop ul#dropdown-menu li{
 	height:30px;
-	width:230px;
+	width:200px;
 }
 div#project-infos div#infos-shop ul#dropdown-menu li a{
 	display: block;
 	width:100%;
-	font-size:20px;
+	font-size:2em;
 	line-height: 30px;
 	text-align: center;
 	color: white;
@@ -362,7 +323,7 @@ div#project-infos div#infos-content h1{
 	width:100%;
 	/*height:60px;*/
 	line-height: 60px;
-	font-size: 30px;
+	font-size: 3em;
 	text-align: center;
 	color: rgb(252,50,110);
 	word-break:break-all;
@@ -371,7 +332,7 @@ div#project-infos div#infos-content span{
 	display: block;
 	width: 100%;
 	line-height: 40px;
-	font-size: 24px;
+	font-size: 2.4em;
 	text-align: center;
 }
 div#project-infos div#infos-content button#doDesign{
@@ -417,8 +378,229 @@ div#addProject input,div#addProject select,div#addDevice input{
     padding-top: 10px;
     color:#FFFFFF;
 }
+/* screen width <= 800  stop   */
+/* 800 <  screen width  start   */
+@media (min-width: 800px) {
+	div#container{
+	    font-size: 11px;
+	}
+	div#project-area{
+		width:220px;
+	}
+	div#main div#main-content img#chain-img{
+		margin-top: 20px;
+		width:400px;
+		height:400px;
+	}
+	div#project-infos{
+		width:220px;
+	}
+	div#project-infos div#infos-shop ul#dropdown-menu li{
+		width:220px;
+	}
+	div#project-infos div#infos-content button#doDesign{
+		width:160px;
+		height:32px;
+		border-radius: 6px;
+		line-height: 32px;
+		font-size: 20px;
+	}
+}
+/* 800 <  screen width  stop   */
 
+/* 1400 < screen width start   */
+@media (min-width: 1400px) {
+	div#container{
+	    font-size: 12.5px;
+	}
+	div#project-area{
+		width:250px;
+	}
+	div#project-area div#logo{
+		height:70px;
+	}
+	div#project-area div#logo img{
+		width:70px;
+		height:70px;
+	}
+	div#project-area div#logo span{
+		line-height: 70px;
+	}
+	div#project-area ul#project-shop{
+		height:50px;
+	}
+	div#project-area ul#project-shop li span{
+		line-height: 50px;
+	}
+	div#project-area ul#project-content li.project-label div.button{
+		height:44px;
+	}
+	div#project-area ul#project-content li.project-label div.button span{
+		line-height: 44px;
+	}
+	div#project-area ul#project-content li.project-label div.project-label-shop span{
+		margin-right: 10px;
+		line-height: 44px;
+	}
+	div#project-area ul#project-content li.project-label ul.device-menu li.device-label{
+		height:44px;
+		line-height: 44px;
+	}
+	div#project-area ul#project-content li.project-label ul.device-menu li.device-label div.device-label-shop span{
+		margin-right: 7px;
+		line-height: 32px;
+	}
+	div#main div#main-shop{
+		height:70px;
+	}
+	div#main div#main-shop ul#label-container li span {
+		margin-left: 20px;
+		line-height: 70px;
+	}
+	div#main div#main-shop ul#button-nav li button{
+		margin-right: 10px;
+		margin-top:18px;
+		height:34px;
+		font-size: 22px;
+		line-height: 34px;
+	}
+	div#main div#main-content img#chain-img{
+		margin-top: 30px;
+		width:600px;
+		height:600px;
+	}
+	div#project-infos{
+		width:230px;
+	}
+	div#project-infos div#infos-shop{
+		margin-bottom: 3px;
+		height:70px;
+	}
+	div#project-infos div#infos-shop div#dropdown span{
+		line-height: 70px;
+	}
+	div#project-infos div#infos-shop ul#dropdown-menu{
+		top:70px;
+	}
+	div#project-infos div#infos-shop ul#dropdown-menu li{
+		height:32px;
+		width:230px;
+	}
+	div#project-infos div#infos-shop ul#dropdown-menu li a{
+		font-size:2em;
+		line-height: 32px;
+	}
+	div#project-infos div#infos-content h1{
+		line-height: 70px;
+	}
+	div#project-infos div#infos-content span{
+		line-height: 44px;
+	}
+	div#project-infos div#infos-content button#doDesign{
+		width:180px;
+		height:40px;
+		border-radius: 8px;
+		line-height: 40px;
+		font-size: 24px;
+	}
+}
+/* 1400 < screen width stop    */
 
+/* 2000 < screen width start   */
+@media (min-width: 1800px) {
+	div#container{
+	    font-size: 15px;
+	}
+	div#project-area{
+		width:300px;
+	}
+	div#project-area div#logo{
+		height:80px;
+	}
+	div#project-area div#logo img{
+		width:80px;
+		height:80px;
+	}
+	div#project-area div#logo span{
+		line-height: 80px;
+	}
+	div#project-area ul#project-shop{
+		height:60px;
+	}
+	div#project-area ul#project-shop li span{
+		line-height: 60px;
+	}
+	div#project-area ul#project-content li.project-label div.button{
+		height:48px;
+	}
+	div#project-area ul#project-content li.project-label div.button span{
+		line-height: 48px;
+	}
+	div#project-area ul#project-content li.project-label div.project-label-shop span{
+		margin-right: 10px;
+		line-height: 48px;
+	}
+	div#project-area ul#project-content li.project-label ul.device-menu li.device-label{
+		height:48px;
+		line-height: 48px;
+	}
+	div#project-area ul#project-content li.project-label ul.device-menu li.device-label div.device-label-shop span{
+		line-height: 36px;
+	}
+	div#main div#main-shop{
+		height:80px;
+	}
+	div#main div#main-shop ul#label-container li span {
+		margin-left: 20px;
+		line-height: 80px;
+	}
+	div#main div#main-shop ul#button-nav li button{
+		margin-right: 15px;
+		margin-top:20px;
+		height:40px;
+		font-size: 26px;
+		line-height: 40px;
+	}
+	div#main div#main-content img#chain-img{
+		margin-top: 40px;
+		width:600px;
+		height:600px;
+	}
+	div#project-infos{
+		width:250px;
+	}
+	div#project-infos div#infos-shop{
+		height:80px;
+	}
+	div#project-infos div#infos-shop div#dropdown span{
+		line-height: 80px;
+	}
+	div#project-infos div#infos-shop ul#dropdown-menu{
+		top:80px;
+	}
+	div#project-infos div#infos-shop ul#dropdown-menu li{
+		height:36px;
+		width:250px;
+	}
+	div#project-infos div#infos-shop ul#dropdown-menu li a{
+		font-size:2em;
+		line-height: 36px;
+	}
+	div#project-infos div#infos-content h1{
+		line-height: 80px;
+	}
+	div#project-infos div#infos-content span{
+		line-height: 48px;
+	}
+	div#project-infos div#infos-content button#doDesign{
+		width:200px;
+		height:50px;
+		border-radius: 10px;
+		line-height: 50px;
+		font-size: 30px;
+	}
+}
+/* 2000 < screen width stop   */
 
 
 

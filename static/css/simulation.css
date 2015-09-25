@@ -92,9 +92,6 @@ div#main div#sidebar {
 	background: #3d414d;
 }
 div#sidebar div#sidebar-shop {
-	/*position: absolute;
-	top:0;
-	left: 0;*/
 	height:40px;
 	width:100%;
 	background: rgb(63,150,227);
@@ -253,11 +250,6 @@ div#sidebar button#run {
 	height:30px;
 	border-radius: 5px;
 }
-/*div#sidebar button.new-input-row span {
-	line-height: 40px;
-	font-size: 20px;
-	text-align: center;
-}*/
 div.reaction-equation-area span.point {
 	display: block;
 	margin:5px auto;
@@ -274,40 +266,39 @@ div#main div#content {
     -moz-box-flex:1;
     -o-box-flex:1;
 	height:100%;
-	/*background: green;*/
 }
 @media (min-width: 800px){
 	div#container {
 		font-size:11px; 
 	}
 	div#header {
-	    height:55px;
+	    height:50px;
 	}
 	div#header div#logo {
-		width:260px;
+		width:240px;
 	}
 	div#logo img{
-	    height:55px;
-	    width:55px;
+	    height:50px;
+	    width:50px;
 	}
 	div#logo span{
-	    line-height: 55px;
+	    line-height: 50px;
 	}
 	div#main div#sidebar {
-		width:260px;
+		width:240px;
 	}
 	div#sidebar div#sidebar-shop {
-		height:45px;
+		height:42px;
 	}
 	div#sidebar-shop span {
-		line-height: 45px
+		line-height: 42px
 	}
 	div#sidebar h1.title{
 		height:38px;
 		line-height: 38px;
 	}
 }
-@media (min-width: 1200px){
+@media (min-width: 1400px){
 	div#container {
 		font-size:12px; 
 	}
@@ -315,17 +306,17 @@ div#main div#content {
 	    height:60px;
 	}
 	div#header div#logo {
-		width:320px;
+		width:280px;
 	}
 	div#logo img{
 	    height:60px;
 	    width:60px;
 	}
 	div#logo span{
-	    line-height: 55px;
+	    line-height: 60px;
 	}
 	div#main div#sidebar {
-		width:320px;
+		width:280px;
 	}
 	div#sidebar div#sidebar-shop {
 		height:50px;
@@ -338,7 +329,37 @@ div#main div#content {
 		line-height: 42px;
 	}
 }
-
+@media (min-width: 2000px){
+	div#container {
+		font-size:15px; 
+	}
+	div#header {
+	    height:70px;
+	}
+	div#header div#logo {
+		width:320px;
+	}
+	div#logo img{
+	    height:70px;
+	    width:70px;
+	}
+	div#logo span{
+	    line-height: 70px;
+	}
+	div#main div#sidebar {
+		width:320px;
+	}
+	div#sidebar div#sidebar-shop {
+		height:50px;
+	}
+	div#sidebar-shop span {
+		line-height: 50px
+	}
+	div#sidebar h1.title{
+		height:44px;
+		line-height: 44px;
+	}
+}
 
 svg, g {
   pointer-events: all;

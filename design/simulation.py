@@ -12,7 +12,7 @@ class reaction_simulator:
     """
     reaction simulator
     """
-    def __init__(self, reaction_list, martial_list, reaction_time=100):
+    def __init__(self, reaction_list, martial_list, reaction_time=200):
         """
         init function
 

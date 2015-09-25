@@ -116,11 +116,10 @@ function createDevice(name, id){
 				var element = $( get_element('li', result['name'], 'class', 'device-label', 'chain-id', result['id']) );
 				var div = $( get_element('div', '', 'class', 'device-label-shop' ) );
 				var edit = $( get_element('span', '', 'class', 'device-edit glyphicon glyphicon-pencil'));
-			    var add = $( get_element('span', '', 'class', 'device-add glyphicon glyphicon-plus-sign'));
 			    var remove = $( get_element('span', '', 'class', 'device-remove glyphicon glyphicon-remove-sign'));
-				div.append(edit, add, remove);
+				div.append(edit, remove);
 				element.append(div);
-				$('ul#project-content li.altering ul#device-menu').append(element);
+				$('li.altering ul.device-menu').append(element);
 			}else{
 				showMsg('Device create failed');
 			}
@@ -374,7 +373,7 @@ $(document).on({
 		$('#createChain').attr('disabled','disabled');
 		var name = $('#device-name').val(),
 		project_id = $('#addDevice').attr('project-id');
-		createDevice(name, project_id)
+		createDevice(name, project_id);
 	}
 }, '#createChain');
 //project-label click
@@ -458,15 +457,20 @@ $(document).on({
 	}
 },'div#project-infos div#dropdown, div#project-infos ul#dropdown-menu');
 $(document).on({
+	// gong
 	click:function(){
-		alert('device-remove');
+		$('.device-label-altering').removeClass('device-label-altering');
+		var element = $(this).parent().parent();
+		element.addClass('device-label-altering'); // 你点击修改或删除devcie 的 li 
+		var chain_id = element.attr('chain-id'),
+			chain_name = element.text();
+		if( $(this).hasClass('device-remove') ){
+			alert('remove')
+		}else if( $(this).hasClass('device-edit') ){
+			alert('edit');
+		}
 	}
-},'div.device-label-shop span.device-remove');
-$(document).on({
-	click:function(){
-		alert('device-edit');
-	}
-},'div.device-label-shop span.device-edit');
+},'div.device-label-shop span');
 
 
 

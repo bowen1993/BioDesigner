@@ -73,16 +73,6 @@ $(document).ready(function(){
             }
         }
     },'#search_part_button');
-    // $(document).on({
-    //     keyup:function(){
-
-    //     },
-    //     blur:function(){
-    //         if($('#search_part_input').val().length==0){
-
-    //         }
-    //     }
-    // },'input#search_part_input');
     //为组件 添加 点击出 信息 事件
     $(document).on({
         click:function(){
@@ -230,7 +220,28 @@ $(document).ready(function(){
     $(document).on({
         click:function(){
             var recommend_ids = $(this).attr('recommend_ids');
-            //  龚博文 
+            $.ajax({
+                url:'/home/between_recommend?pairs='+recommend_ids,
+                type:'GET',
+                dateType:'JSON',
+                success:function(result){
+                    if(result['isSuccessful']){
+                        $('#operation_recommand_container').empty();//将之前的推荐清除
+                        for(var i = 0; i<result['recommend_list'].length; i++){
+                            result_list = result['recommend_list'][i];
+                            var insertElems=$('#recommand_part_list').tmpl(result_list);
+                            var row = $("<div class='row'></div>");
+                            row.append(insertElems);
+                            var line = $("<div class='line col-xs-9 col-sm-9 col-md-9'></div>");
+                            row.append(line);
+                            var list = $("<div class='operation_recommand_list'></div>");
+                            list.append(row);
+                            $('#operation_recommand_container').append(list);
+                        }  
+                        setOperationRecommandDraggable($('.operation_recommand_part'));
+                    }          
+                }
+            });
         }
     },'.recommend');
     //为加号按钮设置点击的事件
@@ -276,6 +287,14 @@ $(document).ready(function(){
             getFunctions(id);
         }
     },'div#myModal ul#select-track li');
+    $(document).on({
+        mouseover:function(){
+            $(this).parent().children('span.hide-function').addClass('show-function');
+        },
+        mouseout:function(){
+            $(this).parent().children('span.hide-function').removeClass('show-function');
+        }
+    },'div#myModal ul#select-function li span.normal');
 });
 //设置框架大小
 function setFrame () {
@@ -284,7 +303,9 @@ function setFrame () {
     var bananer_height = $('#bananer').height();
     var sidebar_height = total_height-bananer_height;
     var search_part_container_height = sidebar_height*0.6;
-    var part_result_container_height = search_part_container_height-73;
+    var h1_height = $('#search_part_container h1').height();
+    var search_container_height = $('#search_part_container #search_container').height();
+    var part_result_container_height = search_part_container_height-h1_height-search_container_height;
     $('#part_result_container').css("height",part_result_container_height);
     var recommand_container_height = sidebar_height-search_part_container_height;
     var recommand_search_height = recommand_container_height-33;
@@ -294,40 +315,6 @@ function setFrame () {
     $('#dashboard_container').css("height",dashboard_container_height);
     $('#message').css('height',sidebar_height);
     setDashBoardFloat();
-
-    // var total_width=document.documentElement.clientWidth;//获得屏幕宽度
-    // if(total_width<800){
-    //     total_width=800;
-    // }
-    // var total_height=document.documentElement.clientHeight;//获得屏幕高度
-    // if(total_height<400){
-    //     total_height=400;
-    // }
-
-    // $('#container').css("height",total_height).css("width",total_width);
-    // var bananer_height = $('#bananer').height();
-    // var main_height = total_height-bananer_height;
-    // $('#main').css("height",main_height);//设置主区域高度
-
-    // var sidebar_width = $('#sidebar').width();
-    // var main_right_width = total_width-sidebar_width;
-    // $('#main_right').css("width",main_right_width);//设置右侧宽度
-    // var operation_recommand_height=$('#operation_recommand_container').height();
-    // var dashboard_container_height = main_height-operation_recommand_height;
-    // $('#dashboard_container').css("height",dashboard_container_height);
-
-    // var search_part_container_height = main_height*0.6;
-    // var recommand_container_height = main_height-search_part_container_height;
-    // $('#search_part_container').css("height",search_part_container_height);//设置search_part_container高度
-    // $('#recommand_container').css("height",recommand_container_height);//设置推荐区域高度
-    
-    // var title_height = $('.title').height();
-    // var search_container_height = $('.search_container').height();
-    // var result_container_height = search_part_container_height-title_height-search_container_height;
-    // $('#part_result_container').css("height",result_container_height);
-    // $('#recommand_search_container').css("height",recommand_container_height-title_height);
-
-     
 }
 function getFunctions(track_id){
     $.ajax({
@@ -338,7 +325,6 @@ function getFunctions(track_id){
             //var result = {"functions": [{"id": 25, "name": "artificial biofilm"}, {"id": 30, "name": "Genetic memory devices "}, {"id": 27, "name": "water purification"}, {"id": 26, "name": "degrading, and decolourising azo-dyes"}, {"id": 28, "name": "genetic lock"}, {"id": 29, "name": "intracellular calcium spikes"}, {"id": 61, "name": "phage cocktail"}, {"id": 64, "name": "biological signals"}, {"id": 38, "name": "target gene replacement "}, {"id": 63, "name": "chlorophyll biosynthetic pathway "}, {"id": 80, "name": "gene therapy"}, {"id": 85, "name": "environment  threaten"}, {"id": 84, "name": "decontamination"}, {"id": 99, "name": "extract metal\u2028"}, {"id": 98, "name": "raising n-butanol"}, {"id": 90, "name": "circuits implementing intercellular regulation"}, {"id": 104, "name": "electricity"}, {"id": 106, "name": "antibiotic resistant bacteria"}, {"id": 143, "name": "protein libraries "}, {"id": 177, "name": "bio-imaging system"}, {"id": 175, "name": "detecte and prevent bacteria"}, {"id": 157, "name": "degrade smelly molecules"}, {"id": 170, "name": "human body for healthcare"}], "isSuccessful": true};
             if(result['isSuccessful']){
                 addFunctions(result['functions']);
-                console.log(result['functions']);
             }
         }
     });
@@ -346,10 +332,17 @@ function getFunctions(track_id){
 function addFunctions(functions){
     $('div#myModal ul#select-function').empty();
     for(var i = 0; i<functions.length; i++){
+        if(functions[i]['name'].length>32){
+            var name = functions[i]['name'].substr(0,30) + '...';
+        }else {
+            var name = functions[i]['name'];
+        }
         var li_elem = $("<li></li>");
-        var html = "<span function-id=\""+functions[i]['id']+"\">"+functions[i]['name']+"</span>";
+        var html = "<span class='hide-function' function-id=\""+functions[i]['id']+"\">" + functions[i]['name'] + "</span>";
         li_elem.append($(html));
         html = "<input type=\"checkbox\"/>";
+        li_elem.append($(html));
+        html = "<span class='normal'>"+name+"</span>";
         li_elem.append($(html));
         $('div#myModal ul#select-function').append(li_elem);
     }
@@ -551,33 +544,6 @@ function setDashboardDroppable(elems){
         accept:".operation_part_style"
     });
 }
-//设置操作区 加号按钮的接收
-// function setAddDroppable(elems){
-//     elems.droppable({        
-//         drop:function(){
-//             //var element = $(this).parent();
-//              //$('.operation_recommends_list').remove();
-//              //判断是前按钮 还是后按钮
-//              alert(1);
-//             // if( $(this).is('.btn-front') ){
-//             //          有问题
-//             //     $('.btn-front').trigger('click');
-//             //     getInsert( $( $('receive_style')[0] ) );
-                
-//             // }else{
-//             //     $('.btn-back').trigger('click');
-//             //     getInsert( $(this).parent().next('.part-cell').children('.receive_style') );
-//             // }
-            
-//             // saveChain();
-            
-//         },
-//         over:function(){
-//             alert('over');
-//         },
-//         hoverClass:"receive_hover"
-//     });
-// }
 //  保存 链
 function saveChain(){
     //showMsg('Saving...');

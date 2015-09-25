@@ -148,7 +148,7 @@ def sort_result(es_result, funcs):
     hits = es_result['hits']['hits']
     for item in hits:
         if item['_source']['part_id'] in func_parts:
-            item['_score'] += 1.5
+            item['_score'] += 2
     hits = sorted(hits, key = lambda x:x['_score'], reverse = True)
     return hits[:40]
 

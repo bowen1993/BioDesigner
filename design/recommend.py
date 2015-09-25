@@ -135,8 +135,39 @@ def toFrozenset(data):
             temp.append(frozenset(i))
         result.append(temp)
     return result
-    
 
+def getBetweenMarkovRecommend(part_id):
+    """
+    get recommendations with Markov algorithm
+
+    @param part_id: part id
+    @type part_id: str
+    @return : recommendations
+    @rytpe: dict
+    """
+    result = {
+        'isSuccessful' : True,
+    }
+    predictChains = predict(1, 5, part_id, loadA())
+    if not predictChains:
+        result['isSuccessful'] = False
+        return result
+    chains = list()
+    for predictChain in predictChains:
+        chain = list()
+        for part in predictChain:
+            infos = getPartNameAndType(part)
+            if not infos[0]:
+                break
+            item = {
+                'part_id':part,
+                'part_name': infos[0],
+                'part_type' : infos[1]
+            }
+            chain.append(item)
+        chains.append(chain)
+    result['recommend_list'] = chains
+    return result
 
 def getMarkovRecommend(part_id):
     """
@@ -204,6 +235,8 @@ def get_chain(elem, num, process):
         chain = get_chain(last_elem, num-1, process)
         chain.append(elem)
         return chain
+
+
 
 def predict(m, count, s, A):
     """predict the chain after s
