@@ -62,6 +62,21 @@ def projectView(request):
     try:
         isLoggedIn = request.session['isLoggedIn']
         if isLoggedIn:
+            template = loader.get_template('home/project_new.html')
+            context = RequestContext(request, {
+                'username':request.session['username']
+                })
+            return HttpResponse(template.render(context))
+        else:
+            return HttpResponseRedirect('/')
+    except KeyError:
+        return HttpResponseRedirect('/')
+
+@csrf_exempt
+def oldprojectView(request):
+    try:
+        isLoggedIn = request.session['isLoggedIn']
+        if isLoggedIn:
             template = loader.get_template('home/project.html')
             context = RequestContext(request, {
                 'username':request.session['username']
@@ -111,10 +126,13 @@ def createProject(request):
     }
     if not isLoggedIn(request):
         return HttpResponse(json.dumps(result), content_type="application/json")
-    name = request.POST.get('name', '')
+
+    received_json_data = json.loads(request.body)
+    name = received_json_data['name']
     userObj = getCurrentUserObj(request)
     #function_id = int(request.POST.get('function', ''))
-    track_id = int(request.POST.get('track', ''))
+    # track_id = int(request.POST.get('track', ''))
+    track_id = int(received_json_data['track'])
     createResult = newProject(name, userObj, track_id)
     result['isSuccessful'] = createResult[0]
     result['project_name'] = name
@@ -168,8 +186,9 @@ def createNewDevice(request):
     }
     if not isLoggedIn(request):
         return HttpResponse(json.dumps(result), content_type="application/json")
-    name = request.POST.get('name', '')
-    projectId = request.POST.get('id', '')
+    received_json_data = json.loads(request.body)
+    name = received_json_data['name']
+    projectId = received_json_data['id']
     newChain = chain(name=name, project_id=int(projectId))
     try:
         newChain.save()
@@ -287,7 +306,9 @@ def get_between_recommend(request):
 
 @csrf_exempt
 def deleteProject(request):
-    projectId = request.POST.get('id', '')
+    request_json = json.loads(request.body)
+    # projectId = request.POST.get('id', '')
+    projectId = request_json['id']
     result = {
         'isSuccessful' : True,
     }

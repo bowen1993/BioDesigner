@@ -1,0 +1,55 @@
+<div class="main-area" flex layout="row" style>
+	<md-list flex="20" class="project-list md-whiteframe-z2" md-is-locked-open="$mdMedia('gt-sm')" layout-padding>
+		<md-list layout="row">
+			<md-button class="md-icon-button">
+			<md-icon ng-click="showNewProjectDialog($event)" md-svg-src="/static/icon/plus.svg"></md-icon>
+			</md-button>
+			<span flex></span>
+			<md-button class="md-icon-button" ng-click="toggle_edit()">
+				Edit
+			</md-button>
+		</md-list>
+		<md-list-item layout="column" class="project-item" ng-repeat="project in project_info">
+			<div class="project-item-btn" layout="row" >
+				<span flex ng-click="toggle_device($index)">{{project.name}}</span>
+				<div ng-hide="!isEdit">
+					<md-button class="md-icon-button" ng-click="showNewDeviceDialog($event, project.id)">
+					<md-icon md-svg-src="/static/icon/plus.svg"></md-icon>
+					</md-button>
+					<md-button class="md-icon-button" ng-click="delete_project($index, project.id)">
+						<md-icon md-svg-src="/static/icon/delete.svg"></md-icon>
+					</md-button>
+				</div>
+			</div>
+			<md-list ng-hide="project.isDeviceShowed" class="device-list" layout-padding >
+				<md-list-item class="device-item" ng-repeat="device in project.devices">
+					<div ng-click="device_clicked(device.id)" class="device-item-btn" layout="row">
+						<span flex>{{device.name}}</span>
+<!-- 						<div ng-hide="!isEdit">
+							<md-button class="md-icon-button">
+								<md-icon md-svg-src="/static/icon/delete.svg"></md-icon>
+							</md-button>
+						</div> -->
+					</div>
+					<md-divider></md-divider>
+				</md-list-item>
+			</md-list>
+			<md-divider></md-divider>
+		</md-list-item>
+	</md-list>
+	<div class="device-content" flex="60">
+		<img src="{{devcie_img_src}}" alt="" class="img-responsive device-img">
+	</div>
+	
+	<md-card class="device-info" layout="column" flex layout-padding>
+		<md-card-title-text >
+			<h2>Device name</h2>
+		</md-card-title-text>
+		<md-card-title-text >
+			<h4>Length: 0</h4>
+		</md-card-title-text>
+		<md-card-title-text >
+			<md-button class="md-raised md-accent">Design</md-button>
+		</md-card-title-text>
+	</md-card>
+</div>

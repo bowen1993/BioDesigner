@@ -1,0 +1,78 @@
+html, body{
+	width: 100%;
+	height: 100%;
+}
+
+.dialog-opac{
+	opacity:1;
+}
+
+.box{
+	display: box;
+	display: -webkit-box;
+	display: -moz-box;
+	display: -o-box;
+}
+
+div.logo-name img{
+	width: 60px;
+	height: 60px;
+}
+
+.main{
+	height: 100%;
+}
+
+.main-area{
+	height: 90%;
+}
+
+.project-list{
+	background-color: #EFEFFF;
+	height: 100%;
+}
+
+.project-item{
+	color:#111;
+	background-color: 
+	width:100%;
+}
+
+.project-item-btn{
+	display:block;
+	width: 90%;
+	line-height: 1.3em;
+	font-size: 1.4em;
+}
+
+.device-list{
+	width: 80%;
+	margin: 0 0 0 auto;
+}
+
+.device-item{
+	width: 100%; 
+}
+
+.device-item-btn{
+	font-weight: 500;
+	line-height: 2em;
+}
+
+div.device-content{
+
+}
+
+.device-img{
+	width: 50%;
+	margin: 0 auto;
+}
+
+.device-info{
+	background-color: #EEE;
+	border-radius: 5px;
+}
+
+.project-dialog{
+	width: 80%;
+}

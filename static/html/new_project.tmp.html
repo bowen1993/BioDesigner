@@ -1,0 +1,50 @@
+<md-dialog class="project-dialog dialog-opac" aria-label="New_Project" ng-clock>
+<form name="newproject">
+	<md-toolbar class="md-accent">
+		<div class="md-toolbar-tools">
+	        <h2 class="dialog-title">New Project</h2>
+	        <span flex></span>
+	        <md-button class="md-icon-button" ng-click="cancel()">
+	          <md-icon md-svg-src="/static/icon/close.svg" aria-label="Close dialog"></md-icon>
+	        </md-button>
+      </div>
+	</md-toolbar>
+	<md-dialog-content>
+		<div class="md-dialog-content" layout="column" layout-padding>
+			<div class="input-area" flex layout="row" layout-padding>
+				<div><span flex="10">
+						<h4>Project Name: </h4>
+					</span></div>
+				<span flex></span>
+				<md-input-container class="md-block" flex="80">
+		          <label>Project Name</label>
+		          <input name="proname" type="text" required ng-model="new_project_name">
+		          <div ng-messages="newproject.proname.$error" multiple md-auto-hide="true">
+			          <div ng-message="required">
+			          </div>
+		          </div>
+		        </md-input-container>
+			</div>
+			<div class="select-area" layout="row" flex layout-padding>
+				<div><span flex="10"><h4>Track: </h4></span></div>
+				<span flex></span>
+				<div flex="80">
+					<md-select ng-model="new_project_track">
+						<md-option ng-repeat="track in tracks" ng-value="track.id">
+							{{track.track}}
+						</md-option>
+					</md-select>
+				</div>
+			</div>
+		</div>
+	</md-dialog-content>
+	<md-dialog-actions layout="row" layout-padding>
+		<md-button ng-click="cancel()">
+        Cancel
+      </md-button>
+      <md-button class="md-primary md-raised" ng-click="create_project()">
+       	Confirm
+      </md-button>
+	</md-dialog-actions>
+</form>
+</md-dialog>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="bio_project">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no" />
+	<title>BioDesigner|Project</title>
+	<link rel="stylesheet" href="/static/css/project_new.css">
+    <link rel="stylesheet" href="/static/css/angular-material.css">
+    <script src="/static/js/angular.min.js"></script>
+    <script src="/static/js/angular-aria.min.js"></script>
+    <script src="/static/js/angular-animate.min.js"></script>
+    <script src="/static/js/angular-route.min.js"></script>
+    <script src="/static/js/angular-material.js"></script>
+    <script src="/static/js/project_main.js"></script>
+    <script src="/static/js/project_ctrl.js"></script>
+    <link rel="stylesheet" href="/static/css/bootstrap.css" />
+</head>
+<body layout="column" style>
+	<md-toolbar class="main-bar" flex="10">
+		<div class="md-toolbar-tools">
+			<div class="logo-name box"layout="row" layout-align="start center">
+				<img src="/static/img/logo_white_small.png" class="img-responsive" alt="logo">
+				<h2 flex>
+					<span>BioDesigner</span>
+				</h2>
+			</div>
+			<span flex="10"></span>
+	        <!-- <div id="sel-hint" flex>Project Name Track Name > Device Name</div> -->
+	        <span flex></span>
+	        <div class="lock-size" layout="row" layout-align="center center">
+	      </div>
+			<md-button class="md-raised md-accent" aria-label="Result">Get Result</md-button>
+	      	<md-button class="md-raised md-accent" aria-label="Result">Simulator</md-button>
+	      	<md-button class="md-raised md-accent" aria-label="Result">System</md-button>
+	        <md-button href="/accounts/logout" class="md-raised" aria-label="Learn More">
+	          Logout
+	        </md-button>
+	      </div>
+	</md-toolbar>
+	<div class="main" ng-view layout="column" flex></div>
+</body>
+</html>
