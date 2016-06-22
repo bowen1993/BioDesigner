@@ -4,6 +4,7 @@ ProController.controller('MainCtrl',function($scope, $http, $location, $mdDialog
 	$scope.project_info = [];
 	$scope.isEdit = false
 	$scope.isChosen = false;
+	$scope.current_id = -1;
 	$scope.toggle_device = function(index){
 		$scope.getDevices(index, $scope.project_info[index].id);
 
@@ -37,12 +38,16 @@ ProController.controller('MainCtrl',function($scope, $http, $location, $mdDialog
 			$scope.project_info[index].devices = data;
 		});
 	}
+	$scope.set_new_img_path = function(img_path){
+		$scope.devcie_img_src = img_path.replace('downloads', 'static');
+	}
 	$scope.device_clicked = function(device_id){
 		$scope.isChosen = true;
+		$scope.current_id = device_id;
 		$http.get('/home/getResultImage?id='+device_id).success(function(data){
 			if(data.isSuccessful){
 				console.log(data);
-				$scope.devcie_img_src = data.filepath;
+				$scope.set_new_img_path(data.filepath);
 			}else{
 				console.log(data);
 			}
@@ -115,6 +120,12 @@ ProController.controller('MainCtrl',function($scope, $http, $location, $mdDialog
 			}
 		});
 	}
+	$scope.toDesign = function(){
+		if( $scope.current_id != -1 ){
+			window.location = '/home/dashboard?id=' + $scope.current_id;
+		}
+	}
+
 
 	$scope.init();
 

@@ -369,6 +369,7 @@ def getResultImage(request):
                 chainObj.image_file_path = result['filepath']
                 chainObj.save()
     except:
+        traceback.print_exc()
         result['isSuccessful'] = False
     return HttpResponse(json.dumps(result), content_type="application/json")
 
